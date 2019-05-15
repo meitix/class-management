@@ -2,17 +2,24 @@ import { Model } from 'mongoose';
 import { Request, Response } from 'express';
 import { IEntity } from '../models/interfaces/system/entity.interface';
 
-export abstract class Controller<T extends IEntity> {
+export class Controller<T extends IEntity> {
   Entity: Model<T>;
+  
+  constructor(entity: Model<T>) {
+    this.Entity = entity;
+  }
 
   // fetch all.
   async fetch(req: Request, res: Response) {
     let data = null;
-    // check if there is od in params read by id.
+    // check if there is id in params read by id.
     if (req.params.id) data = await this.Entity.findById(req.param('id'));
     // find by req.body in lack of id.
-    else data = await this.Entity.find(req.body);
-    
+    else {
+      if(this.Entity)
+      data = await this.Entity.find(req.body);
+      else console.log(`entity is null.`)
+    }
     res.send(data);
   }
 

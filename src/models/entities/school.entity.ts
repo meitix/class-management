@@ -1,6 +1,6 @@
-import { Schema, model, Model } from "mongoose";
-import { ISchool } from "../interfaces/edu/school.interface";
-import { PersonSchema } from "./people.schema";
+import { Schema, model, Model } from 'mongoose';
+import { ISchool } from '../interfaces/edu/school.interface';
+import { PersonSchema } from './people.schema';
 
 export const SchoolSchema = new Schema({
   code: {
@@ -20,4 +20,4 @@ export const SchoolSchema = new Schema({
   students: [PersonSchema]
 });
 
-export const School: Model<ISchool> = model<ISchool>("School", SchoolSchema);
+export const School: Model<ISchool> = model<ISchool>('School', SchoolSchema);

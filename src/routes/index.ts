@@ -10,8 +10,8 @@ class SchoolManagementRouter {
   }
 
   init() {
-      this.router.use('/school' , schoolRoutes);
-  } 
+    this.router.use('/school', schoolRoutes);
+  }
 }
 
 export default new SchoolManagementRouter().router;
