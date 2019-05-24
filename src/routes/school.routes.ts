@@ -12,6 +12,7 @@ class SchoolRouter {
     }
 
     init() {
+        // Schools functionality is here.
         // fetch.
         this.router.get('/' , this.controller.fetch);
         this.router.get('/:id' , this.controller.fetch);
@@ -21,6 +22,14 @@ class SchoolRouter {
         this.router.put('/:id' , this.controller.edit);
         // delete.
         this.router.delete('/:id' , this.controller.delete);
+
+        // Students.
+        // create student.
+        this.router.post('/:id/students' , this.controller.addStudent);
+        this.router.get('/:id/students' , this.controller.getStudents);
+        this.router.put('/:id/student/:studentId' , this.controller.updateStudent);
+        this.router.delete('/:id/studentId' , this.controller.deleteStudent);
+        
     }
 }
 
