@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12 col-lg-offset-4 col-md-offset-3">
+    <form (submit)="submit()" #f="ngForm">
+      <div class="card">
+        <div class="card-header" data-background-color="purple">
+          <h4 class="text-center">ورود</h4>
+        </div>
+        <div class="card-content">
+        </div>
+        <div class="container-fluid">
+            <p class="text-danger text-center">{{errorMessage}}</p>
+          <div class="form-group label-floating">
+            <label class="control-label">نام کاربری</label>
+            <input type="text" class="form-control" required name="username" [(ngModel)]="username" #us>
+            <span class="text-danger" *ngIf="us.errors !=null && us.touched">لطفا نام کاربری را وارد کنید.</span>
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">کلمه عبور</label>
+            <input type="password" class="form-control" required required name="password" [(ngModel)]="password" #pswd>
+            <span class="text-danger" *ngIf="pswd.errors !=null && pswd.touched">لطفا کلمه عبور را وارد کنید.</span>
+          </div>
+
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="optionsCheckboxes" [(ngModel)]="remember" name="remember"> مرابه خاطر بسپار
+            </label>
+          </div>
+
+          <div class="col-sm-12 text-center">
+            <button class="btn btn-primary">ورود</button>
+            <a [routerLink]="'../register'" class="btn btn-success text-center">ثبت نام کنید !</a>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

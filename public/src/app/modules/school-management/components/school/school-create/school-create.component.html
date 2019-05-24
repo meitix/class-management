@@ -1,0 +1,51 @@
+<div class="card">
+  <div class="card-header" data-background-color="blue">
+    <h4>ایجاد مکتب جدید</h4>
+    <p>در این قسمت میتوانید مکتب جدید تعریف کنید</p>
+  </div>
+  <div class="card-content">
+    <form class="form" (ngSubmit)="submit(f)" #f="ngForm">
+      <div class="row">
+        <div
+          class="col-sm-12 col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2"
+        >
+          <div class="form-group label-floating">
+            <label class="control-label">کد</label>
+            <input
+              type="text"
+              name="code"
+              required
+              class="form-control"
+              [(ngModel)]="school.code"
+            />
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">عنوان</label>
+            <input
+              type="text"
+              name="title"
+              required
+              class="form-control"
+              [(ngModel)]="school.title"
+            />
+          </div>
+
+          <div class="form-group label-floating">
+            <label class="control-label">فعال</label>
+            <input
+              type="checkbox"
+              name="isEnable"
+              required
+              class="form-control"
+              [(ngModel)]="school.isEnable"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="form-group text-center">
+        <button class="btn btn-success">ثبت</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,5 +1,3 @@
-import { Document } from "mongoose";
-
-export interface IEntity extends Document{
+export interface IEntity {
     _id: string;
 }

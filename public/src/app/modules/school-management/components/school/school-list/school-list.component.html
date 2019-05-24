@@ -1,0 +1,24 @@
+<div class="card">
+    <div class="card-header" data-background-color="blue">
+      <h4>لیست کاربران</h4>
+      <p>کاربران ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
+    </div>
+    <div class="card-content">
+      <table class="table">
+        <thead>
+          <th>نام کاربری</th>
+          <th>نقش</th>
+          <th>وضعیت</th>
+          <th>تاریخ عضویت</th>
+        </thead>
+        <tbody>
+          <tr >
+            <td></td>
+          </tr>
+          <tr *ngIf="schools.length === 0">
+            <td style="text-align:center">موردی یافت نشد</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

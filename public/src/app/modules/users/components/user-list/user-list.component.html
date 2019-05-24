@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="card-header" data-background-color="blue">
+    <h4>لیست کاربران</h4>
+    <p>کاربران ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
+  </div>
+  <div class="card-content">
+    <table class="table">
+      <thead>
+        <th>نام کاربری</th>
+        <th>نقش</th>
+        <th>وضعیت</th>
+        <th>تاریخ عضویت</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{user.username}}</td>
+          <td>{{user.roles | roles}}</td>
+          <td [innerHTML]="user.active | activeSatus"></td>
+          <td>{{user.createDate  }}</td>
+          <td>
+            <a [routerLink]="['edit' , user._id]" class="btn btn-warning btn-simple">
+            <i class="material-icons">edit</i>
+          </a>
+          </td>
+        </tr>
+        <tr *ngIf="users.length === 0">
+          <td>موردی یافت نشد</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
