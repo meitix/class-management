@@ -16,7 +16,7 @@ export const SchoolSchema = new Schema({
     required: true
   },
   boardOfTrust: String,
-  presonel: [PersonSchema],
+  personnel: [PersonSchema],
   students: [PersonSchema]
 });
 

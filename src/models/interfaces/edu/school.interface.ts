@@ -6,7 +6,7 @@ export interface ISchool extends IEntity {
   title: string;
   isEnable: boolean;
   boardOfTrust?: string;
-  personle: IPerson[];
+  personnel: IPerson[];
   students: IPerson[];
 }
  
