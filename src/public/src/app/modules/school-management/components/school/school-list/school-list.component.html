@@ -6,19 +6,31 @@
     <div class="card-content">
       <table class="table">
         <thead>
-          <th>نام کاربری</th>
-          <th>نقش</th>
+          <th>کد</th>
+          <th>عنوان</th>
           <th>وضعیت</th>
-          <th>تاریخ عضویت</th>
+          <th>هیات امنا</th>
         </thead>
         <tbody>
-          <tr >
-            <td></td>
-          </tr>
-          <tr *ngIf="schools.length === 0">
-            <td style="text-align:center">موردی یافت نشد</td>
+          <tr *ngFor="let school of schools">
+            <td>{{school.code}}</td>
+            <td>{{school.title}}</td>
+            <!-- <td [innerHtml]="school.isEnable | activeStatus"></td> -->
+            <td [innerHtml]="school.isEnable"></td>
+            <td>{{school.boardOfTrust}}</td>
+            <td>
+              <a class="btn btn-simple btn-sm" [routerLink]="['edit' , school._id]" >
+              <i class="material-icons text-info text-sm">edit</i>
+            </a>
+            <a class="btn btn-simple btn-sm" (click)="delete(school._id)">
+              <i class="material-icons text-danger text-sm">delete</i>
+            </a>
+            </td>
           </tr>
         </tbody>
       </table>
+      <div *ngIf="!schools">
+        <p style="text-align:center">موردی یافت نشد</p>
+      </div>
     </div>
   </div>

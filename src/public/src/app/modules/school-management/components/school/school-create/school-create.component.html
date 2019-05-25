@@ -30,7 +30,16 @@
               [(ngModel)]="school.title"
             />
           </div>
-
+          <div class="form-group label-floating">
+            <label class="control-label">توضیحات (هیات امنا)</label>
+            <textarea
+              type="text"
+              name="boardOfTrust"
+              required
+              class="form-control"
+              [(ngModel)]="school.boardOfTrust"
+            ></textarea>
+          </div>
           <div class="form-group label-floating">
             <label class="control-label">فعال</label>
             <input

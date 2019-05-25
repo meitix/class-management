@@ -1,7 +1,5 @@
-import { IRole } from '../auth/role.interface';
-import { Document } from 'mongoose';
 
-export interface IPerson extends Document {
+export interface IPerson {
   firstname: string;
   lastname: string;
   nationalCode: string;
@@ -10,4 +8,8 @@ export interface IPerson extends Document {
   birthDate: Date;
   roles: IRole[];
   description: string;
+}
+
+export interface IRole{
+  title: string;
 }

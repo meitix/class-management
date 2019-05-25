@@ -99,7 +99,4 @@ export class SchoolController {
       res.status(400).send(err);
     }
 }
-
-
-
 }

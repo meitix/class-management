@@ -1,7 +1,7 @@
 import { IRole } from '../auth/role.interface';
-import { Document } from 'mongoose';
+import { IEntity } from '../system/entity.interface';
 
-export interface IPerson extends Document {
+export interface IPerson extends IEntity {
   firstname: string;
   lastname: string;
   nationalCode: string;
