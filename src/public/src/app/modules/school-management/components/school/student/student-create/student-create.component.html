@@ -1,0 +1,28 @@
+<div class="card">
+  <div class="card-header" data-background-color="blue">
+    <h4>ایجاد قرآن آموز جدید</h4>
+    <p>در این قسمت میتوانید قرآن آموز جدید تعریف کنید</p>
+  </div>
+  <div class="card-content">
+    <div class="row">
+    <div class="col-md-6">
+      <h3>مشخصات قرآن آموز</h3>
+      <app-person-create
+        [enableSubmit]="false"
+        [person]="student"
+        (personUpdate)="updatePerson($event)"
+      ></app-person-create>
+    </div>
+    <div class="col-md-6">
+      <h3>مشخصات ولی</h3>
+      <app-person-create
+        [enableSubmit]="false"
+        [person]="student.parent"
+      ></app-person-create>
+    </div>
+  </div>
+    <div class="form-group text-center">
+      <button class="btn btn-success" (click)="submit()">ثبت</button>
+    </div>
+  </div>
+</div>

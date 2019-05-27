@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ISchool, School } from '../../../models/edu/school.interface';
 import { NgForm } from '@angular/forms';
 import { SchoolService } from '../services/school.service';
@@ -11,7 +11,7 @@ import { ErrorService } from 'src/app/modules/base/services/error.service';
   templateUrl: './school-create.component.html',
   styleUrls: ['./school-create.component.css']
 })
-export class SchoolCreateComponent implements OnInit {
+export class SchoolCreateComponent implements OnInit , OnDestroy{
   school: ISchool;
   routeSubscription: Subscription;
   @ViewChild('f') form: NgForm;
@@ -39,14 +39,21 @@ export class SchoolCreateComponent implements OnInit {
 
   submit(f: NgForm) {
     if (f.valid) {
-      this.schoolService.create(this.school).subscribe(
-        res => {
-          alert(this.school.code + ` با موفقیت ثبت شد`);
-        },
-        err => {
-          this.errorService.handle(err, 'خطا.');
-        }
-      );
+      let request = this.schoolService.create(this.school);
+
+      // change request to update if user is updating.
+      if (this.school._id) {
+        request = this.schoolService.update(this.school._id , this.school);
+      }
+
+      request.subscribe(res => {
+        this.school = res;
+        alert(this.school.code + ` با موفقیت ثبت شد`); },
+        err => this.errorService.handle(err, 'خطا.'));
     }
+  }
+
+  ngOnDestroy(): void {
+   this.routeSubscription.unsubscribe();
   }
 }

@@ -10,7 +10,9 @@ import { ISchool } from '../../../models/edu/school.interface';
 export class SchoolListComponent implements OnInit {
 
   schools: ISchool[];
-  constructor(private schoolService: SchoolService) { }
+  constructor(private schoolService: SchoolService) {
+    this.schools = [];
+   }
 
   ngOnInit() {
    this.fetchGridData();
@@ -24,7 +26,7 @@ export class SchoolListComponent implements OnInit {
 
   delete(id: string) {
     if (confirm('آیا برای حذف اطمینان دارید؟')) {
-      this.schoolService.delete(id).subscribe(res => {
+      this.schoolService.remove(id).subscribe(res => {
         alert('مورد با موفقیت حذف شد');
         this.fetchGridData();
       });

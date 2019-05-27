@@ -7,11 +7,12 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
-            "program": "${workspaceFolder}\\index.js",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
+            "name": "Launch TS in Node.js",
+            "program": "${workspaceFolder}/index.ts",
+            "preLaunchTask": "typescript",
+            "cwd": "${workspaceFolder}",
+            "protocol": "inspector",
+            "outFiles": ["${workspaceFolder}/dist/out-tsc/**/*.js"]
         }
     ]
 }

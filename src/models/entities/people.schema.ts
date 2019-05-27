@@ -1,4 +1,4 @@
-import { Schema, Model, model } from 'mongoose';
+import { Schema, Model, model, Types } from 'mongoose';
 import { IPerson } from '../interfaces/people/person.interface';
 
 export const PersonSchema = new Schema({
@@ -17,7 +17,13 @@ export const PersonSchema = new Schema({
   },
   mobile: {
     type: String
-  }
+  },
+  tel: String,
+  birthDate: Date,
+  roles: [{title: String}],
+  description: String,
+  parent: Object,
+  children: [Object]
 });
 
 export const Person: Model<IPerson> = model<IPerson>('Person', PersonSchema);

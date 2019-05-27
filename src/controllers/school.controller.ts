@@ -59,12 +59,15 @@ export class SchoolController {
   // Students.
   // create student.
   async addStudent(req: Request, res: Response) {
+    console.log(req.body);
     try {
+      debugger;
       const student = new Person(req.body);
       const result = await School.findOneAndUpdate(
         { id: req.params.id },
         { $push: { students: student } }
       );
+      console.log('result', result);
       res.json(result);
     } catch (e) {
       res.status(400).send(e);

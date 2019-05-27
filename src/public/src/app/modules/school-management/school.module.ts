@@ -6,10 +6,26 @@ import { SchoolStartComponent } from './components/school/school-start/school-st
 import { SchoolRoutingModule } from './components/school/school-routing/school-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActiveStatusPipe } from '../users/pipes/active-status.pipe';
-import { PersonelComponent } from './components/personel/personel.component';
+import { PersonStartComponent } from './components/person/person-start/person-start.component';
+import { PersonCreateComponent } from './components/person/person-create/person-create.component';
+import { PersonListComponent } from './components/person/person-list/person-list.component';
+import { StudentStartComponent } from './components/school/student/student-start/student-start.component';
+import { StudentCreateComponent } from './components/school/student/student-create/student-create.component';
+import { StudentListComponent } from './components/school/student/student-list/student-list.component';
 
 @NgModule({
-  declarations: [SchoolListComponent, SchoolCreateComponent, SchoolStartComponent, ActiveStatusPipe, PersonelComponent],
+  declarations: [
+    SchoolListComponent,
+    SchoolCreateComponent,
+    SchoolStartComponent,
+    ActiveStatusPipe,
+    PersonStartComponent,
+    PersonCreateComponent,
+    PersonListComponent,
+    StudentStartComponent,
+    StudentCreateComponent,
+    StudentListComponent
+  ],
   imports: [
     CommonModule,
     SchoolRoutingModule,
@@ -18,4 +34,4 @@ import { PersonelComponent } from './components/personel/personel.component';
   ],
   exports: [ActiveStatusPipe]
 })
-export class SchoolManagementModule { }
+export class SchoolManagementModule {}
