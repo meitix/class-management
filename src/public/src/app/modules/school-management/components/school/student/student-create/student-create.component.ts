@@ -40,6 +40,8 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
       const res = await this.schoolService
         .addStudent(this.schoolId, this.student)
         .toPromise();
+
+        alert('قرآن آموز با موفقیت ثبت شد');
     } catch (e) {
       this.errorService.handle(e, 'مشکل در اتصال به سرور');
     }

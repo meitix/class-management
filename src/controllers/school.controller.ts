@@ -108,10 +108,8 @@ export class SchoolController {
   // delete student.
   async deleteStudent(req: Request, res: Response) {
     try {
-      const result = await Person.findOneAndUpdate(
-        req.param("userId"),
-        req.body
-      );
+      const studentId = new Types.ObjectId(req.params.studentId);
+      const result = await Person.updateOne({'children._id': studentId}, {$pull: {children: {_id: studentId}}});
       res.json(result);
     } catch (err) {
       res.status(400).send(err);

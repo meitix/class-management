@@ -13,9 +13,14 @@ export class SchoolService extends RestService<ISchool> {
   }
 
   addStudent(schoolId: string, student: IStudent) {
-     return this.post(this.url.concat(schoolId, '/students') , student).pipe(map(res => {
-       console.log(res);
-       return res;
-     }));
+     return this.post(this.url.concat(schoolId, '/students') , student).pipe(map(res => <IStudent>res));
+  }
+
+  getStudents(schoolId: string) {
+    return this.get(`${this.url + schoolId}/students`).pipe(map(res => <Array<IStudent>>res));
+  }
+
+  deleteStudent(schoolId: string, studentId: string) {
+   return this.delete(`${this.url + schoolId}/student/${studentId}`);
   }
 }

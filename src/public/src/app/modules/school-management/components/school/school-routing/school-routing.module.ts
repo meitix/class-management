@@ -21,7 +21,8 @@ const schoolRoutes: Routes = [
         component: StudentStartComponent,
         children: [
           { path: '', component: StudentListComponent },
-          { path: 'create', component: StudentCreateComponent }
+          { path: 'create', component: StudentCreateComponent },
+          { path: 'edit/:id', component: StudentCreateComponent }
         ]
       }
     ]

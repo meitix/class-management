@@ -28,7 +28,7 @@ class SchoolRouter {
         this.router.post('/:id/students' , this.controller.addStudent);
         this.router.get('/:id/students' , this.controller.getStudents);
         this.router.put('/:id/student/:studentId' , this.controller.updateStudent);
-        this.router.delete('/:id/studentId' , this.controller.deleteStudent);
+        this.router.delete('/:id/student/:studentId' , this.controller.deleteStudent);
         
     }
 }
