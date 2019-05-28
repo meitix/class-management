@@ -2,6 +2,7 @@ import { Schema, Model, model, Types } from 'mongoose';
 import { IPerson } from '../interfaces/people/person.interface';
 
 export const PersonSchema = new Schema({
+  schoolId: {type: Types.ObjectId , ref: 'School'},
   firstname: {
     type: String,
     required: true
@@ -22,7 +23,6 @@ export const PersonSchema = new Schema({
   birthDate: Date,
   roles: [{title: String}],
   description: String,
-  parent: Object,
   children: [Object]
 });
 

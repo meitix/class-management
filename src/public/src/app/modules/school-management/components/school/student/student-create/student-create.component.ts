@@ -45,11 +45,15 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  updatePerson(student: IStudent) {
+  updateStudent(student: IStudent) {
     if (student) {
       this.student = student;
       console.log(this.student);
     }
+  }
+
+  updateParent(parent: Parent) {
+    this.student.parent = parent;
   }
 
   ngOnDestroy(): void {

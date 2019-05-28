@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import { School } from "../models/entities/school.entity";
 import { Person } from "../models/entities/people.schema";
-import schoolRoutes from "../routes/school.routes";
+import { IPerson } from "../models/interfaces/people/person.interface";
+import { Types } from "mongoose";
+import * as _ from 'lodash';
 
 export class SchoolController {
   constructor() {}
@@ -59,47 +61,60 @@ export class SchoolController {
   // Students.
   // create student.
   async addStudent(req: Request, res: Response) {
-    console.log(req.body);
+    const schoolId = req.params.id;
     try {
-      debugger;
-      const student = new Person(req.body);
-      const result = await School.findOneAndUpdate(
-        { id: req.params.id },
-        { $push: { students: student } }
-      );
-      console.log('result', result);
-      res.json(result);
+    const studentVM = <IPerson>req.body;
+    // fetch parent from db.
+    let parent = await Person.findOne({
+      nationalCode: studentVM.parent.nationalCode
+    });
+    // create new parent if is not already exists.
+    if (!parent) parent = new Person(studentVM.parent);
+
+    const student = new Person(req.body);
+    student.schoolId = schoolId;
+    parent.children.push(student);
+
+    const result = await parent.save();
+
+    console.log("result", result);
+    res.json(result);
     } catch (e) {
       res.status(400).send(e);
     }
   }
 
   // get students by condition.
-  async getStudents(req: Request , res:Response) {
-      try {
-        const result = await School.find(req.body);
-        res.json(result);
-      } catch(e) {
-          res.status(500).send(e);
-      }
+  async getStudents(req: Request, res: Response) {
+    const schoolId = req.params.id;
+    try {
+      const result = await Person.find({'children.schoolId': Types.ObjectId(schoolId)}, {children: 1});
+      const students = _.flatten(result.map(r => r.children));
+      res.json(students);
+    } catch (e) {
+      res.status(500).send(e);
+    }
   }
   // update student.
   async updateStudent(req: Request, res: Response) {
-      try{
-          const result = await Person.findOneAndUpdate(req.param('userId'), req.body);
-          res.json(result);
-      } catch(err) {
-        res.status(400).send(err);
-      }
+    try {
+      const result = await Person.findOneAndUpdate({'children.id':req.params.userId}, {$set:{ 'children.$': req.body}});
+      res.json(result);
+    } catch (err) {
+      res.status(400).send(err);
+    }
   }
 
   // delete student.
   async deleteStudent(req: Request, res: Response) {
-    try{
-        const result = await Person.findOneAndUpdate(req.param('userId'), req.body);
-        res.json(result);
-    } catch(err) {
+    try {
+      const result = await Person.findOneAndUpdate(
+        req.param("userId"),
+        req.body
+      );
+      res.json(result);
+    } catch (err) {
       res.status(400).send(err);
     }
-}
+  }
 }

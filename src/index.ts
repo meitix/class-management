@@ -1,4 +1,4 @@
-import { ClassManagement } from "./src/class-management";
+import { ClassManagement } from "./class-management";
 
 const classManagement = new ClassManagement();
 

@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StudentListComponent implements OnInit {
 
-  constructor() { }
+  constructor(private schoolService) { }
 
   ngOnInit() {
   }
