@@ -1,34 +1,37 @@
 import { Router } from 'express';
 import { SchoolController } from '../controllers/school.controller';
+import { PeopleController } from '../controllers/people.controller';
 
 class SchoolRouter {
     router: Router;
-    private controller: SchoolController;
+    private schoolController: SchoolController;
+    private peopleController: PeopleController;
 
     constructor() {
         this.router = Router();
-        this.controller = new SchoolController();
+        this.schoolController = new SchoolController();
+        this.peopleController = new PeopleController();
         this.init();
     }
 
     init() {
         // Schools functionality is here.
         // fetch.
-        this.router.get('/' , this.controller.fetch);
-        this.router.get('/:id' , this.controller.fetch);
+        this.router.get('/' , this.schoolController.fetch);
+        this.router.get('/:id' , this.schoolController.fetch);
         // create.
-        this.router.post('/' , this.controller.create);
+        this.router.post('/' , this.schoolController.create);
         // edit.
-        this.router.put('/:id' , this.controller.edit);
+        this.router.put('/:id' , this.schoolController.edit);
         // delete.
-        this.router.delete('/:id' , this.controller.delete);
+        this.router.delete('/:id' , this.schoolController.delete);
 
         // Students.
-        // create student.
-        this.router.post('/:id/students' , this.controller.addStudent);
-        this.router.get('/:id/students' , this.controller.getStudents);
-        this.router.put('/:id/student/:studentId' , this.controller.updateStudent);
-        this.router.delete('/:id/student/:studentId' , this.controller.deleteStudent);
+        this.router.post('/:id/students' , this.peopleController.addStudent);
+        this.router.get('/student/:studentId' , this.peopleController.getStudent)
+        this.router.get('/:id/students' , this.peopleController.getStudents);
+        this.router.put('/:id/student/:studentId' , this.peopleController.updateStudent);
+        this.router.delete('/:id/student/:studentId' , this.peopleController.deleteStudent);
         
     }
 }

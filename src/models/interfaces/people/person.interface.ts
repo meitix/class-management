@@ -2,6 +2,7 @@ import { IRole } from '../auth/role.interface';
 import { IEntity } from '../system/entity.interface';
 
 export interface IPerson extends IEntity {
+  code: string;
   schoolId?: string;
   parentId: string;
   parent: IPerson;

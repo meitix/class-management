@@ -1,6 +1,7 @@
 import { IEntity } from '../system/entity.interface';
 
 export interface IPerson extends IEntity {
+  code: string;
   firstname: string;
   lastname: string;
   nationalCode: string;
@@ -16,6 +17,7 @@ export interface IRole {
 }
 
 export class Person implements IPerson {
+  code: string;
   firstname: string;
   lastname: string;
   nationalCode: string;

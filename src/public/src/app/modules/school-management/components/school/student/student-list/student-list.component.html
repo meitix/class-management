@@ -4,43 +4,6 @@
     <p>کاربران ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
   </div>
   <div class="card-content">
-    <table class="table">
-      <thead *ngIf="students && students.length > 0">
-        <th>کد</th>
-        <th>نام</th>
-        <th>نام خانوادگی</th>
-        <th>کد ملی</th>
-        <th>موبایل</th>
-        <th>تلفن منزل</th>
-        <th>وضعیت</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let student of students">
-          <td>{{ student.firstname }}</td>
-          <td>{{ student.lastname }}</td>
-          <td>{{ student.nationalCode }}</td>
-          <td>{{ student.mobile }}</td>
-          <td>{{ student.tel }}</td>
-          <!-- <td [innerHtml]="student.isEnable | activeStatus"></td> -->
-          <td [innerHtml]="student.isEnable"></td>
-
-          <td>
-            <a class="btn btn-simple btn-sm" [routerLink]="[student._id , 'student']">
-              <i class="material-icons text-primary text-sm">face</i>
-            </a>
-            <a
-              class="btn btn-simple btn-sm" [routerLink]="['edit', student._id]">
-              <i class="material-icons text-info text-sm">edit</i>
-            </a>
-            <a class="btn btn-simple btn-sm" (click)="delete(student._id)">
-              <i class="material-icons text-danger text-sm">delete</i>
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div *ngIf="students.length === 0">
-      <p style="text-align:center">موردی یافت نشد</p>
-    </div>
+    <app-person-list [people]="students"></app-person-list>
   </div>
 </div>

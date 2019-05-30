@@ -1,8 +1,9 @@
-import { Schema, Model, model, Types } from 'mongoose';
+import { Schema, Model, model } from 'mongoose';
 import { IPerson } from '../interfaces/people/person.interface';
 
 export const PersonSchema = new Schema({
-  schoolId: {type: Types.ObjectId , ref: 'School'},
+  code: {type: String, required: true},
+  schoolId: {type: Schema.Types.ObjectId , ref: 'School'},
   firstname: {
     type: String,
     required: true
@@ -13,7 +14,7 @@ export const PersonSchema = new Schema({
   },
   nationalCode: {
     type: String,
-    maxLenghth: 10,
+    maxLength: 10,
     minLength: 10
   },
   mobile: {

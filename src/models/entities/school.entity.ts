@@ -1,4 +1,4 @@
-import { Schema, model, Model } from 'mongoose';
+import { Schema, model, Model, Types } from 'mongoose';
 import { ISchool } from '../interfaces/edu/school.interface';
 import { PersonSchema } from './people.schema';
 
@@ -16,7 +16,7 @@ export const SchoolSchema = new Schema({
     required: true
   },
   boardOfTrust: String,
-  personnel: [PersonSchema],
+  personnel: [{type: Schema.Types.ObjectId , ref: 'Person'}],
   students: [PersonSchema]
 });
 

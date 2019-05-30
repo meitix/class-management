@@ -9,8 +9,6 @@ import {
   Output
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { ErrorService } from 'src/app/modules/base/services/error.service';
 import { IPerson, Person } from '../../../models/people/person.interface';
 import { PersonService } from '../services/person.service';
@@ -21,7 +19,7 @@ import { PersonService } from '../services/person.service';
   styleUrls: ['./person-create.component.css']
 })
 export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
-  routeSubscription: Subscription;
+  // routeSubscription: Subscription;
   @Output() personUpdate: EventEmitter<IPerson>;
 
   @Input() person: IPerson;
@@ -30,29 +28,12 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private personService: PersonService,
-    private route: ActivatedRoute,
     private errorService: ErrorService
   ) {
     this.personUpdate = new EventEmitter<IPerson>();
   }
 
   ngOnInit() {
-    console.log(this.person);
-    this.routeSubscription = this.route.params.subscribe(async params => {
-      console.log(params.id);
-      if (params.id) {
-        // fetch person data.
-        try {
-          this.person = await this.personService
-            .fetchById(params.id)
-            .toPromise();
-        } catch (e) {
-          this.errorService.handle(e, 'مشکل در بارگزاری اطلاعات');
-        }
-      } else {
-        this.person = new Person();
-      }
-    });
   }
 
   submit(f: NgForm) {
@@ -84,7 +65,7 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.routeSubscription.unsubscribe();
+    // this.routeSubscription.unsubscribe();
   }
 
   ngOnChanges(): void {

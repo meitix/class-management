@@ -29,10 +29,12 @@ export class StudentListComponent implements OnInit {
    });
   }
 
+  // get students from student service.
   async fetchStudents(schoolId: string) {
     this.students = await this.schoolService.getStudents(schoolId).toPromise();
   }
 
+  // delete student.
   delete(studentId: string) {
     if (confirm('آیا برای حذف اطمینان دارید؟')) {
     this.schoolService.deleteStudent(this.schoolId , studentId).subscribe(res => {
