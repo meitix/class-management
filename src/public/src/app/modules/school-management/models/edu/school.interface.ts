@@ -6,16 +6,16 @@ export interface ISchool extends IEntity {
   title: string;
   isEnable: boolean;
   boardOfTrust?: string;
-  personle: IPerson[];
+  personnel: IPerson[];
   students: IPerson[];
 }
 
-export class School implements ISchool{
+export class School implements ISchool {
   code: string;
   title: string;
   isEnable: boolean;
   boardOfTrust?: string;
-  personle: IPerson[];
+  personnel: IPerson[];
   students: IPerson[];
 
   constructor() {
