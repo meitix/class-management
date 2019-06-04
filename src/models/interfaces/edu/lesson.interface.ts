@@ -3,6 +3,6 @@ import { IPractice } from "./practice.interface";
 
 export interface ILesson extends IEntity {
     title: string;
-    practices: IPractice[];
+    // practices: IPractice[];
     description?: string;
 }
