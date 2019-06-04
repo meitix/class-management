@@ -1,0 +1,35 @@
+<table class="table">
+    <thead *ngIf="people && people.length > 0">
+      <th>کد</th>
+      <th>نام</th>
+      <th>نام خانوادگی</th>
+      <th>کد ملی</th>
+      <th>موبایل</th>
+      <th>تلفن منزل</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let person of people">
+        <td>{{ person.code }}</td>
+        <td>{{ person.firstname }}</td>
+        <td>{{ person.lastname }}</td>
+        <td>{{ person.nationalCode }}</td>
+        <td>{{ person.mobile }}</td>
+        <td>{{ person.tel }}</td>
+        <!-- <td [innerHtml]="person.isEnable | activeStatus"></td> -->
+        <td [innerHtml]="person.isEnable"></td>
+
+        <td>
+          <a
+            class="btn btn-simple btn-sm" [routerLink]="['edit', person._id]">
+            <i class="material-icons text-info text-sm">edit</i>
+          </a>
+          <a class="btn btn-simple btn-sm" (click)="delete(person._id)">
+            <i class="material-icons text-danger text-sm">delete</i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="people.length === 0">
+    <p style="text-align:center">موردی یافت نشد</p>
+  </div>

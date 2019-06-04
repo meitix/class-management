@@ -1,0 +1,35 @@
+
+.form-group.label-static label.control-label, .form-group.label-floating.is-focused label.control-label, .form-group.label-floating:not(.is-empty) label.control-label{
+    right:0;
+    left:auto;
+}
+@font-face {
+    font-family: 'IRANSans';
+    src: url('../fonts/IRANSans-Light.woff2') format('woff');
+}
+
+*,h1,h2,h3,h4,h5,h6,pre{
+    font-family:IRANSans;
+}
+
+pre {
+    font-family:IRANSans !important;
+}
+
+    .checkbox .checkbox-material::before{
+    top:0;
+}
+
+.checkbox-material{
+    direction:ltr;
+}
+
+textarea.form-control{
+    height:200px !important ;
+}
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
