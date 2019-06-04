@@ -1,9 +1,10 @@
 import { Injector } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { ServerConfig } from 'src/app/app-config/server-config';
 
 export abstract class RestService<T> {
-  private serverUrl = 'http://localhost:3000/';
+  private serverUrl = ServerConfig.serverUrl;
   protected url: string;
   protected http: HttpClient;
   protected requestOption: object;

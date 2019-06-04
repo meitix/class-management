@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import schoolRoutes from './school.routes';
+import roleRouter from './role.routes';
 
 class SchoolManagementRouter {
   router: Router;
@@ -11,6 +12,7 @@ class SchoolManagementRouter {
 
   init() {
     this.router.use('/school', schoolRoutes);
+    this.router.use('/roles', roleRouter);
   }
 }
 

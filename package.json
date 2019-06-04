@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Management classes",
   "main": "index.js",
+  "prettier": {
+    "singleQuote": true
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

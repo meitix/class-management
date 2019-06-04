@@ -11,8 +11,7 @@ export class SchoolController {
     if (req.params.id) data = await School.findById(req.param("id"));
     // find by req.body in lack of id.
     else {
-      if (School) data = await School.find(req.body);
-      else console.log(`School is null.`);
+     data = await School.find(req.body);
     }
     res.send(data);
   }
@@ -32,7 +31,7 @@ export class SchoolController {
   }
 
   // edit.
-  edit(req: Request, res: Response) {
+  update(req: Request, res: Response) {
     const id = req.params.id;
     School.findOneAndUpdate({ _id: id }, { $set: req.body })
       .then(r => {

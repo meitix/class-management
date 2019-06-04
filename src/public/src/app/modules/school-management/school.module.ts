@@ -12,6 +12,10 @@ import { PersonListComponent } from './components/person/person-list/person-list
 import { StudentStartComponent } from './components/school/student/student-start/student-start.component';
 import { StudentCreateComponent } from './components/school/student/student-create/student-create.component';
 import { StudentListComponent } from './components/school/student/student-list/student-list.component';
+import { PersonnelStartComponent } from './components/school/personnel/personnel-start/personnel-start.component';
+import { PersonnelCreateComponent } from './components/school/personnel/personnel-create/personnel-create.component';
+import { PersonnelListComponent } from './components/school/personnel/personnel-list/personnel-list.component';
+import { NgSelect2Module } from 'ng-select2';
 
 @NgModule({
   declarations: [
@@ -24,13 +28,17 @@ import { StudentListComponent } from './components/school/student/student-list/s
     PersonListComponent,
     StudentStartComponent,
     StudentCreateComponent,
-    StudentListComponent
+    StudentListComponent,
+    PersonnelStartComponent,
+    PersonnelCreateComponent,
+    PersonnelListComponent
   ],
   imports: [
     CommonModule,
     SchoolRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgSelect2Module
   ],
   exports: [ActiveStatusPipe]
 })

@@ -7,6 +7,8 @@ import { SchoolCreateComponent } from '../school-create/school-create.component'
 import { StudentStartComponent } from '../student/student-start/student-start.component';
 import { StudentListComponent } from '../student/student-list/student-list.component';
 import { StudentCreateComponent } from '../student/student-create/student-create.component';
+import { PersonnelListComponent } from '../personnel/personnel-list/personnel-list.component';
+import { PersonnelCreateComponent } from '../personnel/personnel-create/personnel-create.component';
 
 const schoolRoutes: Routes = [
   {
@@ -17,12 +19,23 @@ const schoolRoutes: Routes = [
       { path: 'create', component: SchoolCreateComponent },
       { path: 'edit/:id', component: SchoolCreateComponent },
       {
+        // student routes.
         path: ':id/student',
         component: StudentStartComponent,
         children: [
           { path: '', component: StudentListComponent },
           { path: 'create', component: StudentCreateComponent },
           { path: 'edit/:id', component: StudentCreateComponent }
+        ]
+      },
+      {
+        // personnel routes.
+        path: ':id/personnel',
+        component: StudentStartComponent,
+        children: [
+          { path: '', component: PersonnelListComponent },
+          { path: 'create', component: PersonnelCreateComponent },
+          { path: 'edit/:id', component: PersonnelCreateComponent }
         ]
       }
     ]

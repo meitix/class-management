@@ -6,10 +6,10 @@
       <th>کد ملی</th>
       <th>موبایل</th>
       <th>تلفن منزل</th>
-      <th>وضعیت</th>
     </thead>
     <tbody>
       <tr *ngFor="let person of people">
+        <td>{{ person.code }}</td>
         <td>{{ person.firstname }}</td>
         <td>{{ person.lastname }}</td>
         <td>{{ person.nationalCode }}</td>
@@ -19,9 +19,6 @@
         <td [innerHtml]="person.isEnable"></td>
 
         <td>
-          <a class="btn btn-simple btn-sm" [routerLink]="[person._id , 'detail']">
-            <i class="material-icons text-primary text-sm">description</i>
-          </a>
           <a
             class="btn btn-simple btn-sm" [routerLink]="['edit', person._id]">
             <i class="material-icons text-info text-sm">edit</i>

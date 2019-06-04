@@ -16,7 +16,12 @@ export const SchoolSchema = new Schema({
     required: true
   },
   boardOfTrust: String,
-  personnel: [{type: Schema.Types.ObjectId , ref: 'Person'}],
+  personnel: [
+    {
+      person: {type: Schema.Types.ObjectId , ref: 'Person'},
+      roles: [{type: Schema.Types.ObjectId , ref: 'Role'}]
+    }
+  ],
   students: [PersonSchema]
 });
 

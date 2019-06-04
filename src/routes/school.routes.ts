@@ -22,7 +22,7 @@ class SchoolRouter {
         // create.
         this.router.post('/' , this.schoolController.create);
         // edit.
-        this.router.put('/:id' , this.schoolController.edit);
+        this.router.put('/:id' , this.schoolController.update);
         // delete.
         this.router.delete('/:id' , this.schoolController.delete);
 
@@ -33,6 +33,13 @@ class SchoolRouter {
         this.router.put('/:id/student/:studentId' , this.peopleController.updateStudent);
         this.router.delete('/:id/student/:studentId' , this.peopleController.deleteStudent);
         
+
+        // Personnel.
+        this.router.post('/:id/personnel' , this.peopleController.addPersonnel);
+        this.router.get('/:id/personnel/:personnelId' , this.peopleController.getPersonnelById)
+        this.router.get('/:id/personnel' , this.peopleController.getPersonnel);
+        this.router.put('/:id/personnel/:personnelId' , this.peopleController.updatePersonnel);
+        this.router.delete('/:id/personnel/:personnelId' , this.peopleController.deleteStudent);
     }
 }
 

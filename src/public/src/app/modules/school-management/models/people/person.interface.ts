@@ -12,7 +12,7 @@ export interface IPerson extends IEntity {
   description: string;
 }
 
-export interface IRole {
+export interface IRole extends IEntity {
   title: string;
 }
 
@@ -30,5 +30,6 @@ export class Person implements IPerson {
 }
 
 export class Role implements IRole {
+  _id: string;
   title: string;
 }

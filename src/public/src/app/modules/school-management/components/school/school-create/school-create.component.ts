@@ -11,7 +11,7 @@ import { ErrorService } from 'src/app/modules/base/services/error.service';
   templateUrl: './school-create.component.html',
   styleUrls: ['./school-create.component.css']
 })
-export class SchoolCreateComponent implements OnInit , OnDestroy{
+export class SchoolCreateComponent implements OnInit , OnDestroy {
   school: ISchool;
   routeSubscription: Subscription;
   @ViewChild('f') form: NgForm;
