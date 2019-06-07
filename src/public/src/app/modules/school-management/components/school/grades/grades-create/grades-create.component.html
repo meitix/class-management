@@ -53,6 +53,7 @@
               <td>
                 <input
                   type="text"
+                  placeholder="عنوان درس جدید"
                   class="form-control"
                   [(ngModel)]="newLesson.title"
                   name="title"
@@ -61,6 +62,7 @@
               <td>
                 <input
                   type="text"
+                  placeholder="توضیحات را اینجا وارد کنید"
                   class="form-control"
                   [(ngModel)]="newLesson.description"
                   name="description"
@@ -77,11 +79,18 @@
             </tr>
           </tbody>
         </table>
+        <i class="tip">برای ایجاد درس جدید از فرم بالا استفاده کنید</i>
       </div>
     </div>
     <div class="row">
       <div class="form-group text-center">
-        <button class="btn btn-success" disabled]="isProcessing" (click)="submit()">{{ isProcessing ? '...' : 'ثبت' }}</button>
+        <button
+          class="btn btn-success"
+          [disabled]="isProcessing"
+          (click)="submit()"
+        >
+          {{ isProcessing ? '...' : 'ثبت' }}
+        </button>
       </div>
     </div>
   </div>
