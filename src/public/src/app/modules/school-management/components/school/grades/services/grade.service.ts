@@ -5,7 +5,7 @@ import { IGrade } from 'src/app/modules/school-management/models/edu/grade.inter
 @Injectable({
   providedIn: 'root'
 })
-export class GradeService extends RestService<IGrade>{
+export class GradeService extends RestService<IGrade> {
 
   constructor(injector: Injector) {
     super('grades', injector);

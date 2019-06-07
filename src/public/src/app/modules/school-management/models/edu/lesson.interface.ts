@@ -6,3 +6,9 @@ export interface ILesson extends IEntity {
   practices: IPractice[];
   description?: string;
 }
+
+export class Lesson implements ILesson {
+  title: string;  practices: IPractice[];
+  description?: string;
+  _id?: string;
+}
