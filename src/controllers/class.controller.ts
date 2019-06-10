@@ -16,9 +16,16 @@ export class ClassController {
   // create.
   async create(req: Request, res: Response) {
     delete req.body._id;
+    const schoolId = req.params.id;
+    // school id validation.
+    if(!schoolId) {
+      res.status(400).send('مدرسه مشخص نشده است');
+    }
+    req.body.school = schoolId;
     const _class = new Class(req.body);
     try {
       const result = await _class.save();
+
       res.json(result);
     } catch (err) {
       res.status(400).send(err);
