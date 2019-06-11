@@ -3,7 +3,6 @@ import { IPerson } from '../interfaces/people/person.interface';
 
 export const PersonSchema = new Schema({
   code: {type: String, required: true},
-  schoolId: {type: Schema.Types.ObjectId , ref: 'School'},
   firstname: {
     type: String,
     required: true
@@ -22,9 +21,7 @@ export const PersonSchema = new Schema({
   },
   tel: String,
   birthDate: Date,
-  roles: [{title: String}],
-  description: String,
-  children: [Object]
+  description: String
 });
 
 export const Person: Model<IPerson> = model<IPerson>('Person', PersonSchema);

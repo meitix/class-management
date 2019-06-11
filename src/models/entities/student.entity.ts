@@ -24,6 +24,10 @@ export const StudentSchema = new Schema<IStudent>({
     type: Schema.Types.ObjectId,
     ref: 'Person'
   },
+  school: {
+    type: Schema.Types.ObjectId,
+    ref: 'School'
+  },
   parent: {
     type: Schema.Types.ObjectId,
     ref: 'Person'
