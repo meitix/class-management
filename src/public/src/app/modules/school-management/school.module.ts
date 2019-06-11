@@ -19,6 +19,9 @@ import { NgSelect2Module } from 'ng-select2';
 import { GradesListComponent } from './components/school/grades/grades-list/grades-list.component';
 import { GradesCreateComponent } from './components/school/grades/grades-create/grades-create.component';
 import { GradesStartComponent } from './components/school/grades/grades-start/grades-start.component';
+import { ClassStartComponent } from './components/school/class/class-start/class-start.component';
+import { ClassListComponent } from './components/school/class/class-list/class-list.component';
+import { ClassCreateComponent } from './components/school/class/class-create/class-create.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,9 @@ import { GradesStartComponent } from './components/school/grades/grades-start/gr
     GradesListComponent,
     GradesCreateComponent,
     GradesStartComponent,
+    ClassStartComponent,
+    ClassListComponent,
+    ClassCreateComponent,
   ],
   imports: [
     CommonModule,
