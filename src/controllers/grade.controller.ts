@@ -8,7 +8,7 @@ export class GradeController {
     if (req.params.id) data = await Grade.findById(req.params.id);
     // find by req.body in lack of id.
     else {
-      data = await Grade.find(req.body);
+      data = await Grade.find(req.body).select({title: 1, description: 1});
     }
     res.send(data);
   }

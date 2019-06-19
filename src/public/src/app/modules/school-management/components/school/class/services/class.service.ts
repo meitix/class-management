@@ -1,15 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { RestService } from 'src/app/modules/base/services/rest.service';
-import { IPerson } from '../../../models/people/person.interface';
+import { IClass } from 'src/app/modules/school-management/models/edu/class.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PersonService extends RestService<IPerson> {
-
+export class ClassService extends RestService<IClass> {
 
   constructor(injector: Injector) {
-    super('person' , injector);
-  }
-
+    super('class', injector);
+   }
 }

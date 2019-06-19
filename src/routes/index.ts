@@ -16,7 +16,6 @@ class SchoolManagementRouter {
     this.router.use('/school', schoolRoutes);
     this.router.use('/roles', roleRouter);
     this.router.use('/grades', gradeRouter);
-    this.router.use('/class', classRouter);
   }
 }
 

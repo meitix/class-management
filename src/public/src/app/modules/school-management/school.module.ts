@@ -22,7 +22,8 @@ import { GradesStartComponent } from './components/school/grades/grades-start/gr
 import { ClassStartComponent } from './components/school/class/class-start/class-start.component';
 import { ClassListComponent } from './components/school/class/class-list/class-list.component';
 import { ClassCreateComponent } from './components/school/class/class-create/class-create.component';
-
+import { MatAutocompleteModule , MatInputModule} from '@angular/material';
+import { SearchComponent } from './components/person/search/search.component';
 @NgModule({
   declarations: [
     SchoolListComponent,
@@ -44,6 +45,7 @@ import { ClassCreateComponent } from './components/school/class/class-create/cla
     ClassStartComponent,
     ClassListComponent,
     ClassCreateComponent,
+    SearchComponent,
   ],
   imports: [
     CommonModule,

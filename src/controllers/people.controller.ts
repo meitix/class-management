@@ -14,9 +14,39 @@ export class PeopleController {
     if (req.params.id) data = await Person.findById(req.param('id'));
     // find by req.body in lack of id.
     else {
-      data = await Person.find(req.body);
+      data = await Person.find(req.query);
     }
     res.send(data);
+  }
+
+  // search people by term.
+  async search(req: Request, res: Response) {
+    const term = req.params.term;
+    const schoolId = req.params.id;
+    if (!term || !schoolId) {
+      res.status(400).end();
+      return;
+    }
+    
+    const school = await School.findById(schoolId);
+    
+    // search condition.
+    const condition = { 
+      _id : {
+        $in : school.personnel.map(p => p.person)
+      },
+        $or: [
+          { firstname: { $regex: `.*${term}.*` } },
+          { lastname: { $regex: `.*${term}.*` } },
+          { nationalCode: { $regex: `.*${term}.*` } },
+          { mobile: { $regex: `.*${term}.*` } },
+        ]
+      }
+
+    // search people by term.
+    const result = await Person.find(condition);
+
+    res.json(result);
   }
 
   // create.
@@ -100,7 +130,8 @@ export class PeopleController {
     const schoolId = new Types.ObjectId(req.params.id);
     try {
       const students = await Student.find({ school: schoolId })
-      .populate('info').exec();
+        .populate('info')
+        .exec();
 
       res.json(students);
     } catch (e) {
@@ -131,18 +162,20 @@ export class PeopleController {
       if (req.body.schoolId)
         req.body.schoolId = new Types.ObjectId(req.body.schoolId);
       delete req.body._id;
-      await Student.updateOne({ _id: new Types.ObjectId(req.params.studentId) }, {$set: req.body});
-      
+      await Student.updateOne(
+        { _id: new Types.ObjectId(req.params.studentId) },
+        { $set: req.body }
+      );
+
       // update student info - it should update the object using Person schema.
       const personId = new Types.ObjectId(req.body.info._id);
       delete req.body.info._id;
-      await Person.updateOne({_id: personId}, req.body.info);
-      
+      await Person.updateOne({ _id: personId }, req.body.info);
+
       // update student parent - it should update the object using Person schema.
       const parentId = new Types.ObjectId(req.body.parent._id);
       delete req.body.parent._id;
-      await Person.updateOne({_id: parentId}, req.body.parent);
-      
+      await Person.updateOne({ _id: parentId }, req.body.parent);
 
       // commit transaction.
       await ssn.commitTransaction();
@@ -189,9 +222,11 @@ export class PeopleController {
         .populate('personnel.person')
         .populate('personnel.roles')
         .select({ personnel: 1 });
-        // TODO: FixMe >>> this is the most shitty way I ever done in my life. it shouldn't be filtered after retrieving from DB.
-        // find the personnel info from schools personnel.
-      res.json(_.filter(result.personnel, p => personnelId.equals(<any>p.person)));
+      // TODO: FixMe >>> this is the most shitty way I ever done in my life. it shouldn't be filtered after retrieving from DB.
+      // find the personnel info from schools personnel.
+      res.json(
+        _.filter(result.personnel, p => personnelId.equals(<any>p.person))
+      );
     } catch (e) {
       res.status(400).send(e);
     }

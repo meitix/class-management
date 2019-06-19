@@ -1,3 +1,39 @@
-<p>
-  class-list works!
-</p>
+<div class="card">
+  <div class="card-header" data-background-color="blue">
+    <h4>لیست کلاس ها</h4>
+    <p>کلاس های ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
+  </div>
+  <div class="card-content">
+    <table class="table">
+      <thead *ngIf="classes && classes.length > 0">
+        <th>عنوان</th>
+        <th>معلم</th>
+        <th>پایه</th>
+        <th>توضیحات</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let class of classes">
+          <td>{{ class.title }}</td>
+          <td>{{ class.teacher.firstname +' '+ class.teacher.lastname  }}</td>
+          <td>{{ class.grade.title }}</td>
+          <td>{{ class.description }}</td>
+          <!-- <td [innerHtml]="class.isEnable | activeStatus"></td> -->
+          <td [innerHtml]="class.isEnable"></td>
+          <td>
+            <a
+              class="btn btn-simple btn-sm" [routerLink]="['edit', class._id]">
+              <i class="material-icons text-info text-sm">edit</i>
+            </a>
+            <a class="btn btn-simple btn-sm" (click)="delete(class._id)">
+              <i class="material-icons text-danger text-sm">delete</i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="classes.length === 0">
+      <p style="text-align:center">موردی یافت نشد</p>
+    </div>
+  </div>
+</div>

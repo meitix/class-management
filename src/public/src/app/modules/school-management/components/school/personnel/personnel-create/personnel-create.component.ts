@@ -61,7 +61,7 @@ export class PersonnelCreateComponent implements OnInit , OnDestroy {
 
     this.select2Options = {
       width: '300',
-      multiple: true
+      multiple: true,
     };
   }
   async fetchPersonnel(personId: string) {
@@ -75,8 +75,6 @@ export class PersonnelCreateComponent implements OnInit , OnDestroy {
     const roles = await this.roleService.fetch().toPromise();
     this.roles = roles.map(r => ({ id: r._id, text: r.title}));
   }
-
-
 
   async submit() {
     this.isProcessing = true;

@@ -11,3 +11,13 @@ export interface IClass extends IEntity {
   period: string;
   isActive: boolean;
 }
+
+export class Class implements IClass {
+  title: string;
+  teacher: IPerson;
+  school: ISchool;
+  grade: IGrade;
+  period: string;
+  isActive: boolean;
+  _id?: string;
+}

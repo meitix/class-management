@@ -12,6 +12,9 @@ import { PersonnelCreateComponent } from '../personnel/personnel-create/personne
 import { GradesStartComponent } from '../grades/grades-start/grades-start.component';
 import { GradesListComponent } from '../grades/grades-list/grades-list.component';
 import { GradesCreateComponent } from '../grades/grades-create/grades-create.component';
+import { ClassStartComponent } from '../class/class-start/class-start.component';
+import { ClassListComponent } from '../class/class-list/class-list.component';
+import { ClassCreateComponent } from '../class/class-create/class-create.component';
 
 const schoolRoutes: Routes = [
   {
@@ -49,6 +52,16 @@ const schoolRoutes: Routes = [
           { path: '', component: GradesListComponent },
           { path: 'create', component: GradesCreateComponent },
           { path: 'edit/:id', component: GradesCreateComponent }
+        ]
+      },
+      {
+        // Classes routes.
+        path: ':id/classes',
+        component: ClassStartComponent,
+        children: [
+          { path: '', component: ClassListComponent },
+          { path: 'create', component: ClassCreateComponent },
+          { path: 'edit/:id', component: ClassCreateComponent }
         ]
       }
     ]

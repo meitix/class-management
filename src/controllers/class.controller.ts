@@ -5,10 +5,10 @@ export class ClassController {
   async fetch(req: Request, res: Response) {
     let data = null;
     // check if there is id in params read by id.
-    if (req.params.id) data = await Class.findById(req.params.id);
+    if (req.params.id) data = await Class.findById(req.params.id).populate('teacher');
     // find by req.body in lack of id.
     else {
-      data = await Class.find(req.body);
+      data = await Class.find(req.body).populate('teacher').populate('grade').exec();
     }
     res.send(data);
   }
