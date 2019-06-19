@@ -16,9 +16,17 @@ export class ClassManagement {
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(schoolManagementRouter);
+    this.useErrorHandler();
   }
 
-  //
+  // assign error handlers.
+  useErrorHandler() {
+    process.on('uncaughtException' , err => {
+      console.log(err);
+    });
+  }
+
+  // start application method.
   start(port, dbConnectionString) {
     this.app.listen(port, () => {
       console.log(`Class management is running on port ${port}`);

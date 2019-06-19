@@ -1,0 +1,72 @@
+<div class="card">
+  <div class="card-header" data-background-color="blue">
+    <h4>ایجاد کلاس جدید</h4>
+    <p>در این قسمت میتوانید کلاس جدید تعریف کنید</p>
+  </div>
+  <div class="card-content">
+    <div class="row">
+      <!-- TEACHER SELECT  -->
+      <div class="col-md-10 col-md-offset-1" *ngIf="isTeacherSearchMode">
+        <app-person-search
+          (personSelect)="selectTeacher($event)"
+        ></app-person-search>
+        <button class="btn btn-default" (click)="disableTeacherSearchMode()">
+          لغو
+        </button>
+      </div>
+
+      <!-- CLASS DEFINITION -->
+      <div class="col-md-10 col-md-offset-1" *ngIf="!isTeacherSearchMode">
+        <div class="form-group label-floating">
+          <label class="control-label">عنوان</label>
+          <input
+            type="text"
+            name="title"
+            required
+            class="form-control"
+            [(ngModel)]="class.title"
+          />
+        </div>
+        <div class="form-group label-floating">
+          <label class="control-label">پایه</label>
+          <ng-select2
+            [data]="grades"
+            [options]="select2Options"
+            [width]="500"
+            [(ngModel)]="class.grade"
+          >
+          </ng-select2>
+        </div>
+        <div class="form-group label-floating">
+          <label>معلم کلاس: </label>
+          <button class="btn btn-primary" (click)="gotoTeacherSearchMode()">
+            <span>{{
+              class.teacher.firstname + ' ' + class.teacher.lastname
+            }}</span>
+            <span *ngIf="!class.teacher"> انتخاب معلم</span>
+          </button>
+        </div>
+        <div class="form-group label-floating">
+          <label class="control-label">توضیحات</label>
+          <textarea
+            name="description"
+            class="form-control"
+            [(ngModel)]="class.description"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+    <!-- SUBMIT BUTTON -->
+    <div class="row" *ngIf="!isTeacherSearchMode">
+      <div class="form-group text-center">
+        <button
+          class="btn btn-success"
+          [disabled]="isProcessing"
+          (click)="submit()"
+        >
+          {{ isProcessing ? '...' : 'ثبت' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

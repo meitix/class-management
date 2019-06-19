@@ -2,6 +2,7 @@ import { Injector } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { ServerConfig } from 'src/app/app-config/server-config';
+import { stringify } from 'query-string';
 
 export abstract class RestService<T> {
   private serverUrl = ServerConfig.serverUrl;
@@ -36,9 +37,9 @@ export abstract class RestService<T> {
   }
 
   // operational methods.
-  fetch() {
+  fetch(filter?: any) {
     return this.http
-      .get(this.url, this.requestOption)
+      .get(this.url + `?${stringify(filter)}`, this.requestOption)
       .pipe(map((res: any) => <Array<T>>res));
   }
 

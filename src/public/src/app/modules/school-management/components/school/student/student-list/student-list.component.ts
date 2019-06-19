@@ -4,6 +4,7 @@ import { SchoolService } from '../../services/school.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ErrorService } from 'src/app/modules/base/services/error.service';
+import { IPerson } from 'src/app/modules/school-management/models/people/person.interface';
 
 @Component({
   selector: 'app-student-list',
@@ -12,7 +13,7 @@ import { ErrorService } from 'src/app/modules/base/services/error.service';
 })
 export class StudentListComponent implements OnInit {
 
-  students: Array<IStudent>;
+  students: Array<IPerson>;
   schoolIdSubscription: Subscription;
   schoolId: string;
 
@@ -31,7 +32,11 @@ export class StudentListComponent implements OnInit {
 
   // get students from student service.
   async fetchStudents(schoolId: string) {
-    this.students = await this.schoolService.getStudents(schoolId).toPromise();
+    const students = await this.schoolService.getStudents(schoolId).toPromise();
+    this.students = students.map(s => {
+      s.info._id = s._id;
+      return s.info;
+    });
   }
 
   // delete student.

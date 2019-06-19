@@ -67,7 +67,7 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
 
   updateStudent(student: IStudent) {
     if (student) {
-      this.student = student;
+      this.student.info = student;
     }
   }
 

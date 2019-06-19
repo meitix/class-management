@@ -4,6 +4,7 @@ import { IPerson } from '../models/interfaces/people/person.interface';
 import { Types, Mongoose } from 'mongoose';
 import * as _ from 'lodash';
 import { School } from '../models/entities/school.entity';
+import { Student } from '../models/entities/student.entity';
 
 export class PeopleController {
   // fetch all.
@@ -13,9 +14,39 @@ export class PeopleController {
     if (req.params.id) data = await Person.findById(req.param('id'));
     // find by req.body in lack of id.
     else {
-      data = await Person.find(req.body);
+      data = await Person.find(req.query);
     }
     res.send(data);
+  }
+
+  // search people by term.
+  async search(req: Request, res: Response) {
+    const term = req.params.term;
+    const schoolId = req.params.id;
+    if (!term || !schoolId) {
+      res.status(400).end();
+      return;
+    }
+    
+    const school = await School.findById(schoolId);
+    
+    // search condition.
+    const condition = { 
+      _id : {
+        $in : school.personnel.map(p => p.person)
+      },
+        $or: [
+          { firstname: { $regex: `.*${term}.*` } },
+          { lastname: { $regex: `.*${term}.*` } },
+          { nationalCode: { $regex: `.*${term}.*` } },
+          { mobile: { $regex: `.*${term}.*` } },
+        ]
+      }
+
+    // search people by term.
+    const result = await Person.find(condition);
+
+    res.json(result);
   }
 
   // create.
@@ -58,8 +89,11 @@ export class PeopleController {
 
   // create student.
   async addStudent(req: Request, res: Response) {
-    const schoolId = req.params.id;
+    // begin transaction.
+    const ssn = await Person.db.startSession();
+    ssn.startTransaction();
     try {
+      const schoolId = new Types.ObjectId(req.params.id);
       const studentVM = <IPerson>req.body;
       // fetch parent from db.
       let parent = await Person.findOne({
@@ -68,15 +102,25 @@ export class PeopleController {
       // create new parent if is not already exists.
       if (!parent) parent = new Person(studentVM.parent);
 
-      const student = new Person(req.body);
-      student.schoolId = schoolId;
-      parent.children.push(student);
-
-      const result = await parent.save();
-
-      console.log('result', result);
-      res.json(result);
+      const studentInfo = new Person(req.body);
+      // save people infos of parent and student.
+      await parent.save();
+      await studentInfo.save();
+      // create student using parent id and student info id.
+      const student = new Student({
+        info: studentInfo._id,
+        school: schoolId,
+        parent: parent._id
+      });
+      // save student.
+      student.save();
+      // commit transaction.
+      await ssn.commitTransaction();
+      //send created response with 201 as status code to user.
+      res.status(201).end();
     } catch (e) {
+      // abort transaction.
+      ssn.abortTransaction();
       res.status(400).send(e);
     }
   }
@@ -85,13 +129,9 @@ export class PeopleController {
   async getStudents(req: Request, res: Response) {
     const schoolId = new Types.ObjectId(req.params.id);
     try {
-      const result = await Person.find(
-        { 'children.schoolId': schoolId },
-        { children: 1 }
-      );
-      let students = _.flatten(result.map(r => r.children)).filter(c =>
-        schoolId.equals(c.schoolId)
-      );
+      const students = await Student.find({ school: schoolId })
+        .populate('info')
+        .exec();
 
       res.json(students);
     } catch (e) {
@@ -102,25 +142,12 @@ export class PeopleController {
   // get single student.
   async getStudent(req: Request, res: Response) {
     try {
-      const studentId = new Types.ObjectId(req.params.studentId);
-      const parent = await Person.findOne(
-        { 'children._id': studentId },
-        {
-          firstname: 1,
-          lastname: 1,
-          nationalCode: 1,
-          mobile: 1,
-          tel: 1,
-          birthDate: 1,
-          description: 1,
-          children: 1
-        }
-      );
-      const student = <any>(
-        Object.assign({}, _.find(parent.children, { _id: studentId }))
-      );
-      delete parent.children;
-      student.parent = parent;
+      const studentId = req.params.studentId;
+      const student = await Student.findById(studentId)
+        .populate('parent')
+        .populate('info')
+        .exec();
+
       res.json(student);
     } catch (e) {
       res.status(400).send(e);
@@ -129,17 +156,32 @@ export class PeopleController {
 
   // update student.
   async updateStudent(req: Request, res: Response) {
+    const ssn = await Person.db.startSession();
+    ssn.startTransaction();
     try {
-      delete req.body.parent;
       if (req.body.schoolId)
         req.body.schoolId = new Types.ObjectId(req.body.schoolId);
-
-      const result = await Person.updateOne(
-        { 'children._id': Types.ObjectId(req.params.studentId) },
-        { $set: { 'children.$': req.body } }
+      delete req.body._id;
+      await Student.updateOne(
+        { _id: new Types.ObjectId(req.params.studentId) },
+        { $set: req.body }
       );
-      res.json(result);
+
+      // update student info - it should update the object using Person schema.
+      const personId = new Types.ObjectId(req.body.info._id);
+      delete req.body.info._id;
+      await Person.updateOne({ _id: personId }, req.body.info);
+
+      // update student parent - it should update the object using Person schema.
+      const parentId = new Types.ObjectId(req.body.parent._id);
+      delete req.body.parent._id;
+      await Person.updateOne({ _id: parentId }, req.body.parent);
+
+      // commit transaction.
+      await ssn.commitTransaction();
+      res.end();
     } catch (err) {
+      ssn.abortTransaction();
       res.status(400).send(err);
     }
   }
@@ -171,14 +213,20 @@ export class PeopleController {
       res.status(400).send(e);
     }
   }
+  // get personnel by id.
   async getPersonnelById(req: Request, res: Response) {
     const schoolId = req.params.id;
     try {
-      const result = await School.findOne({ _id: new Types.ObjectId(schoolId) })
+      const personnelId = new Types.ObjectId(req.params.personnelId);
+      const result = await School.findById({ _id: schoolId })
         .populate('personnel.person')
         .populate('personnel.roles')
         .select({ personnel: 1 });
-      res.json(result.personnel[0]);
+      // TODO: FixMe >>> this is the most shitty way I ever done in my life. it shouldn't be filtered after retrieving from DB.
+      // find the personnel info from schools personnel.
+      res.json(
+        _.filter(result.personnel, p => personnelId.equals(<any>p.person))
+      );
     } catch (e) {
       res.status(400).send(e);
     }

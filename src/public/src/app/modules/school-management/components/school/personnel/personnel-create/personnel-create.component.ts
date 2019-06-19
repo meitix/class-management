@@ -18,6 +18,8 @@ import { RoleService } from 'src/app/modules/authentication/services/role.servic
   styleUrls: ['./personnel-create.component.css']
 })
 export class PersonnelCreateComponent implements OnInit , OnDestroy {
+  isProcessing: boolean;
+
   schoolId: string;
   personId: string;
   roleIds: string[];
@@ -60,7 +62,6 @@ export class PersonnelCreateComponent implements OnInit , OnDestroy {
     this.select2Options = {
       width: '300',
       multiple: true,
-      tags: true
     };
   }
   async fetchPersonnel(personId: string) {
@@ -75,15 +76,15 @@ export class PersonnelCreateComponent implements OnInit , OnDestroy {
     this.roles = roles.map(r => ({ id: r._id, text: r.title}));
   }
 
-
-
   async submit() {
+    this.isProcessing = true;
     let req = this.schoolService.addPersonnel(this.schoolId, this.person , this.roleIds);
     if (this.personId) {
       req = this.schoolService.updatePersonnel(this.schoolId , this.personId , this.person , this.roleIds);
     }
     try {
       const res = await req.toPromise();
+      this.isProcessing = false;
       alert('پرسنل با موفقیت ثبت شد');
     } catch (e) {
       this.errorService.handle(e, 'مشکل در اتصال به سرور');

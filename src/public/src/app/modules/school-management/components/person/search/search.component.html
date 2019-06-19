@@ -1,0 +1,39 @@
+<div class="form-group label-floating">
+    <label class="control-label">معلم</label>
+    <input
+      type="text"
+      required
+      class="form-control"
+      placeholder="جستجوی معلم..."
+      [formControl]="searchTerm"
+    />
+  </div>
+    <table class="table table-striped" *ngIf="people && people.length > 0">
+      <thead>
+        <tr>
+          <th>کد</th>
+          <th>نام</th>
+          <th>نام خانوادگی</th>
+          <th>کد ملی</th>
+          <th>شماره موبایل</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="people.length">
+        <tr
+          *ngFor="let person of people"
+          (click)="selectPerson(person)"
+          class="clickable"
+        >
+          <td>{{ person.code }}</td>
+          <td>{{ person.firstname }}</td>
+          <td>{{ person.lastname }}</td>
+          <td>{{ person.nationalCode }}</td>
+          <td>{{ person.mobile }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+        <div class="text-center" *ngIf="people.length === 0">
+          موردی یافت نشد
+        </div>

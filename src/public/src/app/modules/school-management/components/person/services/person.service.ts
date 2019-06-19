@@ -7,7 +7,9 @@ import { IPerson } from '../../../models/people/person.interface';
 })
 export class PersonService extends RestService<IPerson> {
 
+
   constructor(injector: Injector) {
     super('person' , injector);
   }
+
 }

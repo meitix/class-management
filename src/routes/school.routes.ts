@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { SchoolController } from '../controllers/school.controller';
 import { PeopleController } from '../controllers/people.controller';
+import classRoutes from './class.routes';
 
 class SchoolRouter {
     router: Router;
@@ -40,6 +41,9 @@ class SchoolRouter {
         this.router.get('/:id/personnel' , this.peopleController.getPersonnel);
         this.router.put('/:id/personnel/:personnelId' , this.peopleController.updatePersonnel);
         this.router.delete('/:id/personnel/:personnelId' , this.peopleController.deleteStudent);
+        this.router.get('/:id/personnel/search/:term' , this.peopleController.search);
+
+        this.router.use('/:id/classes', classRoutes);
     }
 }
 

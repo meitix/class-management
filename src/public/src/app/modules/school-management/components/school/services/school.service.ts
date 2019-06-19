@@ -5,6 +5,8 @@ import { IStudent } from '../../../models/people/student.interface';
 import { map } from 'rxjs/operators';
 import { IPerson } from '../../../models/people/person.interface';
 import { IPersonnelViewModel } from '../../../models/people/personnel.interface';
+import { IClass } from '../../../models/edu/class.interface';
+import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +43,10 @@ export class SchoolService extends RestService<ISchool> {
   }
 
   // get personnel.
-  getPersonnel(schoolId: string) {
-    return this.get(`${this.url + schoolId}/personnel`).pipe(map(res => <Array<IPersonnelViewModel>>res));
+  getPersonnel(schoolId: string, filter?: any) {
+    return this.get(`${this.url + schoolId}/personnel/?${stringify(filter)}`).pipe(map(res => <Array<IPersonnelViewModel>>res));
   }
+
   getSinglePersonnel(schoolId: string, personnelId: string) {
     return this.get(`${this.url + schoolId}/personnel/${personnelId}`).pipe(map(res => <IPersonnelViewModel>res));
   }
@@ -54,5 +57,31 @@ export class SchoolService extends RestService<ISchool> {
   // update personnel.
   updatePersonnel(schoolId: string, personId: string, person: IPerson, roleIds: string[]) {
     return this.put(`${this.url + schoolId}/personnel/${personId}`, {person , roleIds});
+  }
+
+  // create class.
+  createClass(schoolId: string , _class: IClass) {
+    return this.post(`${this.url + schoolId}/classes`, _class);
+   }
+
+   // update class.
+  updateClass(schoolId: string , classId: string, _class: IClass) {
+    return this.put(`${this.url + schoolId}/classes/${classId}`, _class);
+  }
+
+  // get class by id.
+  getClassById(schoolId , classId: string) {
+    return this.get(`${this.url + schoolId }/classes/${classId}`).pipe(map(res => <IClass>res));
+  }
+
+  // get class by school id.
+  getClassesBySchoolId(schoolId: string) {
+    return this.get(`${this.url + schoolId}/classes`).pipe(map(res => <IClass[]>res));
+  }
+
+  // search personnel of an school.
+
+  searchPersonnel(schoolId: string, term: string) {
+    return this.get(`${this.url + schoolId}/personnel/search/${term}`).pipe(map(res => <Array<IPerson>>res));
   }
 }

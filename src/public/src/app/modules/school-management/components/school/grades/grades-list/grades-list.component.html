@@ -1,0 +1,35 @@
+<div class="card">
+    <div class="card-header" data-background-color="blue">
+      <h4>لیست پایه ها</h4>
+      <p>پایه های ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
+    </div>
+    <div class="card-content">
+      <table class="table">
+        <thead *ngIf="grades && grades.length > 0">
+          <th>عنوان</th>
+          <th>توضیحات</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let grade of grades">
+            <td>{{ grade.title }}</td>
+            <td>{{ grade.description }}</td>
+            <!-- <td [innerHtml]="grade.isEnable | activeStatus"></td> -->
+            <td [innerHtml]="grade.isEnable"></td>
+            <td>{{ grade.boardOfTrust }}</td>
+            <td>
+              <a
+                class="btn btn-simple btn-sm" [routerLink]="['edit', grade._id]">
+                <i class="material-icons text-info text-sm">edit</i>
+              </a>
+              <a class="btn btn-simple btn-sm" (click)="delete(grade._id)">
+                <i class="material-icons text-danger text-sm">delete</i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="grades.length === 0">
+        <p style="text-align:center">موردی یافت نشد</p>
+      </div>
+    </div>
+  </div>

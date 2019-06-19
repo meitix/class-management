@@ -16,7 +16,14 @@ import { PersonnelStartComponent } from './components/school/personnel/personnel
 import { PersonnelCreateComponent } from './components/school/personnel/personnel-create/personnel-create.component';
 import { PersonnelListComponent } from './components/school/personnel/personnel-list/personnel-list.component';
 import { NgSelect2Module } from 'ng-select2';
-
+import { GradesListComponent } from './components/school/grades/grades-list/grades-list.component';
+import { GradesCreateComponent } from './components/school/grades/grades-create/grades-create.component';
+import { GradesStartComponent } from './components/school/grades/grades-start/grades-start.component';
+import { ClassStartComponent } from './components/school/class/class-start/class-start.component';
+import { ClassListComponent } from './components/school/class/class-list/class-list.component';
+import { ClassCreateComponent } from './components/school/class/class-create/class-create.component';
+import { MatAutocompleteModule , MatInputModule} from '@angular/material';
+import { SearchComponent } from './components/person/search/search.component';
 @NgModule({
   declarations: [
     SchoolListComponent,
@@ -31,7 +38,14 @@ import { NgSelect2Module } from 'ng-select2';
     StudentListComponent,
     PersonnelStartComponent,
     PersonnelCreateComponent,
-    PersonnelListComponent
+    PersonnelListComponent,
+    GradesListComponent,
+    GradesCreateComponent,
+    GradesStartComponent,
+    ClassStartComponent,
+    ClassListComponent,
+    ClassCreateComponent,
+    SearchComponent,
   ],
   imports: [
     CommonModule,

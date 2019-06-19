@@ -23,7 +23,7 @@
         </ng-select2>
       </div>
       <div class="form-group text-center">
-        <button class="btn btn-success" (click)="submit()">ثبت</button>
+        <button class="btn btn-success" [disabled]="isProcessing" (click)="submit()">{{isProcessing ? '...' : 'ثبت'}}</button>
       </div>
     </div>
   </div>

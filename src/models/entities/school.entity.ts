@@ -21,8 +21,7 @@ export const SchoolSchema = new Schema({
       person: {type: Schema.Types.ObjectId , ref: 'Person'},
       roles: [{type: Schema.Types.ObjectId , ref: 'Role'}]
     }
-  ],
-  students: [PersonSchema]
+  ]
 });
 
 export const School: Model<ISchool> = model<ISchool>('School', SchoolSchema);
