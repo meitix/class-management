@@ -1,6 +1,13 @@
 import { Schema, model, Model, Types } from 'mongoose';
 import { ISchool } from '../interfaces/edu/school.interface';
-import { PersonSchema } from './people.schema';
+
+
+export const PeriodSchema = new Schema({
+  title: {
+    type: String,
+    required: true
+  }
+});
 
 export const SchoolSchema = new Schema({
   code: {
@@ -21,7 +28,8 @@ export const SchoolSchema = new Schema({
       person: {type: Schema.Types.ObjectId , ref: 'Person'},
       roles: [{type: Schema.Types.ObjectId , ref: 'Role'}]
     }
-  ]
+  ],
+  period: [PeriodSchema]
 });
 
 export const School: Model<ISchool> = model<ISchool>('School', SchoolSchema);
