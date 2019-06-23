@@ -1,5 +1,6 @@
 import { Schema, model, Model, Types } from 'mongoose';
 import { ISchool } from '../interfaces/edu/school.interface';
+import { IPeriod } from '../interfaces/edu/period.interface';
 
 
 export const PeriodSchema = new Schema({
@@ -29,7 +30,8 @@ export const SchoolSchema = new Schema({
       roles: [{type: Schema.Types.ObjectId , ref: 'Role'}]
     }
   ],
-  period: [PeriodSchema]
+  periods: [PeriodSchema]
 });
 
 export const School: Model<ISchool> = model<ISchool>('School', SchoolSchema);
+export const Period: Model<IPeriod> = model<IPeriod>('Period' , PeriodSchema);

@@ -20,8 +20,7 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
     private schoolService: SchoolService,
     private route: ActivatedRoute,
     private errorService: ErrorService,
-    private gradeService: GradeService,
-    private teacherService: SchoolService
+    private gradeService: GradeService
   ) {
     this.class = new Class();
   }
@@ -87,11 +86,11 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
     try {
       this.isProcessing = true;
       const res = await req.toPromise();
-      this.isProcessing = false;
       alert('کلاس با موفقیت ثبت شد');
     } catch (e) {
       this.errorService.handle(e, 'مشکل در اتصال به سرور');
     }
+      this.isProcessing = false;
   }
 
   // toggle teacher search mode.

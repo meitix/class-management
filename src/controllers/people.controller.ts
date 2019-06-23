@@ -102,7 +102,7 @@ export class PeopleController {
       // create new parent if is not already exists.
       if (!parent) parent = new Person(studentVM.parent);
 
-      const studentInfo = new Person(req.body);
+      const studentInfo = new Person(req.body.info);
       // save people infos of parent and student.
       await parent.save();
       await studentInfo.save();

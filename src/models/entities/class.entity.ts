@@ -9,8 +9,9 @@ export const ClassSchema = new Schema({
     teacher: {type: Schema.Types.ObjectId , ref: 'Person'},
     description: String,
     isActive: Boolean,
+    school: { type: Types.ObjectId, ref: 'School'},
     period: {
-        type: Types.ObjectId , ref: 'School.period'
+        type: Types.ObjectId , ref: 'Period'
     }
 });
 

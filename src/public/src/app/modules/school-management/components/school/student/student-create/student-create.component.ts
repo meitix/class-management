@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ErrorService } from 'src/app/modules/base/services/error.service';
 import { Parent } from 'src/app/modules/school-management/models/people/parent.interface';
+import { Person } from 'src/app/modules/school-management/models/people/person.interface';
 
 @Component({
   selector: 'app-student-create',
@@ -29,6 +30,7 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
   ) {
     this.student = new Student();
     this.student.parent = new Parent();
+    this.student.info = new Person();
     console.log(this.student);
   }
 

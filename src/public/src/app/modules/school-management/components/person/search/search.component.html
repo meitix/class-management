@@ -18,7 +18,7 @@
           <th>شماره موبایل</th>
         </tr>
       </thead>
-      <tbody *ngIf="people.length">
+      <tbody *ngIf="people">
         <tr
           *ngFor="let person of people"
           (click)="selectPerson(person)"

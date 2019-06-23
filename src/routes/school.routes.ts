@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { SchoolController } from '../controllers/school.controller';
 import { PeopleController } from '../controllers/people.controller';
 import classRoutes from './class.routes';
+import periodRoutes from './period.routes';
 
 class SchoolRouter {
     router: Router;
@@ -9,7 +10,7 @@ class SchoolRouter {
     private peopleController: PeopleController;
 
     constructor() {
-        this.router = Router();
+        this.router = Router({mergeParams: true});
         this.schoolController = new SchoolController();
         this.peopleController = new PeopleController();
         this.init();
@@ -42,8 +43,11 @@ class SchoolRouter {
         this.router.put('/:id/personnel/:personnelId' , this.peopleController.updatePersonnel);
         this.router.delete('/:id/personnel/:personnelId' , this.peopleController.deleteStudent);
         this.router.get('/:id/personnel/search/:term' , this.peopleController.search);
-
+        
+        // clas routes.
         this.router.use('/:id/classes', classRoutes);
+        // period routes.
+        this.router.use('/:id/periods', periodRoutes);
     }
 }
 

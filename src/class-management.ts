@@ -3,6 +3,7 @@ import * as express from "express";
 import { connect , set } from "mongoose";
 import schoolManagementRouter from "./routes";
 import * as cors from 'cors';
+import { School } from "./models/entities/school.entity";
 export class ClassManagement {
   app: Express;
 

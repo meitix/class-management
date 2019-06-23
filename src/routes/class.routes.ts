@@ -11,16 +11,16 @@ export class RoleRouter {
   }
 
   private init() {
-    this.router = Router();
+    this.router = Router({mergeParams: true});
     this.classController = new ClassController();
   }
 
   private assignTheRoutesToController() {
     this.router.get('/', this.classController.fetch);
-    this.router.get('/:id', this.classController.fetch);
+    this.router.get('/:classId', this.classController.fetch);
     this.router.post('/', this.classController.create);
-    this.router.put('/:id', this.classController.update);
-    this.router.delete('/:id', this.classController.delete);
+    this.router.put('/:classId', this.classController.update);
+    this.router.delete('/:classId', this.classController.delete);
   }
 }
 

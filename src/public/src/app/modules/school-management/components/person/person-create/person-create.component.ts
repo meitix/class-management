@@ -31,9 +31,11 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
     private errorService: ErrorService
   ) {
     this.personUpdate = new EventEmitter<IPerson>();
+    this.person = new Person();
   }
 
   ngOnInit() {
+    console.log(this.person);
   }
 
   submit(f: NgForm) {

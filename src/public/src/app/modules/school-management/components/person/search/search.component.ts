@@ -23,6 +23,7 @@ export class SearchComponent implements OnInit , OnDestroy {
 
   constructor(private personService: SchoolService, private route: ActivatedRoute) {
     this.personSelect = new EventEmitter<IPerson>();
+    this.people = [];
   }
 
   ngOnInit() {

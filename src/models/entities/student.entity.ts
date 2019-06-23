@@ -4,8 +4,8 @@ import { IStudent } from '../interfaces/edu/student.interface';
 export const StatisticSchema = new Schema({
   grade: {
     type: Schema.Types.ObjectId,
-    ref: 'Person'
-  },
+    ref: 'Person' // TODO: fix this.
+  }, 
   statuses: [
     {
       homework: Boolean,
