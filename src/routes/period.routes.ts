@@ -11,7 +11,11 @@ export class PeriodRouter {
   }
 
   private assignRoutesToController() {
-    this.router.post('/', this.periodController.addPeriod);
+    this.router.get('/', this.periodController.fetchAll);
+    this.router.get('/:periodId', this.periodController.fetch);
+    this.router.post('/', this.periodController.create);
+    this.router.put('/:periodId', this.periodController.update);
+    this.router.delete('/:periodId', this.periodController.delete);
   }
 }
 
