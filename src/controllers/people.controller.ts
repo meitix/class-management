@@ -225,7 +225,7 @@ export class PeopleController {
       // TODO: FixMe >>> this is the most shitty way I ever done in my life. it shouldn't be filtered after retrieving from DB.
       // find the personnel info from schools personnel.
       res.json(
-        _.filter(result.personnel, p => personnelId.equals(<any>p.person))
+        _.filter(result.personnel, p => personnelId.equals(<any>p.person._id))[0]
       );
     } catch (e) {
       res.status(400).send(e);
