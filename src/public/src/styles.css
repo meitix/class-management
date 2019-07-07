@@ -2,3 +2,10 @@
 .clickable {
   cursor: pointer;
 }
+
+.dropdown-menu {
+  left: 0;
+  right: auto;
+  float: right;
+  text-align: right;
+}

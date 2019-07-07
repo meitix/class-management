@@ -4,6 +4,9 @@ import { IPeriod } from '../interfaces/edu/period.interface';
 
 
 export const PeriodSchema = new Schema({
+  school: {
+    type: Schema.Types.ObjectId, ref: 'School'
+  },
   title: {
     type: String,
     required: true

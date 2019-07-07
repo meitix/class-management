@@ -7,14 +7,35 @@ import { IPerson } from '../../../models/people/person.interface';
 import { IPersonnelViewModel } from '../../../models/people/personnel.interface';
 import { IClass } from '../../../models/edu/class.interface';
 import { stringify } from 'querystring';
+import { IPeriod } from '../../../models/edu/period.interface';
+import { EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchoolService extends RestService<ISchool> {
 
+
+  private schoolId: string;
+
+  schoolSelected: EventEmitter<string>;
+
   constructor(injector: Injector) {
     super('school', injector);
+    this.schoolSelected = new EventEmitter<string>();
+  }
+
+  getSelectedSchoolId(): string {
+    return this.schoolId;
+  }
+
+  /*
+    آی دی مدرسه ای که انتخاب شده با این تابع از طریق یه ایونت فایر میشه
+    برای اینکه کامپوننت هایی که به آدرس دسترسی ندارن یا قبل از آدرس مدرسه لود میشن مثل دوره ها
+  */
+  selectSchool(schoolId: string) {
+    this.schoolId = schoolId;
+    this.schoolSelected.emit(schoolId);
   }
 
   // add a student to an school.
@@ -59,6 +80,13 @@ export class SchoolService extends RestService<ISchool> {
     return this.put(`${this.url + schoolId}/personnel/${personId}`, {person , roleIds});
   }
 
+
+
+  // search personnel of an school.
+  searchPersonnel(schoolId: string, term: string) {
+    return this.get(`${this.url + schoolId}/personnel/search/${term}`).pipe(map(res => <Array<IPerson>>res));
+  }
+
   // create class.
   createClass(schoolId: string , _class: IClass) {
     return this.post(`${this.url + schoolId}/classes`, _class);
@@ -79,9 +107,31 @@ export class SchoolService extends RestService<ISchool> {
     return this.get(`${this.url + schoolId}/classes`).pipe(map(res => <IClass[]>res));
   }
 
-  // search personnel of an school.
 
-  searchPersonnel(schoolId: string, term: string) {
-    return this.get(`${this.url + schoolId}/personnel/search/${term}`).pipe(map(res => <Array<IPerson>>res));
+  // Period service.
+
+  // create period.
+  createPeriod(schoolId: string , _period: IPeriod) {
+    return this.post(`${this.url + schoolId}/periods`, _period);
+   }
+
+   // update period.
+  updatePeriod(schoolId: string , periodId: string, _period: IPeriod) {
+    return this.put(`${this.url + schoolId}/periods/${periodId}`, _period);
+  }
+
+  // get period by id.
+  getPeriodById(schoolId , periodId: string) {
+    return this.get(`${this.url + schoolId }/periods/${periodId}`).pipe(map(res => <IPeriod>res));
+  }
+
+  // get period by school id.
+  getPeriodsBySchoolId(schoolId: string) {
+    return this.get(`${this.url + schoolId}/periods`).pipe(map(res => <IPeriod[]>res));
+  }
+
+  // delete period.
+  deletePeriod(schoolId: string, periodId: string) {
+    return this.delete(`${this.url + schoolId}/periods/${periodId}`);
   }
 }
