@@ -14,6 +14,7 @@ export class ClassListComponent implements OnInit, OnDestroy {
   classes: IClass[];
   schoolIdSubscription: Subscription;
   schoolId: string;
+  periodChangeSubscription: Subscription;
 
   constructor(private schoolService: SchoolService, private route: ActivatedRoute) {
     this.classes = [];
@@ -25,10 +26,16 @@ export class ClassListComponent implements OnInit, OnDestroy {
       this.schoolId = params.id;
     });
    this.fetchGridData();
+
+   // listen to period change.
+   this.periodChangeSubscription = this.schoolService.periodSelected.subscribe(() => {
+     console.log('changed');
+    this.fetchGridData();
+   });
   }
 
   fetchGridData() {
-    this.schoolService.getClassesBySchoolId(this.schoolId).subscribe(res => {
+    this.schoolService.getClassesBySchoolId(this.schoolId, this.schoolService.getSelectedPeriod()).subscribe(res => {
       this.classes = res;
     });
   }
@@ -44,5 +51,6 @@ export class ClassListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.schoolIdSubscription.unsubscribe();
+    this.periodChangeSubscription.unsubscribe();
   }
 }

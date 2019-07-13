@@ -1,7 +1,10 @@
-import { IRole } from "./role.interface";
+import { IPerson } from "../people/person.interface";
+import { IEntity } from "../system/entity.interface";
 
-export interface IUser {
+export interface IUser extends IEntity{
     username: string;
     password: string;
-    roles: IRole[];
+    userType: string;
+    tokens: string[];
+    info: IPerson;
 }

@@ -24,6 +24,7 @@ export const StudentSchema = new Schema<IStudent>({
     type: Schema.Types.ObjectId,
     ref: 'Person'
   },
+  period: { type: Schema.Types.ObjectId , ref: 'Period'},
   school: {
     type: Schema.Types.ObjectId,
     ref: 'School'
