@@ -10,9 +10,10 @@ export class ClassController {
     // check if there is id in params read by id.
     if (req.params.classId) data = await Class.findById(req.params.classId).populate('teacher');
     // find by req.body in lack of id.
-    else {
+    else 
+    {
       const schoolId = new Types.ObjectId(req.params.id);
-      const condition = { school: schoolId , ...req.body};
+      const condition = { school: schoolId , ...req.params};
       data = await Class.find(condition).populate('teacher' , {firstname: 1, lastname: 1}).populate('period').populate('grade',{title: 1}).exec();
     }
     res.send(data);

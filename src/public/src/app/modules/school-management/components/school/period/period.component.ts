@@ -1,17 +1,13 @@
 import {
   Component,
   OnInit,
-  OnDestroy,
-  Injector,
-  Output,
-  Input
+  OnDestroy
 } from '@angular/core';
 import { SchoolService } from '../services/school.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { IPeriod } from '../../../models/edu/period.interface';
-import { EventEmitter } from '@angular/core';
+import { IPeriod, Period } from '../../../models/edu/period.interface';
 
 @Component({
   selector: 'app-period',
@@ -23,12 +19,16 @@ export class PeriodComponent implements OnInit, OnDestroy {
   navigationEndSubscription: Subscription;
   periods: IPeriod[];
   schoolId: string;
+  selectedPeriod: IPeriod;
 
   constructor(
     private schoolService: SchoolService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.selectedPeriod = new Period();
+    this.selectedPeriod.title = 'انتخاب دوره';
+  }
 
   ngOnInit() {
     this.navigationEndSubscription = this.router.events
@@ -49,13 +49,32 @@ export class PeriodComponent implements OnInit, OnDestroy {
           );
         } catch {}
       });
-
   }
 
   async getPeriods(schoolId: string) {
     this.periods = await this.schoolService
       .getPeriodsBySchoolId(schoolId)
       .toPromise();
+
+      // select the current period;
+      this.selectDefaultPeriod();
+  }
+
+  selectDefaultPeriod() {
+    const periodId = this.schoolService.getSelectedPeriod();
+    if (!periodId && this.periods.length) {
+      this.selectedPeriod = this.periods[0];
+    } else {
+     this.selectedPeriod = this.periods.find(p => p._id === periodId);
+    }
+
+    // share the selected period through school service.
+    this.schoolService.setSelectedPeriod(this.selectedPeriod);
+  }
+
+  selectPeriod(period: IPeriod) {
+    this.selectedPeriod = period;
+    this.schoolService.setSelectedPeriod(period);
   }
 
   ngOnDestroy() {

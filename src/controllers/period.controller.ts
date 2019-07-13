@@ -32,7 +32,7 @@ export class PeriodController {
 
       const result = await Period.find({
         school: new Types.ObjectId(schoolId)
-      });
+      }).sort({_id: -1});
 
       res.json(result);
     } catch (e) {

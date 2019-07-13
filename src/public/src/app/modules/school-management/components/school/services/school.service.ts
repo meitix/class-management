@@ -15,15 +15,17 @@ import { EventEmitter } from '@angular/core';
 })
 export class SchoolService extends RestService<ISchool> {
 
+  constructor(injector: Injector) {
+    super('school', injector);
+    this.schoolSelected = new EventEmitter<string>();
+  }
+
 
   private schoolId: string;
 
   schoolSelected: EventEmitter<string>;
 
-  constructor(injector: Injector) {
-    super('school', injector);
-    this.schoolSelected = new EventEmitter<string>();
-  }
+  periodSelected = new EventEmitter<IPeriod>();
 
   getSelectedSchoolId(): string {
     return this.schoolId;
@@ -40,6 +42,7 @@ export class SchoolService extends RestService<ISchool> {
 
   // add a student to an school.
   addStudent(schoolId: string, student: IStudent) {
+    student.period = this.getSelectedPeriod();
      return this.post(this.url.concat(schoolId, '/students') , student).pipe(map(res => <IStudent>res));
   }
 
@@ -89,6 +92,7 @@ export class SchoolService extends RestService<ISchool> {
 
   // create class.
   createClass(schoolId: string , _class: IClass) {
+    _class.period = this.getSelectedPeriod();
     return this.post(`${this.url + schoolId}/classes`, _class);
    }
 
@@ -103,8 +107,8 @@ export class SchoolService extends RestService<ISchool> {
   }
 
   // get class by school id.
-  getClassesBySchoolId(schoolId: string) {
-    return this.get(`${this.url + schoolId}/classes`).pipe(map(res => <IClass[]>res));
+  getClassesBySchoolId(schoolId: string, periodId: string) {
+    return this.get(`${this.url + schoolId}/classes?period=${periodId}`).pipe(map(res => <IClass[]>res));
   }
 
 
@@ -133,5 +137,15 @@ export class SchoolService extends RestService<ISchool> {
   // delete period.
   deletePeriod(schoolId: string, periodId: string) {
     return this.delete(`${this.url + schoolId}/periods/${periodId}`);
+  }
+
+  // get selected period id from local storage.
+  getSelectedPeriod() {
+    return JSON.parse(localStorage.getItem('selectedPeriod'));
+  }
+
+  setSelectedPeriod(period: IPeriod) {
+    this.periodSelected.emit(period);
+    localStorage.setItem('selectedPeriod', JSON.stringify(period));
   }
 }
