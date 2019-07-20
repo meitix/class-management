@@ -12,10 +12,10 @@ export class AuthController {
     const jwtPayload: any = {};
     try {
       let user = <IUser>(
-        await User.schema.methods.findByCredentials(credentials)
+        await (User as any).findByCredentials(credentials)
       );
       if (!user) {
-        throw new Error('کاربری با این مشخصات یافت نشد');
+        throw new Error('نام کاربری یا کلمه عبور اشتباه است');
       }
     
       // add user id to jwt payload object.
@@ -45,7 +45,7 @@ export class AuthController {
       const token = tokenManager.generate(jwtPayload);
       res.send({token});
     } catch (e) {
-      res.status(404).send(e);
+      res.status(400).send(e);
     }
   }
 }

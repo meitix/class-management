@@ -21,15 +21,15 @@
             <span class="text-danger" *ngIf="pswd.errors !=null && pswd.touched">لطفا کلمه عبور را وارد کنید.</span>
           </div>
 
-          <div class="checkbox">
+          <div>
             <label>
               <input type="checkbox" name="optionsCheckboxes" [(ngModel)]="remember" name="remember"> مرابه خاطر بسپار
             </label>
           </div>
-
+          <div class="text-danger text-center">{{errorMessage}}</div>
           <div class="col-sm-12 text-center">
-            <button class="btn btn-primary">ورود</button>
-            <a [routerLink]="'../register'" class="btn btn-success text-center">ثبت نام کنید !</a>
+            <button class="btn btn-primary" [disabled]="isLoading">{{isLoading ? '...' : 'ورود'}}</button>
+            <!-- <a [routerLink]="'../register'" class="btn btn-success text-center">ثبت نام کنید /> -->
           </div>
         </div>
       </div>

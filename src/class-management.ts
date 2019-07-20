@@ -3,7 +3,7 @@ import * as express from "express";
 import { connect , set } from "mongoose";
 import schoolManagementRouter from "./routes";
 import * as cors from 'cors';
-import { School } from "./models/entities/school.entity";
+import { InitialDefaultData } from "./init-default-data";
 export class ClassManagement {
   app: Express;
 
@@ -17,7 +17,8 @@ export class ClassManagement {
     this.app.use(cors());
     this.app.use(express.json());
     this.app.use(schoolManagementRouter);
-    this.useErrorHandler();
+    // this.useErrorHandler();
+    InitialDefaultData();
   }
 
   // assign error handlers.

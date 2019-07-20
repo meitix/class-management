@@ -8,10 +8,12 @@ import { SidebarModule } from './sidebar/sidebar.module';
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { SchoolManagementModule } from './modules/school-management/school.module';
 import { HttpClientModule } from '@angular/common/http';
+import { SystemComponent } from './system/system.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SystemComponent
   ],
   imports: [
     BrowserModule,

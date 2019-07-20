@@ -29,13 +29,12 @@ export class ClassListComponent implements OnInit, OnDestroy {
 
    // listen to period change.
    this.periodChangeSubscription = this.schoolService.periodSelected.subscribe(() => {
-     console.log('changed');
     this.fetchGridData();
    });
   }
 
   fetchGridData() {
-    this.schoolService.getClassesBySchoolId(this.schoolId, this.schoolService.getSelectedPeriod()).subscribe(res => {
+    this.schoolService.getClassesBySchoolId(this.schoolId, this.schoolService.getSelectedPeriod()._id).subscribe(res => {
       this.classes = res;
     });
   }

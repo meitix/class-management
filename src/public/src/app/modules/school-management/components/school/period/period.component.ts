@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SchoolService } from '../services/school.service';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -41,7 +37,9 @@ export class PeriodComponent implements OnInit, OnDestroy {
               if (params.id) {
                 this.schoolService.selectSchool(params.id);
                 this.schoolId = params.id;
-                this.getPeriods(this.schoolId);
+                if (!this.periods) {
+                  this.getPeriods(this.schoolId);
+                }
               } else {
                 this.periods = undefined;
               }
@@ -56,8 +54,8 @@ export class PeriodComponent implements OnInit, OnDestroy {
       .getPeriodsBySchoolId(schoolId)
       .toPromise();
 
-      // select the current period;
-      this.selectDefaultPeriod();
+    // select the current period;
+    this.selectDefaultPeriod();
   }
 
   selectDefaultPeriod() {
@@ -65,7 +63,7 @@ export class PeriodComponent implements OnInit, OnDestroy {
     if (!periodId && this.periods.length) {
       this.selectedPeriod = this.periods[0];
     } else {
-     this.selectedPeriod = this.periods.find(p => p._id === periodId);
+      this.selectedPeriod = this.periods.find(p => p._id === periodId);
     }
 
     // share the selected period through school service.

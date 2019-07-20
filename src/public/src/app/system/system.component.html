@@ -1,10 +1,10 @@
 <div class="wrapper">
-  <div *ngIf="!!authService.getCurrentUser()" class="sidebar" data-color='red' data-image="">
+  <div class="sidebar" data-color='red' data-image="">
     <!-- <app-sidebar-cmp *ngIf="authService.getCurrentUser()" ></app-sidebar-cmp> -->
     <app-sidebar-cmp ></app-sidebar-cmp>
     <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-4.jpg)"></div>
   </div>
-  <div [ngClass]="{'main-panel': !!authService.getCurrentUser()}">
+  <div class="main-panel">
 
     <navbar-cmp></navbar-cmp>
     <div class="main-content">
@@ -13,6 +13,7 @@
         <router-outlet></router-outlet>
       </div>
     </div>
+
 
     <footer-cmp></footer-cmp>
   </div>

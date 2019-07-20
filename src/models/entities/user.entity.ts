@@ -39,7 +39,7 @@ export const UserSchema = new Schema({
   // get by credential method.
   UserSchema.statics.findByCredentials = function(credentials: any) {
     const User = this;
-    return User.findOne({ email: credentials.email }).populate('info')
+    return User.findOne({ username: credentials.username.toLowerCase() }).populate('info')
       .then(async (user: IUser) => {
         // reject the promise if the user does not found;
         if (!user) return Promise.reject('کاربری با این مشخصات یافت نشد.');
@@ -57,6 +57,7 @@ export const UserSchema = new Schema({
   // hash the new password before saving the user.
   UserSchema.pre("save", async function(next) {
     const user = <IUser>this;
+    user.username= user.username.toLowerCase();
     if (user.isModified("password")) {
       const salt = await genSalt(10);
       const hashedPass = await hash(user.password, salt);

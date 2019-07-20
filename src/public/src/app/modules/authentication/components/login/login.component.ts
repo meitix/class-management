@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { User } from '../../../users/models/user';
 import { AuthService } from '../../services/auth.service';
+import { catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -15,13 +15,11 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   remember: boolean;
+  isLoading: boolean;
 
   errorMessage: string;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     const user = this.authService.getRememberedUser();
@@ -34,30 +32,32 @@ export class LoginComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
-      this.authService.login(this.username, this.password).subscribe(res => {
+      this.isLoading = true;
+      this.authService
+        .login(this.username, this.password)
+        .pipe(tap(() => (this.isLoading = false)))
+        .subscribe(
+          res => {
+            // check user is exists.
+            if (res) {
+              // make user remember.
+              if (this.remember) {
+                this.authService.makeUserRemembered(res);
+              }
 
-        // check user is exists.
-        if (res) {
-
-          // make user remember.
-          if (this.remember) {
-           this.authService.makeUserRemembered(res);
+              // make user logged in.
+              this.authService.setCurrentUser(res);
+              // navigate to dashboard.
+              this.router.navigate(['']);
+            } else {
+              this.errorMessage = 'نام کاربری یا کلمه عبور اشتباه است';
+            }
+          },
+          e => {
+            this.errorMessage = e.error;
+            this.isLoading = false;
           }
-
-          // check user status.
-          if (res.active) {
-            // make user logged in.
-            this.authService.setCurrentUser(res);
-            // navigate to dashboard.
-            this.router.navigate(['']);
-          } else {
-            this.errorMessage = 'شما اجازه استفاده از سیستم را ندارید';
-          }
-
-        } else {
-          this.errorMessage = 'نام کاربری یا کلمه عبور اشتباه است';
-        }
-      });
+        );
     } else {
       this.errorMessage = 'لطفا موارد خواسته شده را کامل کنید';
     }
