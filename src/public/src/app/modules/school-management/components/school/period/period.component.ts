@@ -37,7 +37,8 @@ export class PeriodComponent implements OnInit, OnDestroy {
               if (params.id) {
                 this.schoolService.selectSchool(params.id);
                 this.schoolId = params.id;
-                if (!this.periods) {
+                // if there is no list of periods get list of period or school id has been changed fetch the periods.
+                if (!this.periods || this.schoolService.getSelectedSchoolId() !== this.schoolId) {
                   this.getPeriods(this.schoolId);
                 }
               } else {
@@ -59,17 +60,19 @@ export class PeriodComponent implements OnInit, OnDestroy {
   }
 
   selectDefaultPeriod() {
-    const periodId = this.schoolService.getSelectedPeriod();
-    if (!periodId && this.periods.length) {
+    // initial default period.
+    const period = this.schoolService.getSelectedPeriod();
+    if (!period && this.periods.length) {
       this.selectedPeriod = this.periods[0];
     } else {
-      this.selectedPeriod = this.periods.find(p => p._id === periodId);
+      this.selectedPeriod = this.periods.find(p => p._id === period._id);
     }
 
     // share the selected period through school service.
     this.schoolService.setSelectedPeriod(this.selectedPeriod);
   }
 
+  // handles change period event when user change it from UI.
   selectPeriod(period: IPeriod) {
     this.selectedPeriod = period;
     this.schoolService.setSelectedPeriod(period);

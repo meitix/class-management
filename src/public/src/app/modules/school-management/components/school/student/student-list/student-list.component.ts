@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IStudent } from 'src/app/modules/school-management/models/people/student.interface';
 import { SchoolService } from '../../services/school.service';
 import { ActivatedRoute } from '@angular/router';
@@ -11,11 +11,12 @@ import { IPerson } from 'src/app/modules/school-management/models/people/person.
   templateUrl: './student-list.component.html',
   styleUrls: ['./student-list.component.css']
 })
-export class StudentListComponent implements OnInit {
+export class StudentListComponent implements OnInit , OnDestroy {
 
   students: Array<IPerson>;
   schoolIdSubscription: Subscription;
   schoolId: string;
+  periodChangeSubscription: Subscription;
 
   constructor(private schoolService: SchoolService , private route: ActivatedRoute, private errorService: ErrorService) {
     this.students = [];
@@ -28,11 +29,14 @@ export class StudentListComponent implements OnInit {
       this.fetchStudents(this.schoolId);
     }
    });
+
+   // period change subscription.
+   this.periodChangeSubscription = this.schoolService.periodSelected.subscribe(() => this.fetchStudents(this.schoolId));
   }
 
   // get students from student service.
   async fetchStudents(schoolId: string) {
-    const students = await this.schoolService.getStudents(schoolId).toPromise();
+    const students = await this.schoolService.getStudents(schoolId, this.schoolService.getSelectedPeriod()._id).toPromise();
     this.students = students.map(s => {
       s.info._id = s._id;
       return s.info;
@@ -48,5 +52,10 @@ export class StudentListComponent implements OnInit {
     },
     err => this.errorService.handle(err , 'عملیات با مشکل مواجه شد'));
     }
+  }
+
+  ngOnDestroy() {
+    this.schoolIdSubscription.unsubscribe();
+    this.periodChangeSubscription.unsubscribe();
   }
 }

@@ -24,8 +24,8 @@ export abstract class RestService<T> {
     return this.http.post(url, data, this.requestOption);
   }
 
-  protected get(url: string) {
-    return this.http.get(url, this.requestOption);
+  protected get<P>(url: string) {
+    return this.http.get<P>(url, this.requestOption);
   }
 
   protected put(url: string, data: any) {

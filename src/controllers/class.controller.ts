@@ -13,7 +13,7 @@ export class ClassController {
     else 
     {
       const schoolId = new Types.ObjectId(req.params.id);
-      const condition = { school: schoolId , ...req.params};
+      const condition = { school: schoolId , ...req.query};
       data = await Class.find(condition).populate('teacher' , {firstname: 1, lastname: 1}).populate('period').populate('grade',{title: 1}).exec();
     }
     res.send(data);
