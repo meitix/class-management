@@ -19,4 +19,4 @@ export const IStudentStatusSchema = new Schema({
   date: { type: Date, required: [true] }
 });
 
-export const Student: Model<IStudentStatus> = model('StudentGrade',IStudentStatusSchema);
+export const StudentStatus: Model<IStudentStatus> = model('StudentGrade',IStudentStatusSchema);
