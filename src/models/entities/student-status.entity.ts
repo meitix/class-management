@@ -21,6 +21,7 @@ export const ClassStatusSchema = new Schema({
     ref: 'Class',
     required: [true, 'کلاس دریافت نشده است']
   },
+  lesson: String,
   Statistics: [StudentStatusSchema],
   date: { type: Date, required: [true] , index: true}
 });
