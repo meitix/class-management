@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Class } from "../models/entities/class.entity";
 import { Types } from "mongoose";
-import { School } from "../models/entities/school.entity";
 
 export class ClassController {
   async fetch(req: Request, res: Response) {
@@ -20,6 +19,20 @@ export class ClassController {
   } catch (e) {
     res.status(400).send(e);
   }
+  }
+
+  // get grade data by passing class id.
+  async fetchGradeByClassId(req: Request, res: Response) {
+    try {
+      const result = await Class.findById(req.params.classId)
+        .populate('grade')
+        .select({ grade: 1 })
+        .exec();
+      res.json(result.grade);
+    } catch (e) {
+      console.log(e);
+      res.status(400).json(e);
+    }
   }
 
   // create.

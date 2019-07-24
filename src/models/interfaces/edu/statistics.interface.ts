@@ -2,8 +2,13 @@ import { IClass } from './class.interface';
 import { IStudent } from './student.interface';
 import { IEntity } from '../system/entity.interface';
 
-export interface IStudentStatus extends IEntity{
+export interface IClassStatus extends IEntity{
   class: IClass;
+  statistics: IStatistic[];
+  date: Date;
+}
+
+export interface IStatistic {
   student: IStudent;
   result: {
     homework: boolean;
@@ -11,12 +16,6 @@ export interface IStudentStatus extends IEntity{
     lesson: boolean;
   };
   description?: string;
-  date: Date;
-}
-
-export interface IStatistic {
-  class: IClass;
-  statuses: Array<IStudentStatus>;
 }
 
 export type IStatistics = Array<IStatistic>;

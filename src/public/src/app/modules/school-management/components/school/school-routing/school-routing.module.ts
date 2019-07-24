@@ -16,7 +16,11 @@ import { ClassStartComponent } from '../class/class-start/class-start.component'
 import { ClassListComponent } from '../class/class-list/class-list.component';
 import { ClassCreateComponent } from '../class/class-create/class-create.component';
 import { PeriodCreateComponent } from '../period/period-create/period-create.component';
+<<<<<<< HEAD
 import { SchoolDashboardComponent } from '../school-dashboard/school-dashboard.component';
+=======
+import { ManageStudentsComponent } from '../class/manage-students/manage-students.component';
+>>>>>>> 6eae5f4a211c27833bad7d5d34a52c77a5101977
 const schoolRoutes: Routes = [
   {
     path: '',
@@ -64,7 +68,8 @@ const schoolRoutes: Routes = [
         children: [
           { path: '', component: ClassListComponent },
           { path: 'create', component: ClassCreateComponent },
-          { path: 'edit/:id', component: ClassCreateComponent }
+          { path: 'edit/:id', component: ClassCreateComponent },
+          { path: ':id/students', component: ManageStudentsComponent },
         ]
       }
     ]

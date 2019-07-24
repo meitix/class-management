@@ -2,16 +2,19 @@ import { Schema, Model, model } from 'mongoose';
 import { IPerson } from '../interfaces/people/person.interface';
 
 export const PersonSchema = new Schema({
-  code: {type: String, required: true},
+  code: {type: String, required: true, index: true},
   firstname: {
+    index: true,
     type: String,
     required: true
   },
   lastname: {
+    index: true,
     type: String,
     required: true
   },
   nationalCode: {
+    index: true,
     type: String,
     maxLength: 10,
     minLength: 10

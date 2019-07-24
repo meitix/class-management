@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { ClassController } from '../controllers/class.controller';
+import studentStatusRouter from './student-status.routes';
 
 export class RoleRouter {
   router: Router;
@@ -11,7 +12,7 @@ export class RoleRouter {
   }
 
   private init() {
-    this.router = Router({mergeParams: true});
+    this.router = Router({ mergeParams: true });
     this.classController = new ClassController();
   }
 
@@ -21,6 +22,11 @@ export class RoleRouter {
     this.router.post('/', this.classController.create);
     this.router.put('/:classId', this.classController.update);
     this.router.delete('/:classId', this.classController.delete);
+    // get the grade data of class.
+    this.router.get(':classId/grade', studentStatusRouter);
+    
+    // importing student statuses routes.
+    this.router.use(':classId/student-status', studentStatusRouter);
   }
 }
 
