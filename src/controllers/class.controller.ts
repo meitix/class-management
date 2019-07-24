@@ -21,6 +21,20 @@ export class ClassController {
   }
   }
 
+  // get grade data by passing class id.
+  async fetchGradeByClassId(req: Request, res: Response) {
+    try {
+      const result = await Class.findById(req.params.classId)
+        .populate('grade')
+        .select({ grade: 1 })
+        .exec();
+      res.json(result.grade);
+    } catch (e) {
+      console.log(e);
+      res.status(400).json(e);
+    }
+  }
+
   // create.
   async create(req: Request, res: Response) {
     delete req.body._id;
