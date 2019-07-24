@@ -16,15 +16,17 @@ import { ClassStartComponent } from '../class/class-start/class-start.component'
 import { ClassListComponent } from '../class/class-list/class-list.component';
 import { ClassCreateComponent } from '../class/class-create/class-create.component';
 import { PeriodCreateComponent } from '../period/period-create/period-create.component';
+import { SchoolDashboardComponent } from '../school-dashboard/school-dashboard.component';
 const schoolRoutes: Routes = [
   {
     path: '',
     component: SchoolStartComponent,
     children: [
-      { path: '', component: SchoolListComponent },
+      { path: '', component: SchoolListComponent, pathMatch: 'full' },
       { path: 'create', component: SchoolCreateComponent },
       { path: 'edit/:id', component: SchoolCreateComponent },
       { path: ':id/periods', component: PeriodCreateComponent},
+      { path: ':id', component: SchoolDashboardComponent},
       {
         // student routes.
         path: ':id/student',

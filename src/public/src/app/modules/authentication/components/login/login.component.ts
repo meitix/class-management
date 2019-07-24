@@ -9,7 +9,7 @@ import { catchError, tap } from 'rxjs/operators';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   @ViewChild('f') form: NgForm;
 
   username: string;
@@ -20,15 +20,6 @@ export class LoginComponent implements OnInit {
   errorMessage: string;
 
   constructor(private authService: AuthService, private router: Router) {}
-
-  ngOnInit() {
-    const user = this.authService.getRememberedUser();
-    if (user) {
-      this.username = user.username;
-      this.password = user.password;
-      this.submit();
-    }
-  }
 
   submit() {
     if (this.form.valid) {
@@ -47,8 +38,14 @@ export class LoginComponent implements OnInit {
 
               // make user logged in.
               this.authService.setCurrentUser(res);
+
+              if (res.schoolId) {
+                // create redirect url based on user role.
+                this.router.navigate(['school', res.schoolId]);
+              } else {
               // navigate to dashboard.
               this.router.navigate(['']);
+              }
             } else {
               this.errorMessage = 'نام کاربری یا کلمه عبور اشتباه است';
             }

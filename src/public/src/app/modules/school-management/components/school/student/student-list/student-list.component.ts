@@ -36,7 +36,7 @@ export class StudentListComponent implements OnInit , OnDestroy {
 
   // get students from student service.
   async fetchStudents(schoolId: string) {
-    const students = await this.schoolService.getStudents(schoolId, this.schoolService.getSelectedPeriod()._id).toPromise();
+    const students = await this.schoolService.getStudents(schoolId).toPromise();
     this.students = students.map(s => {
       s.info._id = s._id;
       return s.info;
@@ -44,9 +44,9 @@ export class StudentListComponent implements OnInit , OnDestroy {
   }
 
   // delete student.
-  delete(studentId: string) {
+  delete(student: IStudent) {
     if (confirm('آیا برای حذف اطمینان دارید؟')) {
-    this.schoolService.deleteStudent(this.schoolId , studentId).subscribe(res => {
+    this.schoolService.deleteStudent(this.schoolId , student._id).subscribe(res => {
       this.fetchStudents(this.schoolId);
       alert('قرآن آموز با موفقیت حذف شد.');
     },

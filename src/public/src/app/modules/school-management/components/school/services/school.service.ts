@@ -83,7 +83,9 @@ export class SchoolService extends RestService<ISchool> {
     return this.put(`${this.url + schoolId}/personnel/${personId}`, {person , roleIds});
   }
 
-
+  deletePersonnel(schoolId: string, personnelId: string) {
+    return this.http.delete(`${this.url + schoolId}/personnel/${personnelId}`);
+  }
 
   // search personnel of an school.
   searchPersonnel(schoolId: string, term: string) {

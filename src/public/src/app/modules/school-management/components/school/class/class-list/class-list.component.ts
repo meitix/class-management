@@ -10,33 +10,42 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./class-list.component.css']
 })
 export class ClassListComponent implements OnInit, OnDestroy {
-
   classes: IClass[];
   schoolIdSubscription: Subscription;
   schoolId: string;
   periodChangeSubscription: Subscription;
 
-  constructor(private schoolService: SchoolService, private route: ActivatedRoute) {
+  constructor(
+    private schoolService: SchoolService,
+    private route: ActivatedRoute
+  ) {
     this.classes = [];
-   }
+  }
 
   ngOnInit() {
-     // get school id from route.
-     this.schoolIdSubscription = this.route.parent.params.subscribe(params => {
+    // get school id from route.
+    this.schoolIdSubscription = this.route.parent.params.subscribe(params => {
       this.schoolId = params.id;
     });
-   this.fetchGridData();
-
-   // listen to period change.
-   this.periodChangeSubscription = this.schoolService.periodSelected.subscribe(() => {
     this.fetchGridData();
-   });
+
+    // listen to period change.
+    this.periodChangeSubscription = this.schoolService.periodSelected.subscribe(
+      () => {
+        this.fetchGridData();
+      }
+    );
   }
 
   fetchGridData() {
-    this.schoolService.getClassesBySchoolId(this.schoolId, this.schoolService.getSelectedPeriod()._id).subscribe(res => {
-      this.classes = res;
-    });
+    this.schoolService
+      .getClassesBySchoolId(
+        this.schoolId,
+        this.schoolService.getSelectedPeriod()._id
+      )
+      .subscribe(res => {
+        this.classes = res;
+      });
   }
 
   delete(id: string) {
@@ -50,6 +59,8 @@ export class ClassListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.schoolIdSubscription.unsubscribe();
-    this.periodChangeSubscription.unsubscribe();
+    if (this.periodChangeSubscription) {
+      this.periodChangeSubscription.unsubscribe();
+    }
   }
 }

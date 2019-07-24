@@ -37,14 +37,13 @@ export class PersonnelListComponent implements OnInit {
   }
 
   // delete student.
-  delete(studentId: string) {
+  delete(personnel: IPerson) {
     if (confirm('آیا برای حذف اطمینان دارید؟')) {
-    this.schoolService.deleteStudent(this.schoolId , studentId).subscribe(res => {
+    this.schoolService.deletePersonnel(this.schoolId , personnel._id).subscribe(res => {
       this.fetchPersonnel(this.schoolId);
       alert('فرد با موفقیت حذف شد.');
     },
     err => this.errorService.handle(err , 'عملیات با مشکل مواجه شد'));
     }
   }
-
 }

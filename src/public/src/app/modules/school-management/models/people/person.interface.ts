@@ -13,7 +13,9 @@ export interface IPerson extends IEntity {
 }
 
 export interface IRole extends IEntity {
+  _id: string;
   title: string;
+  accessibility: Array<{_id: string, title: string, accessLevel: number}>;
 }
 
 export class Person implements IPerson {
@@ -30,6 +32,7 @@ export class Person implements IPerson {
 }
 
 export class Role implements IRole {
+  accessibility: { _id: string; title: string; accessLevel: number; }[];
   _id: string;
   title: string;
 }
