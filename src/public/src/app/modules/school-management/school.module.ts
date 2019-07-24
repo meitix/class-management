@@ -26,6 +26,7 @@ import { SearchComponent } from './components/person/search/search.component';
 import { PeriodComponent } from './components/school/period/period.component';
 import { PeriodCreateComponent } from './components/school/period/period-create/period-create.component';
 import { PeriodListComponent } from './components/school/period/period-list/period-list.component';
+import { ManageStudentsComponent } from './components/school/class/manage-students/manage-students.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { PeriodListComponent } from './components/school/period/period-list/peri
     PeriodComponent,
     PeriodCreateComponent,
     PeriodListComponent,
+    ManageStudentsComponent,
   ],
   imports: [
     CommonModule,

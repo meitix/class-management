@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { Class } from "../models/entities/class.entity";
 import { Types } from "mongoose";
-import { School } from "../models/entities/school.entity";
 
 export class ClassController {
   async fetch(req: Request, res: Response) {
