@@ -5,6 +5,7 @@ import { pick } from 'lodash';
 
 export const UserSchema = new Schema({
     username: {
+      index: true,
         required: [true, 'نام کاربری یافت نشد'],
         type: String
     },
