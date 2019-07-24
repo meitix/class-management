@@ -5,6 +5,7 @@ import { IEntity } from "../system/entity.interface";
 export interface IClass extends IEntity{
     title: string;
     grade: IGrade;
+    price: number;
     students: IPerson[];
     teacher?: IPerson;
     description: string;

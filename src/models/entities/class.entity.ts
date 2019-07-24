@@ -8,6 +8,7 @@ export const ClassSchema = new Schema({
     students: [{type: Schema.Types.ObjectId , ref: 'Student'}],
     teacher: {type: Schema.Types.ObjectId , ref: 'Person'},
     description: String,
+    price: Number,
     isActive: Boolean,
     school: { type: Types.ObjectId, ref: 'School'},
     period: {

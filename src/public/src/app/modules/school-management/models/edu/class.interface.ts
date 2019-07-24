@@ -7,6 +7,7 @@ import { IPeriod } from './period.interface';
 export interface IClass extends IEntity {
   title: string;
   teacher: IPerson;
+  price: number;
   school: ISchool;
   grade: IGrade;
   period: IPeriod;
@@ -16,6 +17,7 @@ export interface IClass extends IEntity {
 export class Class implements IClass {
   title: string;
   teacher: IPerson;
+  price: number;
   school: ISchool;
   grade: IGrade;
   period: IPeriod;
