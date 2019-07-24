@@ -1,7 +1,7 @@
 import { Schema, Types, Model, model } from 'mongoose';
 import { IClassStatus } from '../interfaces/edu/statistics.interface';
 
-const StudentStatusSchema = new Schema({
+export const StudentStatusSchema = new Schema({
   student: {
     index: true,
     type: Types.ObjectId,

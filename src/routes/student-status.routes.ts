@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { StudentStatusController } from '../controllers/student-status.controller';
+import { ClassStatusController } from '../controllers/class-status.controller';
 
-class StudentStatusRouter {
+class ClassStatusRouter {
   router: Router;
-  private studentStatusController: StudentStatusController;
+  private classStatusController: ClassStatusController;
 
   constructor() {
     this.init();
@@ -12,13 +12,13 @@ class StudentStatusRouter {
 
   private init() {
     this.router = Router();
-    this.studentStatusController = new StudentStatusController();
+    this.classStatusController = new ClassStatusController();
   }
 
   private assignTheRoutesToController() {
-    this.router.get('/', this.studentStatusController.fetch);
-    this.router.post('/', this.studentStatusController.create);
+    this.router.get('/', this.classStatusController.fetch);
+    this.router.post('/', this.classStatusController.create);
   }
 }
 
-export default new StudentStatusRouter().router;
+export default new ClassStatusRouter().router;

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { StudentStatus } from '../models/entities/student-status.entity';
+import { ClassStatus } from '../models/entities/student-status.entity';
 
-export class StudentStatusController {
+export class ClassStatusController {
   // find by query.
   async fetch(req: Request, res: Response) {
     const condition = Object.assign({}, req.query);
@@ -11,14 +11,14 @@ export class StudentStatusController {
       condition.date = new Date(condition.date);
     }
     // get the result and send it to user as json file.
-    const result = await StudentStatus.find(condition);
+    const result = await ClassStatus.find(condition);
     res.json(result);
   }
 
   // create.
   async create(req: Request, res: Response) {
     try {
-      const result = await StudentStatus.create(req.body);
+      const result = await ClassStatus.create(req.body);
       res.json(result);
     } catch (e) {
       res.status(400).json(e);
@@ -28,7 +28,7 @@ export class StudentStatusController {
   // update.
   async updateById(req: Request, res: Response) {
     try {
-      const result = await StudentStatus.updateOne(
+      const result = await ClassStatus.updateOne(
         { _id: req.params.statusId },
         req.body
       );
@@ -41,7 +41,7 @@ export class StudentStatusController {
   // delete.
   async deleteById(req: Request, res: Response) {
     try {
-      const result = await StudentStatus.deleteOne({
+      const result = await ClassStatus.deleteOne({
         _id: req.params.statusId
       });
       res.json(result);
