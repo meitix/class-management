@@ -1,0 +1,23 @@
+<table class="table">
+  <thead *ngIf="priods && priods.length > 0">
+    <th>عنوان</th>
+    <th></th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let period of periods">
+      <td>{{ period.title }}</td>
+      <td>
+        <a
+          class="btn btn-simple btn-sm" (click)="edit(period)">
+          <i class="material-icons text-info text-sm">edit</i>
+        </a>
+        <a class="btn btn-simple btn-sm" (click)="delete(period)">
+          <i class="material-icons text-danger text-sm">delete</i>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="periods.length === 0">
+  <p style="text-align:center">موردی یافت نشد</p>
+</div>

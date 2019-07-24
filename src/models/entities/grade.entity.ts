@@ -7,7 +7,6 @@ export const LessonSchema = new Schema({
     description: String
 });
 
-
 export const GradeSchema = new Schema({
     title: String,
     lessons: [LessonSchema],

@@ -1,0 +1,9 @@
+{
+    "defaultAdmins": [
+        {
+            "username": "tad",
+            "password": "@123qwe@",
+            "userType": "superAdmin"
+        }
+    ]
+}

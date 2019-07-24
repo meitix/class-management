@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { GradeController } from '../controllers/grade.controller';
 
-export class RoleRouter {
+export class GradeRouter {
   router: Router;
   gradeController: GradeController;
 
@@ -24,4 +24,4 @@ export class RoleRouter {
   }
 }
 
-export default new RoleRouter().router;
+export default new GradeRouter().router;

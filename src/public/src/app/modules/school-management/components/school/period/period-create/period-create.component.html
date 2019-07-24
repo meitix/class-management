@@ -1,0 +1,40 @@
+
+<div class="card">
+  <div class="card-header" data-background-color="blue">
+    <h4>ایجاد دوره جدید</h4>
+    <p>در این قسمت میتوانید دوره جدید تعریف کنید</p>
+  </div>
+  <div class="card-content">
+    <div class="row">
+  <div class="col-md-4">
+        <h3 class="heading">مشخصات دوره</h3>
+        <div class="form-group label-floating">
+          <label class="control-label">عنوان</label>
+          <input
+            type="text"
+            name="title"
+            required
+            class="form-control"
+            [(ngModel)]="period.title"
+          />
+        </div>
+
+        <div class="form-group text-center">
+          <button
+            class="btn btn-success"
+            [disabled]="isProcessing"
+            (click)="submit()"
+          >
+            {{ isProcessing ? '...' : 'ثبت' }}
+          </button>
+        </div>
+      </div>
+
+<div class="col-md-6 col-md-offset-2">
+  <h3 class="heading">دوره های موجود</h3>
+  <app-period-list [updateData]="updateDataEvent" (editPeriod)="editPeriod($event)"></app-period-list>
+</div>
+    </div>
+
+</div>
+</div>

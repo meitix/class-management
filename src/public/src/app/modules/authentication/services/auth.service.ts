@@ -1,20 +1,18 @@
 import { Injectable } from '@angular/core';
-import { User } from '../../users/models/user';
 import { HttpClient } from '@angular/common/http';
-import { HttpRequestResult } from '../../../models/http-request-result';
 import { ServerConfig } from '../../../app-config/server-config';
-import { map } from 'rxjs/operators';
+import { IRole } from '../../school-management/models/people/person.interface';
 
 @Injectable()
 export class AuthService {
-  private currentUser: User;
+  private currentUser: ILoginResult;
   private serverUrl: string;
 
   constructor(private http: HttpClient) {
     this.serverUrl = ServerConfig.serverUrl;
   }
 
-  getCurrentUser(): User {
+  getCurrentUser(): ILoginResult {
     const localUserStr = localStorage.getItem('currentUser');
     if (!localUserStr) {
       return null;
@@ -23,53 +21,24 @@ export class AuthService {
     return this.currentUser;
   }
 
-  setCurrentUser(user: User) {
+  setCurrentUser(user: ILoginResult) {
     this.currentUser = user;
     localStorage.setItem('currentUser', JSON.stringify(user));
   }
 
   login(username: string, password: string) {
-    return this.http
-      .post(this.serverUrl.concat('login'), {
-        username: username,
-        password: password
-      })
-      .pipe(
-        map(
-          (res: any) => {
-            return <User>(<HttpRequestResult>res.json()).data;
-          },
-          err => {
-            console.log(err);
-          }
-        )
-      );
+    return this.http.post<ILoginResult>(this.serverUrl.concat('auth', '/', 'login'), {
+      username: username,
+      password: password
+    });
   }
 
-  register(username: string, password: string) {
-    return this.http
-      .post(this.serverUrl.concat('register'), {
-        username: username,
-        password: password
-      })
-      .pipe(
-        map(
-          (res: any) => {
-            return <User>(<HttpRequestResult>res.json()).data;
-          },
-          err => {
-            console.log(err);
-          }
-        )
-      );
-  }
-
-  makeUserRemembered(user: User) {
+  makeUserRemembered(user: ILoginResult) {
     this.currentUser = user;
     localStorage.setItem('rememberedUser', JSON.stringify(user));
   }
 
-  getRememberedUser(): User {
+  getRememberedUser(): ILoginResult {
     const localUserStr = localStorage.getItem('rememberedUser');
     if (!localUserStr) {
       return null;
@@ -77,4 +46,14 @@ export class AuthService {
     this.currentUser = JSON.parse(localUserStr);
     return this.currentUser;
   }
+
+  logout() {
+    localStorage.clear();
+  }
+}
+
+export interface ILoginResult {
+  token: string;
+  schoolId: string;
+  roles: IRole[];
 }

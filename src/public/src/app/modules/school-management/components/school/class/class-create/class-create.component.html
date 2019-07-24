@@ -28,6 +28,16 @@
           />
         </div>
         <div class="form-group label-floating">
+          <label class="control-label">شهریه</label>
+          <input
+            type="text"
+            name="price"
+            required
+            class="form-control"
+            [(ngModel)]="class.price"
+          />
+        </div>
+        <div class="form-group label-floating">
           <label class="control-label">پایه</label>
           <ng-select2
             [data]="grades"
@@ -40,7 +50,7 @@
         <div class="form-group label-floating">
           <label>معلم کلاس: </label>
           <button class="btn btn-primary" (click)="gotoTeacherSearchMode()">
-            <span>{{
+            <span *ngIf="class.teacher">{{
               class.teacher.firstname + ' ' + class.teacher.lastname
             }}</span>
             <span *ngIf="!class.teacher"> انتخاب معلم</span>

@@ -22,8 +22,17 @@ import { GradesStartComponent } from './components/school/grades/grades-start/gr
 import { ClassStartComponent } from './components/school/class/class-start/class-start.component';
 import { ClassListComponent } from './components/school/class/class-list/class-list.component';
 import { ClassCreateComponent } from './components/school/class/class-create/class-create.component';
-import { MatAutocompleteModule , MatInputModule} from '@angular/material';
 import { SearchComponent } from './components/person/search/search.component';
+import { PeriodComponent } from './components/school/period/period.component';
+import { PeriodCreateComponent } from './components/school/period/period-create/period-create.component';
+import { PeriodListComponent } from './components/school/period/period-list/period-list.component';
+<<<<<<< HEAD
+import { SchoolDashboardComponent } from './components/school/school-dashboard/school-dashboard.component';
+import { StudentStatusComponent } from './component/school/class/student-status/student-status/student-status.component';
+=======
+import { ManageStudentsComponent } from './components/school/class/manage-students/manage-students.component';
+>>>>>>> 6eae5f4a211c27833bad7d5d34a52c77a5101977
+
 @NgModule({
   declarations: [
     SchoolListComponent,
@@ -46,6 +55,15 @@ import { SearchComponent } from './components/person/search/search.component';
     ClassListComponent,
     ClassCreateComponent,
     SearchComponent,
+    PeriodComponent,
+    PeriodCreateComponent,
+    PeriodListComponent,
+<<<<<<< HEAD
+    SchoolDashboardComponent,
+    StudentStatusComponent,
+=======
+    ManageStudentsComponent,
+>>>>>>> 6eae5f4a211c27833bad7d5d34a52c77a5101977
   ],
   imports: [
     CommonModule,
@@ -54,6 +72,6 @@ import { SearchComponent } from './components/person/search/search.component';
     ReactiveFormsModule,
     NgSelect2Module
   ],
-  exports: [ActiveStatusPipe]
+  exports: [ActiveStatusPipe, PeriodComponent]
 })
 export class SchoolManagementModule {}

@@ -5,6 +5,7 @@ import { Types, Mongoose } from 'mongoose';
 import * as _ from 'lodash';
 import { School } from '../models/entities/school.entity';
 import { Student } from '../models/entities/student.entity';
+import { User } from '../models/entities/user.entity';
 
 export class PeopleController {
   // fetch all.
@@ -27,21 +28,21 @@ export class PeopleController {
       res.status(400).end();
       return;
     }
-    
+
     const school = await School.findById(schoolId);
-    
+
     // search condition.
-    const condition = { 
-      _id : {
-        $in : school.personnel.map(p => p.person)
+    const condition = {
+      _id: {
+        $in: school.personnel.map(p => p.person)
       },
-        $or: [
-          { firstname: { $regex: `.*${term}.*` } },
-          { lastname: { $regex: `.*${term}.*` } },
-          { nationalCode: { $regex: `.*${term}.*` } },
-          { mobile: { $regex: `.*${term}.*` } },
-        ]
-      }
+      $or: [
+        { firstname: { $regex: `.*${term}.*` } },
+        { lastname: { $regex: `.*${term}.*` } },
+        { nationalCode: { $regex: `.*${term}.*` } },
+        { mobile: { $regex: `.*${term}.*` } }
+      ]
+    };
 
     // search people by term.
     const result = await Person.find(condition);
@@ -99,12 +100,20 @@ export class PeopleController {
       let parent = await Person.findOne({
         nationalCode: studentVM.parent.nationalCode
       });
-      // create new parent if is not already exists.
-      if (!parent) parent = new Person(studentVM.parent);
 
-      const studentInfo = new Person(req.body);
-      // save people infos of parent and student.
-      await parent.save();
+      // create new parent if is not already exists.
+      if (!parent) {
+        parent = new Person(studentVM.parent);
+        const user = new User({
+          username: req.body.nationalCode,
+          password: req.body.nationalCode
+        });
+        user.info = parent;
+        await parent.save();
+      }
+
+      const studentInfo = new Person(req.body.info);
+      // save person infos of parent and student.
       await studentInfo.save();
       // create student using parent id and student info id.
       const student = new Student({
@@ -112,8 +121,7 @@ export class PeopleController {
         school: schoolId,
         parent: parent._id
       });
-      // save student.
-      student.save();
+
       // commit transaction.
       await ssn.commitTransaction();
       //send created response with 201 as status code to user.
@@ -225,7 +233,9 @@ export class PeopleController {
       // TODO: FixMe >>> this is the most shitty way I ever done in my life. it shouldn't be filtered after retrieving from DB.
       // find the personnel info from schools personnel.
       res.json(
-        _.filter(result.personnel, p => personnelId.equals(<any>p.person))
+        _.filter(result.personnel, p =>
+          personnelId.equals(<any>p.person._id)
+        )[0]
       );
     } catch (e) {
       res.status(400).send(e);
@@ -235,8 +245,16 @@ export class PeopleController {
   // add personnel to school.
   async addPersonnel(req: Request, res: Response) {
     const schoolId = new Types.ObjectId(req.params.id);
-    const person = new Person(req.body.person);
+
+    // begin transaction
+    const ssn = await Person.db.startSession();
+    ssn.startTransaction();
+
+    let person = await Person.findOne({nationalCode: req.body.person.nationalCode});
+    if(!person)
+     person = new Person(req.body.person);
     try {
+      // save person and add to schools personnel.
       await person.save();
       const result = await School.updateOne(
         { _id: schoolId },
@@ -244,8 +262,21 @@ export class PeopleController {
           $push: { personnel: { person: person._id, roles: req.body.roleIds } }
         }
       );
+
+      // create user for personnel.
+     await User.create({
+        username: person.code,
+        password: person.nationalCode,
+        info: person
+      });
+  
+
+      // commit transaction and send the result to user.
+      ssn.commitTransaction();
       res.json(result);
     } catch (e) {
+      // rollback transaction.
+      ssn.abortTransaction();
       res.status(500).send(e);
     }
   }
@@ -260,6 +291,22 @@ export class PeopleController {
       const result = await School.updateOne(
         { _id: schoolId, 'personnel.person': personId },
         { $set: { 'personnel.$.roles': req.body.roleIds } }
+      );
+      res.json(result);
+    } catch (e) {
+      res.send(e);
+    }
+  }
+
+  // delete personnel to school.
+  async deletePersonnel(req: Request, res: Response) {
+    const schoolId = new Types.ObjectId(req.params.id);
+    const personnelId = new Types.ObjectId(req.params.personnelId);
+
+    try {
+      const result = await School.updateOne(
+        { _id: schoolId , 'personnel.person': personnelId  },
+        { $pull: { 'personnel': {'person': personnelId} } }
       );
       res.json(result);
     } catch (e) {

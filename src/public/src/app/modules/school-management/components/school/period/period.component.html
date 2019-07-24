@@ -1,0 +1,13 @@
+<li class="dropdown" *ngIf="periods" >
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+    <i class="material-icons">date_range</i>
+    <span>{{selectedPeriod.title}}</span>
+  </a>
+
+  <ul class="dropdown-menu">
+    <li *ngFor="let period of periods">
+      <a (click)="selectPeriod(period)">{{ period.title }}</a>
+    </li>
+    <li><a class="clickable" [routerLink]="['school', schoolId ,'periods']">مدیریت دوره ها</a></li>
+  </ul>
+</li>

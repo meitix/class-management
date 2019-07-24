@@ -15,15 +15,22 @@ import { GradesCreateComponent } from '../grades/grades-create/grades-create.com
 import { ClassStartComponent } from '../class/class-start/class-start.component';
 import { ClassListComponent } from '../class/class-list/class-list.component';
 import { ClassCreateComponent } from '../class/class-create/class-create.component';
-
+import { PeriodCreateComponent } from '../period/period-create/period-create.component';
+<<<<<<< HEAD
+import { SchoolDashboardComponent } from '../school-dashboard/school-dashboard.component';
+=======
+import { ManageStudentsComponent } from '../class/manage-students/manage-students.component';
+>>>>>>> 6eae5f4a211c27833bad7d5d34a52c77a5101977
 const schoolRoutes: Routes = [
   {
     path: '',
     component: SchoolStartComponent,
     children: [
-      { path: '', component: SchoolListComponent },
+      { path: '', component: SchoolListComponent, pathMatch: 'full' },
       { path: 'create', component: SchoolCreateComponent },
       { path: 'edit/:id', component: SchoolCreateComponent },
+      { path: ':id/periods', component: PeriodCreateComponent},
+      { path: ':id', component: SchoolDashboardComponent},
       {
         // student routes.
         path: ':id/student',
@@ -61,7 +68,8 @@ const schoolRoutes: Routes = [
         children: [
           { path: '', component: ClassListComponent },
           { path: 'create', component: ClassCreateComponent },
-          { path: 'edit/:id', component: ClassCreateComponent }
+          { path: 'edit/:id', component: ClassCreateComponent },
+          { path: ':id/students', component: ManageStudentsComponent },
         ]
       }
     ]

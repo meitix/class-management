@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IStudent } from 'src/app/modules/school-management/models/people/student.interface';
 import { SchoolService } from '../../services/school.service';
 import { ActivatedRoute } from '@angular/router';
@@ -11,11 +11,12 @@ import { IPerson } from 'src/app/modules/school-management/models/people/person.
   templateUrl: './student-list.component.html',
   styleUrls: ['./student-list.component.css']
 })
-export class StudentListComponent implements OnInit {
+export class StudentListComponent implements OnInit , OnDestroy {
 
   students: Array<IPerson>;
   schoolIdSubscription: Subscription;
   schoolId: string;
+  periodChangeSubscription: Subscription;
 
   constructor(private schoolService: SchoolService , private route: ActivatedRoute, private errorService: ErrorService) {
     this.students = [];
@@ -28,6 +29,9 @@ export class StudentListComponent implements OnInit {
       this.fetchStudents(this.schoolId);
     }
    });
+
+   // period change subscription.
+   this.periodChangeSubscription = this.schoolService.periodSelected.subscribe(() => this.fetchStudents(this.schoolId));
   }
 
   // get students from student service.
@@ -40,13 +44,18 @@ export class StudentListComponent implements OnInit {
   }
 
   // delete student.
-  delete(studentId: string) {
+  delete(student: IStudent) {
     if (confirm('آیا برای حذف اطمینان دارید؟')) {
-    this.schoolService.deleteStudent(this.schoolId , studentId).subscribe(res => {
+    this.schoolService.deleteStudent(this.schoolId , student._id).subscribe(res => {
       this.fetchStudents(this.schoolId);
       alert('قرآن آموز با موفقیت حذف شد.');
     },
     err => this.errorService.handle(err , 'عملیات با مشکل مواجه شد'));
     }
+  }
+
+  ngOnDestroy() {
+    this.schoolIdSubscription.unsubscribe();
+    this.periodChangeSubscription.unsubscribe();
   }
 }

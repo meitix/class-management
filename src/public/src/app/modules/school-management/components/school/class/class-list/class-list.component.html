@@ -15,7 +15,10 @@
       <tbody>
         <tr *ngFor="let class of classes">
           <td>{{ class.title }}</td>
-          <td>{{ class.teacher.firstname +' '+ class.teacher.lastname  }}</td>
+          <td>
+            <span *ngIf="class.teacher">{{class.teacher.firstname +' '+ class.teacher.lastname}}</span>
+            <span *ngIf="!class.teacher" class="text-danger">بدون معلم</span>
+          </td>
           <td>{{ class.grade.title }}</td>
           <td>{{ class.description }}</td>
           <!-- <td [innerHtml]="class.isEnable | activeStatus"></td> -->

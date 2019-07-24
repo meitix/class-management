@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { School } from "../models/entities/school.entity";
+import { School, Period } from "../models/entities/school.entity";
+import { Types } from "mongoose";
 
 export class SchoolController {
   constructor() {}
