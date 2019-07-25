@@ -41,10 +41,10 @@ class SchoolRouter {
         this.router.get('/:id/personnel/:personnelId' , this.peopleController.getPersonnelById)
         this.router.get('/:id/personnel' , this.peopleController.getPersonnel);
         this.router.put('/:id/personnel/:personnelId' , this.peopleController.updatePersonnel);
-        this.router.delete('/:id/personnel/:personnelId' , this.peopleController.deleteStudent);
+        this.router.delete('/:id/personnel/:personnelId' , this.peopleController.deletePersonnel);
         this.router.get('/:id/personnel/search/:term' , this.peopleController.search);
         
-        // clas routes.
+        // class routes.
         this.router.use('/:id/classes', classRoutes);
         // period routes.
         this.router.use('/:id/periods', periodRoutes);

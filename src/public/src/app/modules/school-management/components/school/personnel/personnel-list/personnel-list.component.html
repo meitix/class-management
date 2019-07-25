@@ -4,6 +4,6 @@
       <p>پرسنل ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
     </div>
     <div class="card-content">
-      <app-person-list [people]="personnel"></app-person-list>
+      <app-person-list [people]="personnel" (delete)="delete($event)"></app-person-list>
     </div>
   </div>

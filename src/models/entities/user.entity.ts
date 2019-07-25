@@ -40,15 +40,16 @@ export const UserSchema = new Schema({
   // get by credential method.
   UserSchema.statics.findByCredentials = function(credentials: any) {
     const User = this;
+    const errorMessage = 'کاربری با این مشخصات یافت نشد.';
     return User.findOne({ username: credentials.username.toLowerCase() }).populate('info')
       .then(async (user: IUser) => {
         // reject the promise if the user does not found;
-        if (!user) return Promise.reject('کاربری با این مشخصات یافت نشد.');
+        if (!user) return Promise.reject(errorMessage);
         // compare password with the hashed value.
         const passIsCorrect = await compare(credentials.password, user.password);
-        // return the result if password is correct.
+        // return the result if password is correct and error if is not.
         if (passIsCorrect) return Promise.resolve(user);
-        else return Promise.reject('خطا در ورود کاربر.');
+        else return Promise.reject(errorMessage);
       })
       .catch((err: any) => {
         return Promise.reject(err);

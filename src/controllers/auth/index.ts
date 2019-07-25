@@ -17,35 +17,35 @@ export class AuthController {
       if (!user) {
         throw new Error('نام کاربری یا کلمه عبور اشتباه است');
       }
-    
       // add user id to jwt payload object.
       jwtPayload.id = user.id;
-
       if (user.userType === 'user') {
         // get school information to user role in the school.
-        const school = <ISchool>await School.where(
-          'personnel.person._id',
-          user.info._id
-        )
+        const school = <ISchool>await School.findOne({'personnel.person': user.info.id})
           .select({ _id: 1, personnel: 1 })
           .populate('personnel.roles')
           .exec();
+
         if (!school) {
           throw new Error(
             'مدرسه مربوط به شما یافت نشد. با مدیر سیستم تماس بگیرید.'
           );
         }
-
+        
         // find user roles in the school.
-        jwtPayload.roles = school.personnel.find(p => p.person._id == user.info._id).roles;
+        jwtPayload.roles = school.personnel.find(p => p.person.equals(user.info.id)).roles;
+        jwtPayload.school = school.id;
       }
-
 
       // generate JWT.
       const token = tokenManager.generate(jwtPayload);
-      res.send({token});
+      // prepare and send the result.
+      const result: any = {token , roles: jwtPayload.roles};
+      if(jwtPayload.school) result.schoolId = jwtPayload.school;
+      res.send(result);
     } catch (e) {
-      res.status(400).send(e);
+      console.log(e);
+      res.status(400).send(e.message || e);
     }
   }
 }
