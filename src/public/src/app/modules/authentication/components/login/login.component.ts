@@ -52,7 +52,6 @@ export class LoginComponent {
           },
           e => {
             this.errorMessage = e.error;
-            this.isLoading = false;
           }
         );
     } else {
