@@ -5,11 +5,13 @@ import tokenManager from '../../helpers/token.manager';
 import { IUser } from '../../models/interfaces/auth/user.interface';
 import { School } from '../../models/entities/school.entity';
 import { ISchool } from '../../models/interfaces/edu/school.interface';
+import { IRole } from '../../models/interfaces/auth/role.interface';
+import { Role } from '../../models/entities/role.entity';
 
 export class AuthController {
   async login(req: Request, res: Response) {
     const credentials = pick(req.body, ['username', 'password']);
-    const jwtPayload: any = {};
+    const jwtPayload: {id: string , roles: IRole[] , school?: string} = {id: '', roles: []};
     try {
       let user = <IUser>(
         await (User as any).findByCredentials(credentials)
@@ -35,6 +37,9 @@ export class AuthController {
         // find user roles in the school.
         jwtPayload.roles = school.personnel.find(p => p.person.equals(user.info.id)).roles;
         jwtPayload.school = school.id;
+      }
+      else {
+        jwtPayload.roles = [new Role({title: 'ادمین', accessibility: {title: 'manage-schools' , accessLevel: 4} })];
       }
 
       // generate JWT.

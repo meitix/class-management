@@ -4,9 +4,8 @@ import {
   ILoginResult
 } from '../modules/authentication/services/auth.service';
 import { Router } from '@angular/router';
-import { IRole } from '../modules/school-management/models/people/person.interface';
 import { MenuService } from './menu.service';
-import { flatten , filter , size } from 'lodash';
+import { flatten } from 'lodash';
 
 declare var $: any;
 @Component({
@@ -26,21 +25,22 @@ export class SidebarComponent implements OnInit {
   ngOnInit() {
     this.currentUser = this.authService.getCurrentUser();
     if (this.currentUser) {
-      this.menuItems = this.getMenuItems(this.currentUser.roles);
+      this.menuItems = this.getMenuItems(this.currentUser);
       $.getScript('../../assets/js/sidebar-moving-tab.js');
     }
   }
 
-  getMenuItems(roles: IRole[]) {
+  getMenuItems(loginResult: ILoginResult) {
     let menuItems = [];
-    roles.forEach(r => {
-      let items: any[] = r.accessibility.map(a =>
-        this.menuService.getMenuItems(a.title)
-      );
-      items = flatten(items);
-      items = items.filter(i => i);
-      menuItems = menuItems.concat(items);
-    });
+    let items: any[];
+      loginResult.roles.forEach(r => {
+        items = r.accessibility.map(a =>
+          this.menuService.getMenuItems(a.title)
+        );
+      });
+    items = flatten(items);
+    items = items.filter(i => i);
+    menuItems = menuItems.concat(items);
     return menuItems;
   }
 
@@ -48,4 +48,5 @@ export class SidebarComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['auth']);
   }
+
 }

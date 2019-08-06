@@ -69,4 +69,14 @@ export const ROUTES: { ability: string; routes: RouteInfo[] }[] = [
       class: ''
     }]
   },
+  // teacher.
+  {
+    ability: 'student-status',
+    routes: [{
+      path: '{schoolPathWithId}/classes',
+      title: 'مدیریت دوره ها',
+      icon: 'file_copy',
+      class: ''
+    }]
+  },
 ];
