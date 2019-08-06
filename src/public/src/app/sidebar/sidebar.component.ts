@@ -33,11 +33,9 @@ export class SidebarComponent implements OnInit {
   getMenuItems(loginResult: ILoginResult) {
     let menuItems = [];
     let items: any[];
-      loginResult.roles.forEach(r => {
-        items = r.accessibility.map(a =>
-          this.menuService.getMenuItems(a.title)
-        );
-      });
+    loginResult.roles.forEach(r => {
+      items = r.accessibility.map(a => this.menuService.getMenuItems(a.title));
+    });
     items = flatten(items);
     items = items.filter(i => i);
     menuItems = menuItems.concat(items);
@@ -48,5 +46,4 @@ export class SidebarComponent implements OnInit {
     this.authService.logout();
     this.router.navigate(['auth']);
   }
-
 }
