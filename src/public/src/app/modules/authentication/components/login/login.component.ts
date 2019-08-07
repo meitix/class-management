@@ -26,7 +26,6 @@ export class LoginComponent {
       this.isLoading = true;
       this.authService
         .login(this.username, this.password)
-        .pipe(tap(() => (this.isLoading = false)))
         .subscribe(
           res => {
             // check user is exists.
@@ -52,7 +51,7 @@ export class LoginComponent {
           },
           e => {
             this.errorMessage = e.error;
-          }
+          }, () => this.isLoading = false
         );
     } else {
       this.errorMessage = 'لطفا موارد خواسته شده را کامل کنید';

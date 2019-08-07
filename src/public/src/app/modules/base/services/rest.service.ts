@@ -3,25 +3,36 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { ServerConfig } from 'src/app/app-config/server-config';
 import { stringify } from 'query-string';
+import { AuthService } from '../../authentication/services/auth.service';
 
 export abstract class RestService<T> {
   private serverUrl = ServerConfig.serverUrl;
   protected url: string;
   protected http: HttpClient;
   protected requestOption: object;
+  private authService: AuthService;
 
   constructor(entityName: string, injector: Injector) {
     // create service complete url.
     this.url = this.serverUrl.concat(entityName + '/');
     // inject HttpClient;
     this.http = injector.get(HttpClient);
+    this.authService = injector.get<AuthService>(AuthService);
     // initial request options.
-    this.requestOption = {};
+    this.requestOption = this.initRequestOption();
+  }
+
+  private initRequestOption() {
+    const options: any = {headers: {}};
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) { options.headers.Authorization = `Bearer ${currentUser.token}`; }
+
+    return options;
   }
 
   // basic http requests.
   protected post(url: string, data: any) {
-    return this.http.post(url, data, this.requestOption);
+    return this.http.post(url, data, {});
   }
 
   protected get<P>(url: string) {

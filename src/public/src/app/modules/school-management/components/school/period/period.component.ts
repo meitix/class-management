@@ -34,7 +34,7 @@ export class PeriodComponent implements OnInit, OnDestroy {
         try {
           this.schoolIdSubscription = this.route.children[0].children[0].children[0].params.subscribe(
             params => {
-              if (params.id) {
+              if (params.id && params.id.length === 24) {
                 this.schoolService.selectSchool(params.id);
                 this.schoolId = params.id;
                 // if there is no list of periods get list of period or school id has been changed fetch the periods.

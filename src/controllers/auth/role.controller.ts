@@ -8,7 +8,7 @@ export class RoleController {
     if (req.params.id) data = await Role.findById(req.params.id);
     // find by req.body in lack of id.
     else {
-      data = await Role.find(req.body);
+      data = await Role.find();
     }
     res.send(data);
   }

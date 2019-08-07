@@ -19,6 +19,7 @@ import { PeriodCreateComponent } from '../period/period-create/period-create.com
 import { SchoolDashboardComponent } from '../school-dashboard/school-dashboard.component';
 import { ManageStudentsComponent } from '../class/manage-students/manage-students.component';
 import { ClassStatusComponent } from '../class/class-status/class-status.component';
+
 const schoolRoutes: Routes = [
   {
     path: '',
@@ -28,7 +29,6 @@ const schoolRoutes: Routes = [
       { path: 'create', component: SchoolCreateComponent },
       { path: 'edit/:id', component: SchoolCreateComponent },
       { path: ':id/periods', component: PeriodCreateComponent},
-      { path: ':id', component: SchoolDashboardComponent},
       {
         // student routes.
         path: ':id/student',
@@ -70,7 +70,9 @@ const schoolRoutes: Routes = [
           { path: ':id/students', component: ManageStudentsComponent },
           { path: ':id/status', component: ClassStatusComponent },
         ]
-      }
+      },
+      // go to school dashboard.
+      { path: ':id', component: SchoolDashboardComponent},
     ]
   }
 ];

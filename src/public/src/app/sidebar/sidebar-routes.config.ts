@@ -64,7 +64,7 @@ export const ROUTES: { ability: string; routes: RouteInfo[] }[] = [
     ability: 'reports',
     routes: [{
       path: '{schoolPathWithId}/reports',
-      title: 'مدیریت دوره ها',
+      title: 'گزارشات',
       icon: 'file_copy',
       class: ''
     }]
@@ -74,9 +74,18 @@ export const ROUTES: { ability: string; routes: RouteInfo[] }[] = [
     ability: 'student-status',
     routes: [{
       path: '{schoolPathWithId}/classes',
-      title: 'مدیریت دوره ها',
+      title: 'مدیریت کلاس ها',
       icon: 'file_copy',
       class: ''
     }]
   },
+  {
+    ability: 'own-students-status',
+    routes: [{
+      path: '{schoolPathWithId}/classes',
+      title: 'مدیریت کلاس ها',
+      icon: 'file_copy',
+      class: ''
+    }]
+  }
 ];
