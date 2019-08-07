@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Class } from '../models/entities/class.entity';
 import { Types } from 'mongoose';
+import { IRole } from '../models/interfaces/auth/role.interface';
 
 export class ClassController {
   async fetch(req: Request, res: Response) {
@@ -13,6 +14,9 @@ export class ClassController {
       else {
         const schoolId = new Types.ObjectId(req.params.id);
         const condition = { school: schoolId, ...req.query };
+        if (hasAccessibility(req['user'], 'own-class-status')) {
+          condition.teacher = req['user'].id;
+        }
         data = await Class.find(condition)
           .populate('teacher', { firstname: 1, lastname: 1 })
           .populate('period')
@@ -21,6 +25,7 @@ export class ClassController {
       }
       res.send(data);
     } catch (e) {
+      console.log(e);
       res.status(400).send(e);
     }
   }
@@ -84,6 +89,16 @@ export class ClassController {
     }
 
     // student statistics.
-    
   }
+}
+
+function hasAccessibility(user, accessibility: string) {
+  let res = false;
+
+  user.roles.forEach((r: IRole) => {
+    const access = r.accessibility.find(a => a.title === accessibility);
+    if (access) res = true;
+  });
+
+  return res;
 }
