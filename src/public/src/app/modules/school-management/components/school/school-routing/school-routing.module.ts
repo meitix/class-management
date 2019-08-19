@@ -19,6 +19,9 @@ import { PeriodCreateComponent } from '../period/period-create/period-create.com
 import { SchoolDashboardComponent } from '../school-dashboard/school-dashboard.component';
 import { ManageStudentsComponent } from '../class/manage-students/manage-students.component';
 import { ClassStatusComponent } from '../class/class-status/class-status.component';
+import { StatisticsStartComponent } from '../class/statistics/statistics-start/statistics-start.component';
+import { StatisticsListComponent } from '../class/statistics/statistics-list/statistics-list.component';
+import { StatisticsCreateComponent } from '../class/statistics/statistics-create/statistics-create.component';
 
 const schoolRoutes: Routes = [
   {
@@ -28,7 +31,7 @@ const schoolRoutes: Routes = [
       { path: '', component: SchoolListComponent, pathMatch: 'full' },
       { path: 'create', component: SchoolCreateComponent },
       { path: 'edit/:id', component: SchoolCreateComponent },
-      { path: ':id/periods', component: PeriodCreateComponent},
+      { path: ':id/periods', component: PeriodCreateComponent },
       {
         // student routes.
         path: ':id/student',
@@ -69,10 +72,19 @@ const schoolRoutes: Routes = [
           { path: 'edit/:id', component: ClassCreateComponent },
           { path: ':id/students', component: ManageStudentsComponent },
           { path: ':id/status', component: ClassStatusComponent },
+          {
+            path: ':id/statistics',
+            component: StatisticsStartComponent,
+            children: [
+              { path: '', component: StatisticsListComponent },
+              { path: 'create', component: StatisticsCreateComponent },
+              { path: 'edit/:date', component: StatisticsListComponent }
+            ]
+          }
         ]
       },
       // go to school dashboard.
-      { path: ':id', component: SchoolDashboardComponent},
+      { path: ':id', component: SchoolDashboardComponent }
     ]
   }
 ];

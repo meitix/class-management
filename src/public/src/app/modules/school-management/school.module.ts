@@ -31,6 +31,9 @@ import { StudentStatusComponent } from './components/school/student-status/stude
 import { ManageStudentsComponent } from './components/school/class/manage-students/manage-students.component';
 import { ClassStatusComponent } from './components/school/class/class-status/class-status.component';
 import { StudentSearchComponent } from './components/school/student/student-search/student-search.component';
+import { StatisticsStartComponent } from './components/school/class/statistics/statistics-start/statistics-start.component';
+import { StatisticsCreateComponent } from './components/school/class/statistics/statistics-create/statistics-create.component';
+import { StatisticsListComponent } from './components/school/class/statistics/statistics-list/statistics-list.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +65,9 @@ import { StudentSearchComponent } from './components/school/student/student-sear
     ManageStudentsComponent,
     ClassStatusComponent,
     StudentSearchComponent,
+    StatisticsStartComponent,
+    StatisticsCreateComponent,
+    StatisticsListComponent,
   ],
   imports: [
     CommonModule,

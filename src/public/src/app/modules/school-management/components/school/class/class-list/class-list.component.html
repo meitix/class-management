@@ -24,6 +24,9 @@
           <!-- <td [innerHtml]="class.isEnable | activeStatus"></td> -->
 
           <td>
+            <a class="btn btn-simple btn-sm" [routerLink]="[class._id,'statistics']">
+              <i class="material-icons text-danger text-sm">list</i>
+            </a>
             <a class="btn btn-simple btn-sm" [routerLink]="[class._id,'students']">
               <i class="material-icons text-danger text-sm">assignment_ind</i>
             </a>
