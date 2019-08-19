@@ -52,8 +52,8 @@ export class SchoolService extends RestService<ISchool> {
   }
 
   // get all students of an school.
-  getStudents(schoolId: string) {
-    return this.get(`${this.url + schoolId}/students`).pipe(map(res => <Array<IStudent>>res));
+  getStudents(schoolId: string, query?: string) {
+    return this.get(`${this.url + schoolId}/students?query=${query}`).pipe(map(res => <Array<IStudent>>res));
   }
 
   // get single student.

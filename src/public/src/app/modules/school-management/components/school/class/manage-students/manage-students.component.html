@@ -1,3 +1,29 @@
-<p>
-  manage-students works!
-</p>
+<div class="card">
+  <div class="card-header" data-background-color="blue">
+    <h4>مدیریت دانش آموزان کلاس</h4>
+    <p>در این قسمت میتوانید دانش آموزان یک کلاس را مدیریت کنید</p>
+  </div>
+  <div class="card-content">
+    <div class="row">
+      <div class="col-md-5">
+        <h3 class="heading"></h3>
+        <app-student-search (studentSelect)="assignStudentToClass($event)"></app-student-search>
+      </div>
+      <div class="col-md-7">
+        <h3 class="heading">لیست دانش آموزان</h3>
+        <app-person-list [people]="people || []" *ngIf="class"></app-person-list>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group text-center">
+        <button
+          class="btn btn-success"
+          [disabled]="isProcessing"
+          (click)="saveChanges()"
+        >
+          {{ isProcessing ? '...' : 'ثبت' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

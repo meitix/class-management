@@ -1,0 +1,40 @@
+<div class="form-group label-floating">
+  <label class="control-label">قرآن آموز</label>
+  <input
+    type="text"
+    required
+    class="form-control"
+    placeholder="جستجوی قرآن آموز..."
+    [formControl]="searchTerm"
+  />
+</div>
+
+<table class="table table-striped" *ngIf="people && people.length > 0">
+  <thead>
+    <tr>
+      <th>کد</th>
+      <th>نام</th>
+      <th>نام خانوادگی</th>
+      <th>کد ملی</th>
+      <th>شماره موبایل</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="people">
+    <tr
+      *ngFor="let student of students | async"
+      (click)="selectStudent(student)"
+      class="clickable"
+    >
+      <td>{{ student.info.code }}</td>
+      <td>{{ student.info.firstname }}</td>
+      <td>{{ student.info.lastname }}</td>
+      <td>{{ student.info.nationalCode }}</td>
+      <td>{{ student.info.mobile }}</td>
+    </tr>
+  </tbody>
+
+</table>
+
+    <div class="text-center" *ngIf="people.length === 0">
+      موردی یافت نشد
+    </div>

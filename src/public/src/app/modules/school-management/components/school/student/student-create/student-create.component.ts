@@ -7,8 +7,7 @@ import {
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ErrorService } from 'src/app/modules/base/services/error.service';
-import { Parent } from 'src/app/modules/school-management/models/people/parent.interface';
-import { Person } from 'src/app/modules/school-management/models/people/person.interface';
+import { Person, IPerson } from 'src/app/modules/school-management/models/people/person.interface';
 
 @Component({
   selector: 'app-student-create',
@@ -29,7 +28,7 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
     private errorService: ErrorService
   ) {
     this.student = new Student();
-    this.student.parent = new Parent();
+    this.student.parent = new Person();
     this.student.info = new Person();
     console.log(this.student);
   }
@@ -54,6 +53,7 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
   }
 
   async submit() {
+    this.student.period = this.schoolService.getSelectedPeriod();
     let req = this.schoolService.addStudent(this.schoolId, this.student);
     if (this.studentId) {
       req = this.schoolService.updateStudent(this.schoolId , this.studentId , this.student);
@@ -67,13 +67,13 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateStudent(student: IStudent) {
+  updateStudent(student: IPerson) {
     if (student) {
       this.student.info = student;
     }
   }
 
-  updateParent(parent: Parent) {
+  updateParent(parent: Person) {
     this.student.parent = parent;
   }
 

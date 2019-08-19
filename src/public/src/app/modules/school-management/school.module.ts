@@ -30,6 +30,7 @@ import { SchoolDashboardComponent } from './components/school/school-dashboard/s
 import { StudentStatusComponent } from './components/school/student-status/student-status.component';
 import { ManageStudentsComponent } from './components/school/class/manage-students/manage-students.component';
 import { ClassStatusComponent } from './components/school/class/class-status/class-status.component';
+import { StudentSearchComponent } from './components/school/student/student-search/student-search.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { ClassStatusComponent } from './components/school/class/class-status/cla
     StudentStatusComponent,
     ManageStudentsComponent,
     ClassStatusComponent,
+    StudentSearchComponent,
   ],
   imports: [
     CommonModule,

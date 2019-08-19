@@ -4,9 +4,11 @@ import { IClass } from 'src/app/modules/school-management/models/edu/class.inter
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { IStudent } from 'src/app/modules/school-management/models/people/student.interface';
+import { IStudent, Student } from 'src/app/modules/school-management/models/people/student.interface';
 import { remove } from 'lodash';
 import { ErrorService } from 'src/app/modules/base/services/error.service';
+import { flatten } from 'lodash';
+import { IPerson } from 'src/app/modules/school-management/models/people/person.interface';
 
 @Component({
   selector: 'app-manage-students',
@@ -17,17 +19,20 @@ export class ManageStudentsComponent implements OnInit {
   class: IClass;
   classIdSubscription: Subscription;
   isLoading: boolean; // is processing indicator.
-
+  people: IPerson[];
   constructor(
     private schoolService: SchoolService,
     private route: ActivatedRoute,
     private errorService: ErrorService
-  ) {}
+  ) {
+    this.people = [];
+  }
 
   ngOnInit() {
-    this.route.params.pipe(take(1)).subscribe(params => {
+    this.route.params.pipe(take(1)).subscribe(async params => {
       if (params.id) {
-        this.fetchClassData(params.id);
+        this.class = await this.fetchClassData(params.id);
+        this.people = this.initPeopleInClass(this.class);
       }
     });
   }
@@ -48,17 +53,23 @@ export class ManageStudentsComponent implements OnInit {
 
   // get class data from server.
   async fetchClassData(classId: string) {
-     // enable loading.
+    // enable loading.
     this.enableLoadingMode();
+    let _class;
     try {
-    // get data from server.
-    this.class = await this.schoolService
-      .getClassById(this.schoolService.getSelectedSchoolId(), classId)
-      .toPromise();
+      // get data from server.
+      _class = await this.schoolService
+        .getClassById(this.schoolService.getSelectedSchoolId(), classId)
+        .toPromise();
     } catch (e) {
-      this.errorService.handle(e , 'خطا در دریافت اطلاعات');
+      this.errorService.handle(e, 'خطا در دریافت اطلاعات');
     }
     this.disableLoadingMode();
+    return _class;
+  }
+
+  initPeopleInClass(_class: IClass): IPerson[] {
+    return flatten(_class.students.map(s => s.info));
   }
 
   // update class after changes.
@@ -71,7 +82,6 @@ export class ManageStudentsComponent implements OnInit {
       )
       .toPromise();
   }
-
 
   // set page to loading mode.
   enableLoadingMode() {

@@ -22,8 +22,11 @@
           <td>{{ class.grade.title }}</td>
           <td>{{ class.description }}</td>
           <!-- <td [innerHtml]="class.isEnable | activeStatus"></td> -->
-          <td [innerHtml]="class.isEnable"></td>
+
           <td>
+            <a class="btn btn-simple btn-sm" [routerLink]="[class._id,'students']">
+              <i class="material-icons text-danger text-sm">assignment_ind</i>
+            </a>
             <a
               class="btn btn-simple btn-sm" [routerLink]="['edit', class._id]">
               <i class="material-icons text-info text-sm">edit</i>

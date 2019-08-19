@@ -102,6 +102,7 @@ export class PeopleController {
       });
 
       // create new parent if is not already exists.
+      // create credentials for parent to login;
       if (!parent) {
         parent = new Person(studentVM.parent);
         const user = new User({
@@ -136,8 +137,20 @@ export class PeopleController {
   // get students by condition.
   async getStudents(req: Request, res: Response) {
     const schoolId = new Types.ObjectId(req.params.id);
+    const condition: any = { school: schoolId };
+    // add search term to condition.
+    if (req.query.q) {
+      const term = req.query.q;
+      condition.$or = [
+        { 'info.firstname': { $regex: `.*${term}.*` } },
+        { 'info.lastname': { $regex: `.*${term}.*` } },
+        { 'info.nationalCode': { $regex: `.*${term}.*` } },
+        { 'info.mobile': { $regex: `.*${term}.*` } }
+      ];
+    }
+
     try {
-      const students = await Student.find({ school: schoolId })
+      const students = await Student.find(condition)
         .populate('info')
         .exec();
 
@@ -250,9 +263,10 @@ export class PeopleController {
     const ssn = await Person.db.startSession();
     ssn.startTransaction();
 
-    let person = await Person.findOne({nationalCode: req.body.person.nationalCode});
-    if(!person)
-     person = new Person(req.body.person);
+    let person = await Person.findOne({
+      nationalCode: req.body.person.nationalCode
+    });
+    if (!person) person = new Person(req.body.person);
     try {
       // save person and add to schools personnel.
       await person.save();
@@ -264,12 +278,11 @@ export class PeopleController {
       );
 
       // create user for personnel.
-     await User.create({
+      await User.create({
         username: person.code,
         password: person.nationalCode,
         info: person
       });
-  
 
       // commit transaction and send the result to user.
       ssn.commitTransaction();
@@ -305,8 +318,8 @@ export class PeopleController {
 
     try {
       const result = await School.updateOne(
-        { _id: schoolId , 'personnel.person': personnelId  },
-        { $pull: { 'personnel': {'person': personnelId} } }
+        { _id: schoolId, 'personnel.person': personnelId },
+        { $pull: { personnel: { person: personnelId } } }
       );
       res.json(result);
     } catch (e) {
