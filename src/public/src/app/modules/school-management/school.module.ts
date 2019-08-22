@@ -27,7 +27,7 @@ import { PeriodComponent } from './components/school/period/period.component';
 import { PeriodCreateComponent } from './components/school/period/period-create/period-create.component';
 import { PeriodListComponent } from './components/school/period/period-list/period-list.component';
 import { SchoolDashboardComponent } from './components/school/school-dashboard/school-dashboard.component';
-import { StudentStatusComponent } from './components/school/student-status/student-status.component';
+import { StudentStatusComponent } from './components/school/class/statistics/statistics-create/student-status/student-status.component';
 import { ManageStudentsComponent } from './components/school/class/manage-students/manage-students.component';
 import { ClassStatusComponent } from './components/school/class/class-status/class-status.component';
 import { StudentSearchComponent } from './components/school/student/student-search/student-search.component';

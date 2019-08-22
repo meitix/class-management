@@ -1,3 +1,19 @@
-<p>
-  statistics-start works!
-</p>
+<!-- with icons and horizontal -->
+<ul class="nav nav-pills nav-pills-icons nav-pills-primary" role="tablist">
+    <li routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}">
+      <a [routerLink]="'./'">
+        <i class="material-icons">list</i>
+        لیست
+      </a>
+    </li>
+    <li routerLinkActive="active"
+    [routerLinkActiveOptions]="{exact: true}">
+      <a [routerLink]="'create'" >
+        <i class="material-icons">add</i>
+        جدید
+      </a>
+    </li>
+  </ul>
+
+  <router-outlet></router-outlet>

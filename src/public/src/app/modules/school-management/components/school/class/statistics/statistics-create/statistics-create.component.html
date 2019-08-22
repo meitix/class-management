@@ -1,3 +1,22 @@
-<p>
-  statistics-create works!
-</p>
+<table class="table table-responsive">
+<thead>
+  <tr>
+  <th>دانش آموز</th>
+  <th>حاضر</th>
+  <th>سبق</th>
+  <th>درس</th>
+</tr>
+</thead>
+<tbody>
+<tr *ngFor="let status of statistics; let i = index">
+  <td>{{class.students[i].info.code}}</td>
+  <td>{{class.students[i].info.firstname}} {{ class.students[i].info.lastname }}</td>
+  <td *ngFor="let control of status.controls">
+    <label>
+      {{control}}
+    <input type="checkbox" formControlName="control" />
+  </label>
+  </td>
+</tr>
+</tbody>
+</table>

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { SchoolService } from '../services/school.service';
 
 @Component({
   selector: 'app-student-status',
@@ -9,7 +7,7 @@ import { SchoolService } from '../services/school.service';
 })
 export class StudentStatusComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute , private schoolService: SchoolService) { }
+  constructor() { }
 
   ngOnInit() {
   }
