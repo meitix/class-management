@@ -32,7 +32,7 @@ export abstract class RestService<T> {
 
   // basic http requests.
   protected post(url: string, data: any) {
-    return this.http.post(url, data, {});
+    return this.http.post(url, data, this.requestOption);
   }
 
   protected get<P>(url: string) {
