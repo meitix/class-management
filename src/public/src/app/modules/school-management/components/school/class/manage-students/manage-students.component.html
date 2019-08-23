@@ -11,7 +11,7 @@
       </div>
       <div class="col-md-7">
         <h3 class="heading">لیست دانش آموزان</h3>
-        <app-person-list [people]="people || []" *ngIf="class"></app-person-list>
+        <app-person-list [people]="people || []" *ngIf="class" (delete)="removeStudentFromClass($event)"></app-person-list>
       </div>
     </div>
     <div class="row">

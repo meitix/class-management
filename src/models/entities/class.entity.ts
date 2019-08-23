@@ -1,6 +1,9 @@
-import { Schema, Model, model, Types } from "mongoose";
+import { Schema, Model, model, Types, } from "mongoose";
+import * as mongoose from 'mongoose';
 import { IClass } from "../interfaces/edu/class.interface";
+const deepPopulate = require('mongoose-deep-populate')(mongoose);
 
+// const deepPopulate = DeepPopulate.default(mongoose);
 
 export const ClassSchema = new Schema({
     title: String,
@@ -15,5 +18,7 @@ export const ClassSchema = new Schema({
         type: Types.ObjectId , ref: 'Period'
     }
 });
+
+ClassSchema.plugin(deepPopulate, {});
 
 export const Class: Model<IClass> = model<IClass>('Class', ClassSchema);

@@ -32,7 +32,7 @@ export class ManageStudentsComponent implements OnInit {
     this.route.params.pipe(take(1)).subscribe(async params => {
       if (params.id) {
         this.class = await this.fetchClassData(params.id);
-        this.people = this.initPeopleInClass(this.class);
+        this.people = this.extractPeopleFromClass(this.class);
       }
     });
   }
@@ -40,15 +40,22 @@ export class ManageStudentsComponent implements OnInit {
   // add student to class.
   assignStudentToClass(student: IStudent) {
     this.class.students = this.class.students || [];
+    // return if user is already added to class.
+    if (this.class.students.find(s => s._id === student._id)) {
+      return;
+    }
+    // adding user to class.
     this.class.students.push(student);
+    this.people = this.extractPeopleFromClass(this.class);
   }
 
   // remove student from class.
-  removeStudentFromClass(student: IStudent) {
-    this.class.students = remove(
+  removeStudentFromClass(person: IPerson) {
+   remove(
       this.class.students,
-      s => s._id === student._id
+      s => s.info._id === person._id
     );
+    this.people = this.extractPeopleFromClass(this.class);
   }
 
   // get class data from server.
@@ -68,7 +75,7 @@ export class ManageStudentsComponent implements OnInit {
     return _class;
   }
 
-  initPeopleInClass(_class: IClass): IPerson[] {
+  extractPeopleFromClass(_class: IClass): IPerson[] {
     return flatten(_class.students.map(s => s.info));
   }
 

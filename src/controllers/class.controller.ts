@@ -9,7 +9,7 @@ export class ClassController {
       let data = null;
       // check if there is id in params read by id.
       if (req.params.classId)
-        data = await Class.findById(req.params.classId).populate('teacher');
+        data = await (Class.findById(req.params.classId).populate('teacher') as any).deepPopulate('students.info');
       // find by req.body in lack of id.
       else {
         const schoolId = new Types.ObjectId(req.params.id);

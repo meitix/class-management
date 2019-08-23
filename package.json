@@ -15,6 +15,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
     "mongoose": "^5.5.8",
+    "mongoose-deep-populate": "^3.1.1",
     "query-string": "^6.7.0"
   },
   "devDependencies": {
@@ -24,6 +25,7 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/lodash": "^4.14.132",
     "@types/mongoose": "^5.5.1",
+    "@types/mongoose-deep-populate": "^2.0.33",
     "@types/query-string": "^6.3.0",
     "@types/typescript": "^2.0.0",
     "ts-node": "^8.3.0",
