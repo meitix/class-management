@@ -9,7 +9,7 @@
   />
 </div>
 
-<table class="table table-striped" *ngIf="people && people.length > 0">
+<table class="table table-striped" *ngIf="students && students.length > 0;else notFound">
   <thead>
     <tr>
       <th>کد</th>
@@ -19,9 +19,9 @@
       <th>شماره موبایل</th>
     </tr>
   </thead>
-  <tbody *ngIf="people">
+  <tbody>
     <tr
-      *ngFor="let student of students | async"
+      *ngFor="let student of students"
       (click)="selectStudent(student)"
       class="clickable"
     >
@@ -34,7 +34,8 @@
   </tbody>
 
 </table>
-
-    <div class="text-center" *ngIf="people.length === 0">
+<ng-template #notFount>
+    <div class="text-center">
       موردی یافت نشد
     </div>
+</ng-template>

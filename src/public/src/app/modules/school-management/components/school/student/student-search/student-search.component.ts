@@ -15,10 +15,11 @@ export class StudentSearchComponent implements OnInit , OnDestroy {
   @Output() studentSelect: EventEmitter<IStudent>;
   searchTerm: FormControl;
   private searchSubscription: Subscription;
-  students: Observable<IStudent[]>;
+  students: IStudent[];
 
   constructor(private schoolService: SchoolService) {
     this.searchTerm = new FormControl();
+    this.studentSelect = new EventEmitter<IStudent>();
   }
 
   ngOnInit() {
@@ -26,7 +27,7 @@ export class StudentSearchComponent implements OnInit , OnDestroy {
   }
 
   async search(q: string) {
-    this.students = this.schoolService.getStudents(this.schoolService.getSelectedSchoolId(), q);
+    this.students = await this.schoolService.getStudents(this.schoolService.getSelectedSchoolId(), q).toPromise();
   }
 
   selectStudent(student: IStudent) {

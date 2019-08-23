@@ -137,20 +137,25 @@ export class PeopleController {
   // get students by condition.
   async getStudents(req: Request, res: Response) {
     const schoolId = new Types.ObjectId(req.params.id);
-    const condition: any = { school: schoolId };
+    const condition: any = {};
     // add search term to condition.
-    if (req.query.q) {
-      const term = req.query.q;
+    if (req.query.query) {
+      const term = req.query.query;
       condition.$or = [
-        { 'info.firstname': { $regex: `.*${term}.*` } },
-        { 'info.lastname': { $regex: `.*${term}.*` } },
-        { 'info.nationalCode': { $regex: `.*${term}.*` } },
-        { 'info.mobile': { $regex: `.*${term}.*` } }
+        { firstname: { $regex: `.*${term}.*` } },
+        { lastname: { $regex: `.*${term}.*` } },
+        { nationalCode: { $regex: `.*${term}.*` } },
+        { mobile: { $regex: `.*${term}.*` } }
       ];
     }
 
     try {
-      const students = await Student.find(condition)
+      // find people ids who matches the condition.
+      const peopleIds = await Person.find(condition , {_id: 1});
+      const students = await Student.find({
+        school: schoolId,
+        info: { $in: peopleIds.map(p => p._id) }
+      })
         .populate('info')
         .exec();
 
