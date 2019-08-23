@@ -11,9 +11,10 @@ export class ClassStatusController {
       condition.date = new Date(condition.date);
     }
     // get the result and send it to user as json file.
-    const result = await ClassStatus.find(condition);
+    const result = await ClassStatus.find(condition).select({date: 1}).distinct();
     res.json(result);
   }
+
 
   // create.
   async create(req: Request, res: Response) {

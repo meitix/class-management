@@ -117,7 +117,7 @@ export class PeopleController {
       // save person infos of parent and student.
       await studentInfo.save();
       // create student using parent id and student info id.
-      const student = new Student({
+      Student.create({
         info: studentInfo._id,
         school: schoolId,
         parent: parent._id

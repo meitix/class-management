@@ -22,8 +22,8 @@ export const ClassStatusSchema = new Schema({
     required: [true, 'کلاس دریافت نشده است']
   },
   lesson: String,
-  Statistics: [StudentStatusSchema],
-  date: { type: Date, required: [true] , index: true}
+  statistics: [StudentStatusSchema],
+  date: { type: Date, required: [true] , index: true , default: new Date()}
 });
 
 export const ClassStatus: Model<IClassStatus> = model('ClassGrade', ClassStatusSchema);
