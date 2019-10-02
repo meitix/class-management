@@ -9,17 +9,16 @@ import { IClass } from '../../../models/edu/class.interface';
 import { stringify } from 'querystring';
 import { IPeriod } from '../../../models/edu/period.interface';
 import { EventEmitter } from '@angular/core';
+import { IClassStatus } from '../../../models/edu/statistics.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchoolService extends RestService<ISchool> {
-
   constructor(injector: Injector) {
     super('school', injector);
     this.schoolSelected = new EventEmitter<string>();
   }
-
 
   private schoolId: string;
 
@@ -43,22 +42,31 @@ export class SchoolService extends RestService<ISchool> {
   // add a student to an school.
   addStudent(schoolId: string, student: IStudent) {
     student.period = this.getSelectedPeriod();
-     return this.post(this.url.concat(schoolId, '/students') , student).pipe(map(res => <IStudent>res));
+    return this.post(this.url.concat(schoolId, '/students'), student).pipe(
+      map(res => <IStudent>res)
+    );
   }
 
   // update an student.
-  updateStudent(schoolId: string , studentId: string , student: IStudent) {
-   return this.put(`${this.url + schoolId}/student/${studentId}` , student).pipe(map(res => <IStudent>res));
+  updateStudent(schoolId: string, studentId: string, student: IStudent) {
+    return this.put(
+      `${this.url + schoolId}/student/${studentId}`,
+      student
+    ).pipe(map(res => <IStudent>res));
   }
 
   // get all students of an school.
   getStudents(schoolId: string, query?: string) {
-    return this.get(`${this.url + schoolId}/students?query=${query || ''}`).pipe(map(res => <Array<IStudent>>res));
+    return this.get(
+      `${this.url + schoolId}/students?query=${query || ''}`
+    ).pipe(map(res => <Array<IStudent>>res));
   }
 
   // get single student.
   getStudent(studentId: string): any {
-    return this.get(`${this.url}student/${studentId}`).pipe(map(res => <IStudent>res));
+    return this.get(`${this.url}student/${studentId}`).pipe(
+      map(res => <IStudent>res)
+    );
   }
 
   // delete a single student.
@@ -68,19 +76,31 @@ export class SchoolService extends RestService<ISchool> {
 
   // get personnel.
   getPersonnel(schoolId: string, filter?: any) {
-    return this.get(`${this.url + schoolId}/personnel/?${stringify(filter)}`).pipe(map(res => <Array<IPersonnelViewModel>>res));
+    return this.get(
+      `${this.url + schoolId}/personnel/?${stringify(filter)}`
+    ).pipe(map(res => <Array<IPersonnelViewModel>>res));
   }
 
   getSinglePersonnel(schoolId: string, personnelId: string) {
-    return this.get(`${this.url + schoolId}/personnel/${personnelId}`).pipe(map(res => <IPersonnelViewModel>res));
+    return this.get(`${this.url + schoolId}/personnel/${personnelId}`).pipe(
+      map(res => <IPersonnelViewModel>res)
+    );
   }
   // add personnel to school.
   addPersonnel(schoolId: string, person: IPerson, roleIds: string[]) {
-    return this.post(`${this.url + schoolId}/personnel`, {person , roleIds});
+    return this.post(`${this.url + schoolId}/personnel`, { person, roleIds });
   }
   // update personnel.
-  updatePersonnel(schoolId: string, personId: string, person: IPerson, roleIds: string[]) {
-    return this.put(`${this.url + schoolId}/personnel/${personId}`, {person , roleIds});
+  updatePersonnel(
+    schoolId: string,
+    personId: string,
+    person: IPerson,
+    roleIds: string[]
+  ) {
+    return this.put(`${this.url + schoolId}/personnel/${personId}`, {
+      person,
+      roleIds
+    });
   }
 
   deletePersonnel(schoolId: string, personnelId: string) {
@@ -89,51 +109,75 @@ export class SchoolService extends RestService<ISchool> {
 
   // search personnel of an school.
   searchPersonnel(schoolId: string, term: string) {
-    return this.get(`${this.url + schoolId}/personnel/search/${term}`).pipe(map(res => <Array<IPerson>>res));
+    return this.get(`${this.url + schoolId}/personnel/search/${term}`).pipe(
+      map(res => <Array<IPerson>>res)
+    );
   }
 
   // create class.
-  createClass(schoolId: string , _class: IClass) {
+  createClass(schoolId: string, _class: IClass) {
     _class.period = this.getSelectedPeriod();
     return this.post(`${this.url + schoolId}/classes`, _class);
-   }
+  }
 
-   // update class.
-  updateClass(schoolId: string , classId: string, _class: IClass) {
+  // update class.
+  updateClass(schoolId: string, classId: string, _class: IClass) {
     return this.put(`${this.url + schoolId}/classes/${classId}`, _class);
   }
 
   // get class by id.
-  getClassById(schoolId , classId: string) {
-    return this.get(`${this.url + schoolId }/classes/${classId}`).pipe(map(res => <IClass>res));
+  getClassById(schoolId, classId: string) {
+    return this.get(`${this.url + schoolId}/classes/${classId}`).pipe(
+      map(res => <IClass>res)
+    );
   }
 
   // get class by school id.
   getClassesBySchoolId(schoolId: string, periodId: string) {
-    return this.get(`${this.url + schoolId}/classes?period=${periodId}`).pipe(map(res => <IClass[]>res));
+    return this.get(`${this.url + schoolId}/classes?period=${periodId}`).pipe(
+      map(res => <IClass[]>res)
+    );
   }
 
+  getClassStatus(schoolId: string, classId: string): any {
+    return this.get(`${this.url + schoolId}/classes/${classId}/status`);
+  }
+
+  createClassStatus(
+    schoolId: string,
+    classId: string,
+    classStatus: IClassStatus
+  ) {
+    return this.post(
+      `${this.url + schoolId}/classes/${classId}/status`,
+      classStatus
+    );
+  }
 
   // Period service.
 
   // create period.
-  createPeriod(schoolId: string , _period: IPeriod) {
+  createPeriod(schoolId: string, _period: IPeriod) {
     return this.post(`${this.url + schoolId}/periods`, _period);
-   }
+  }
 
-   // update period.
-  updatePeriod(schoolId: string , periodId: string, _period: IPeriod) {
+  // update period.
+  updatePeriod(schoolId: string, periodId: string, _period: IPeriod) {
     return this.put(`${this.url + schoolId}/periods/${periodId}`, _period);
   }
 
   // get period by id.
-  getPeriodById(schoolId , periodId: string) {
-    return this.get(`${this.url + schoolId }/periods/${periodId}`).pipe(map(res => <IPeriod>res));
+  getPeriodById(schoolId, periodId: string) {
+    return this.get(`${this.url + schoolId}/periods/${periodId}`).pipe(
+      map(res => <IPeriod>res)
+    );
   }
 
   // get period by school id.
   getPeriodsBySchoolId(schoolId: string) {
-    return this.get(`${this.url + schoolId}/periods`).pipe(map(res => <IPeriod[]>res));
+    return this.get(`${this.url + schoolId}/periods`).pipe(
+      map(res => <IPeriod[]>res)
+    );
   }
 
   // delete period.

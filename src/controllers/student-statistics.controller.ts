@@ -6,7 +6,7 @@ import {
 
 export class StudentStatisticsController {
   async batchUpdate(req: Request, res: Response) {
-    const classStatusId = req.params.clStId;
+    const classStatusId = req.params.classStatusId;
     try {
       const result = await ClassStatus.findByIdAndUpdate(classStatusId, {
         $set: { statistics: req.body }
@@ -35,7 +35,7 @@ export class StudentStatisticsController {
   // get by class status id.
   async getByClassStatusId(req: Request, res: Response) {
     try {
-      const result = await ClassStatus.findById(req.params.clStId);
+      const result = await ClassStatus.findById(req.params.classStatusId);
       res.json(result);
     } catch (e) {
       console.log(e);

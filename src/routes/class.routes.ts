@@ -24,7 +24,7 @@ export class RoleRouter {
     this.router.delete('/:classId', this.classController.delete);
     
     // importing student statuses routes.
-    this.router.use(':classId/student-status', studentStatusRouter);
+    this.router.use('/:classId/status', studentStatusRouter);
   }
 }
 

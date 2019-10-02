@@ -22,4 +22,10 @@ describe('StatisticsCreateComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('student lists', () => {
+    it('should has items length equal to class student length', () => {
+      expect(component.class.students.length).toEqual(component.statistics.length);
+    });
+  });
 });

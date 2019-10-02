@@ -19,7 +19,8 @@ export class ClassStatusController {
   // create.
   async create(req: Request, res: Response) {
     try {
-      const result = await ClassStatus.create(req.body);
+      const classStatus = req.body;
+      const result = await ClassStatus.create(classStatus);
       res.json(result);
     } catch (e) {
       res.status(400).json(e);
