@@ -1,20 +1,25 @@
 import { Request, Response } from 'express';
 import { ClassStatus } from '../models/entities/student-status.entity';
+import { Types } from 'mongoose';
 
 export class ClassStatusController {
   // find by query.
   async fetch(req: Request, res: Response) {
     const condition = Object.assign({}, req.query);
-    condition.classId = req.params.classId;
+    condition.class = new Types.ObjectId(req.params.classId);
     // convert date in query object from string to date format.
     if (condition.date) {
       condition.date = new Date(condition.date);
     }
-    // get the result and send it to user as json file.
-    const result = await ClassStatus.find(condition).select({date: 1}).distinct();
-    res.json(result);
+    try {
+      // get the result and send it to user as json file.
+      const result = await ClassStatus.find(condition).select({ date: 1 });
+      res.json(result);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send(e);
+    }
   }
-
 
   // create.
   async create(req: Request, res: Response) {
@@ -24,6 +29,17 @@ export class ClassStatusController {
       res.json(result);
     } catch (e) {
       res.status(400).json(e);
+    }
+  }
+
+  async getById(req: Request, res: Response) {
+    const statusId = req.params.statusId;
+    try {
+      const status = await ClassStatus.findById(statusId);
+      res.json(status);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send(e);
     }
   }
 

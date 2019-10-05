@@ -9,12 +9,13 @@ import { IClass } from '../../../models/edu/class.interface';
 import { stringify } from 'querystring';
 import { IPeriod } from '../../../models/edu/period.interface';
 import { EventEmitter } from '@angular/core';
-import { IClassStatus } from '../../../models/edu/statistics.interface';
+import { IClassStatus, IStatistics } from '../../../models/edu/statistics.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchoolService extends RestService<ISchool> {
+
   constructor(injector: Injector) {
     super('school', injector);
     this.schoolSelected = new EventEmitter<string>();
@@ -139,8 +140,12 @@ export class SchoolService extends RestService<ISchool> {
     );
   }
 
-  getClassStatus(schoolId: string, classId: string): any {
+  getClassStatus(schoolId: string, classId: string) {
     return this.get(`${this.url + schoolId}/classes/${classId}/status`);
+  }
+
+  getStatusById(schoolId: string, classId: string, statusId: string) {
+    return this.get<IClassStatus>(`${this.url + schoolId}/classes/${classId}/status/${statusId}`);
   }
 
   createClassStatus(
@@ -152,6 +157,10 @@ export class SchoolService extends RestService<ISchool> {
       `${this.url + schoolId}/classes/${classId}/status`,
       classStatus
     );
+  }
+
+  updateStatistics(schoolId: string, classId: string, statusId: string, statistics: IStatistics) {
+    return this.put(`${this.url + schoolId}/classes/${classId}/status/${statusId}/statistics`, statistics);
   }
 
   // Period service.

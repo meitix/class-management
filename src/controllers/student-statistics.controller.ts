@@ -3,15 +3,16 @@ import {
   ClassStatus,
   StudentStatusSchema
 } from '../models/entities/student-status.entity';
+import { Types } from 'mongoose';
 
 export class StudentStatisticsController {
   async batchUpdate(req: Request, res: Response) {
     const classStatusId = req.params.classStatusId;
     try {
-      const result = await ClassStatus.findByIdAndUpdate(classStatusId, {
+      const result = await ClassStatus.updateOne({_id: new Types.ObjectId(classStatusId)}, {
         $set: { statistics: req.body }
       });
-      res.end(result);
+      res.send(result);
     } catch (e) {
       console.log(e);
       res.status(400).send(e);

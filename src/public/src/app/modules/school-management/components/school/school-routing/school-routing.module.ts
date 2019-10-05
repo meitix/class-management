@@ -78,7 +78,7 @@ const schoolRoutes: Routes = [
             children: [
               { path: '', component: StatisticsListComponent },
               { path: 'create', component: StatisticsCreateComponent },
-              { path: 'edit/:date', component: StatisticsListComponent }
+              { path: 'edit/:statusId', component: StatisticsCreateComponent }
             ]
           }
         ]

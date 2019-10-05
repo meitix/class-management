@@ -1,3 +1,28 @@
-<p>
-  statistics-list works!
-</p>
+<div class="card">
+  <div class="card-header" data-background-color="blue">
+    <h4>لیست پایه ها</h4>
+    <p>پایه های ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
+  </div>
+  <div class="card-content">
+    <table class="table">
+      <thead *ngIf="statuses && statuses.length > 0">
+        <th>تاریخ</th>
+        <th></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let status of statuses">
+          <td>{{ status.date | date}} </td>
+          <td>
+            <a
+              class="btn btn-simple btn-sm" [routerLink]="['edit', status._id]">
+              <i class="material-icons text-info text-sm">edit</i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="statuses.length === 0">
+      <p style="text-align:center">موردی یافت نشد</p>
+    </div>
+  </div>
+</div>

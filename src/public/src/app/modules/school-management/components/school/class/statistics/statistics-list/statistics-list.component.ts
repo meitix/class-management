@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { SchoolService } from '../../../services/school.service';
+import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-statistics-list',
@@ -6,10 +9,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./statistics-list.component.css']
 })
 export class StatisticsListComponent implements OnInit {
-
-  constructor() { }
+  statuses: any = [];
+  constructor(
+    private schoolService: SchoolService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
+    this.route.params.pipe(take(1)).subscribe(async params => {
+      this.statuses = await this.getStatuses(params.id);
+    });
   }
 
+  async getStatuses(classId: string) {
+    return await this.schoolService
+      .getClassStatus(this.schoolService.getSelectedSchoolId(), classId)
+      .toPromise();
+  }
 }

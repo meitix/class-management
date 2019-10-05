@@ -12,7 +12,7 @@ class ClassStatusRouter {
   }
 
   private init() {
-    this.router = Router();
+    this.router = Router({mergeParams: true});
     this.classStatusController = new ClassStatusController();
     this.statisticsController = new StudentStatisticsController();
   }
@@ -20,8 +20,9 @@ class ClassStatusRouter {
   private assignTheRoutesToController() {
     this.router.get('/', this.classStatusController.fetch);
     this.router.post('/', this.classStatusController.create);
+    this.router.get('/:statusId', this.classStatusController.getById);
     this.router.put('/:classStatusId/statistics', this.statisticsController.batchUpdate);
-    this.router.put('/:classStatusId/statistics', this.statisticsController.getByClassStatusId);
+    this.router.get('/:classStatusId/statistics', this.statisticsController.getByClassStatusId);
   }
 }
 

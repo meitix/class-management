@@ -6,7 +6,8 @@ import {
 } from 'src/app/modules/school-management/models/edu/class.interface';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { IStatistics } from 'src/app/modules/school-management/models/edu/statistics.interface';
+import { IStatistics, IClassStatus } from 'src/app/modules/school-management/models/edu/statistics.interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-statistics-create',
@@ -16,6 +17,9 @@ import { IStatistics } from 'src/app/modules/school-management/models/edu/statis
 export class StatisticsCreateComponent implements OnInit {
   class: IClass;
   statistics: IStatistics;
+  isUpdateMode = false;
+  status: IClassStatus;
+
   constructor(
     private schoolService: SchoolService,
     private route: ActivatedRoute
@@ -26,12 +30,43 @@ export class StatisticsCreateComponent implements OnInit {
   ngOnInit() {
     this.route.parent.params.pipe(take(1)).subscribe(async params => {
       if (params.id) {
-        this.class = await this.fetchClassData(
-          this.schoolService.getSelectedSchoolId(),
-          params.id
-        );
+        this.class = await this.loadClassData(params.id);
         this.statistics = this.createForm(this.class);
+
+        // load saved statuses in edit mode.
+        this.route.params.pipe(take(1)).subscribe(async currentParams => {
+          if (currentParams.statusId) {
+            this.isUpdateMode = true;
+            // load saved status from server.
+            this.status = await this.loadClassStatuses(
+              this.schoolService.getSelectedSchoolId(),
+              params.id,
+              currentParams.statusId
+            ).toPromise();
+            // bind saved status values to class statistics.
+            this.bindSavedStatuses(this.statistics , this.status.statistics);
+          }
+        });
       }
+    });
+  }
+
+  loadClassData(id: string) {
+    return this.fetchClassData(this.schoolService.getSelectedSchoolId(), id);
+  }
+
+  loadClassStatuses(schoolId: string, classId: string, statusId: string) {
+    return this.schoolService.getStatusById(schoolId, classId, statusId);
+  }
+
+  bindSavedStatuses(target , values: IStatistics) {
+    target = target.map((status , i) => {
+      const result = values.find(v => v.student === status.student._id);
+      if (result) {
+        status.result = values[i].result;
+      }
+
+      return status;
     });
   }
 
@@ -50,11 +85,19 @@ export class StatisticsCreateComponent implements OnInit {
   }
 
   async submit() {
-   const result = await this.schoolService.createClassStatus(
-      this.schoolService.getSelectedSchoolId(),
-      this.class._id,
-      { date: new Date() , class: this.class , statistics: this.statistics }
-    ).toPromise();
+    let request: Observable<object>;
+    if (this.isUpdateMode) {
+     request = this.schoolService.updateStatistics(this.schoolService.getSelectedSchoolId(), this.class._id , this.status._id , this.statistics);
+    } else {
+     request = this.schoolService
+      .createClassStatus(
+        this.schoolService.getSelectedSchoolId(),
+        this.class._id,
+        { date: new Date(), class: this.class, statistics: this.statistics }
+      );
+    }
+
+    const result = await request.toPromise();
 
     alert('نتایج ذخیره شد');
   }
