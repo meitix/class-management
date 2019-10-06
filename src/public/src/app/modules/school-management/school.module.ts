@@ -34,6 +34,8 @@ import { StudentSearchComponent } from './components/school/student/student-sear
 import { StatisticsStartComponent } from './components/school/class/statistics/statistics-start/statistics-start.component';
 import { StatisticsCreateComponent } from './components/school/class/statistics/statistics-create/statistics-create.component';
 import { StatisticsListComponent } from './components/school/class/statistics/statistics-list/statistics-list.component';
+import { DatePipe } from './pipes/date.pipe';
+import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 
 @NgModule({
   declarations: [
@@ -68,13 +70,15 @@ import { StatisticsListComponent } from './components/school/class/statistics/st
     StatisticsStartComponent,
     StatisticsCreateComponent,
     StatisticsListComponent,
+    DatePipe,
   ],
   imports: [
     CommonModule,
     SchoolRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    NgSelect2Module
+    NgSelect2Module,
+    DpDatePickerModule
   ],
   exports: [ActiveStatusPipe, PeriodComponent]
 })

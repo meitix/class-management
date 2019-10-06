@@ -65,8 +65,9 @@ export class PersonnelCreateComponent implements OnInit , OnDestroy {
     };
   }
   async fetchPersonnel(personId: string) {
-   const data = await this.schoolService.getSinglePersonnel(this.schoolId , this.personId).toPromise();
+   const data = await this.schoolService.getSinglePersonnel(this.schoolId , personId).toPromise();
    this.person = data.person;
+   console.log(this.person);
    this.roleIds = data.roles.map(r => r._id);
   }
 

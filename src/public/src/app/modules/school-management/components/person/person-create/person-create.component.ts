@@ -12,14 +12,13 @@ import { NgForm } from '@angular/forms';
 import { ErrorService } from 'src/app/modules/base/services/error.service';
 import { IPerson, Person } from '../../../models/people/person.interface';
 import { PersonService } from '../services/person.service';
-
+import * as moment from 'jalali-moment';
 @Component({
   selector: 'app-person-create',
   templateUrl: './person-create.component.html',
   styleUrls: ['./person-create.component.css']
 })
 export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
-  // routeSubscription: Subscription;
   @Output() personUpdate: EventEmitter<IPerson>;
 
   @Input() person: IPerson;
@@ -34,9 +33,7 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
     this.person = new Person();
   }
 
-  ngOnInit() {
-    console.log(this.person);
-  }
+  ngOnInit() {}
 
   submit(f: NgForm) {
     if (f.valid) {
@@ -66,9 +63,7 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
     this.personUpdate.emit(this.person);
   }
 
-  ngOnDestroy(): void {
-    // this.routeSubscription.unsubscribe();
-  }
+  ngOnDestroy(): void {}
 
   ngOnChanges(): void {
     this.form.valueChanges.subscribe(values => {

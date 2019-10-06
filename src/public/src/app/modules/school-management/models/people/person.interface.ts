@@ -7,7 +7,7 @@ export interface IPerson extends IEntity {
   nationalCode: string;
   mobile: string[];
   tel: string[];
-  birthDate: Date;
+  birthDate: any;
   roles: IRole[];
   description: string;
 }
@@ -25,7 +25,7 @@ export class Person implements IPerson {
   nationalCode: string;
   mobile: string[];
   tel: string[];
-  birthDate: Date = new Date();
+  birthDate: Date;
   roles: IRole[];
   description: string;
   isEnable: boolean;
