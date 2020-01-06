@@ -38,14 +38,16 @@ export class ClassListComponent implements OnInit, OnDestroy {
   }
 
   fetchGridData() {
-    this.schoolService
-      .getClassesBySchoolId(
-        this.schoolId,
-        this.schoolService.getSelectedPeriod()._id
-      )
-      .subscribe(res => {
-        this.classes = res;
-      });
+    if (this.schoolService.getSelectedPeriod()) {
+      this.schoolService
+        .getClassesBySchoolId(
+          this.schoolId,
+          this.schoolService.getSelectedPeriod()._id
+        )
+        .subscribe(res => {
+          this.classes = res;
+        });
+    }
   }
 
   delete(id: string) {
