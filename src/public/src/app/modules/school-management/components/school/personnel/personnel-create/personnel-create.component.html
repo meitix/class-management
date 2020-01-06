@@ -8,6 +8,7 @@
       <div class="col-md-6">
         <h3>مشخصات پرسنل</h3>
         <app-person-create
+          *ngIf="!isLoading"
           [enableSubmit]="false"
           [person]="person"
           (personUpdate)="updatePerson($event)"
@@ -23,7 +24,13 @@
         </ng-select2>
       </div>
       <div class="form-group text-center">
-        <button class="btn btn-success" [disabled]="isProcessing" (click)="submit()">{{isProcessing ? '...' : 'ثبت'}}</button>
+        <button
+          class="btn btn-success"
+          [disabled]="isProcessing"
+          (click)="submit()"
+        >
+          {{ isProcessing ? '...' : 'ثبت' }}
+        </button>
       </div>
     </div>
   </div>

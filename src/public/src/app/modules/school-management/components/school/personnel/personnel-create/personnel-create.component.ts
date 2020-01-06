@@ -17,8 +17,9 @@ import { RoleService } from 'src/app/modules/authentication/services/role.servic
   templateUrl: './personnel-create.component.html',
   styleUrls: ['./personnel-create.component.css']
 })
-export class PersonnelCreateComponent implements OnInit , OnDestroy {
+export class PersonnelCreateComponent implements OnInit, OnDestroy {
   isProcessing: boolean;
+  isLoading: boolean = true;
 
   schoolId: string;
   personId: string;
@@ -45,12 +46,13 @@ export class PersonnelCreateComponent implements OnInit , OnDestroy {
       this.schoolId = params.id;
     });
     // get person id from route.
-    this.personIdSubscription = this.route.params.subscribe(params => {
+    this.personIdSubscription = this.route.params.subscribe(async params => {
       // didn't use parent on route object so in path '/person/:id' we need to read the id parameter.
-      this.personId = params.id;
+      this.personId = params.personnelId;
       if (this.personId) {
-        this.fetchPersonnel(this.personId);
+        await this.fetchPersonnel(this.personId);
       }
+      this.isLoading = false;
     });
 
     // load roles from server.
@@ -61,27 +63,39 @@ export class PersonnelCreateComponent implements OnInit , OnDestroy {
 
     this.select2Options = {
       width: '300',
-      multiple: true,
+      multiple: true
     };
   }
   async fetchPersonnel(personId: string) {
-   const data = await this.schoolService.getSinglePersonnel(this.schoolId , personId).toPromise();
-   this.person = data.person;
-   console.log(this.person);
-   this.roleIds = data.roles.map(r => r._id);
+    const data = await this.schoolService
+      .getSinglePersonnel(this.schoolId, personId)
+      .toPromise();
+    this.person = data.person;
+
+    this.roleIds = data.roles.map(r => r._id);
   }
 
   // get available roles from server.
   async getRoles() {
     const roles = await this.roleService.fetch().toPromise();
-    this.roles = roles.map(r => ({ id: r._id, text: r.title}));
+    this.roles = roles.map(r => ({ id: r._id, text: r.title }));
   }
 
   async submit() {
     this.isProcessing = true;
-    let req = this.schoolService.addPersonnel(this.schoolId, this.person , this.roleIds);
+
+    let req = this.schoolService.addPersonnel(
+      this.schoolId,
+      this.person,
+      this.roleIds
+    );
     if (this.personId) {
-      req = this.schoolService.updatePersonnel(this.schoolId , this.personId , this.person , this.roleIds);
+      req = this.schoolService.updatePersonnel(
+        this.schoolId,
+        this.personId,
+        this.person,
+        this.roleIds
+      );
     }
     try {
       const res = await req.toPromise();
