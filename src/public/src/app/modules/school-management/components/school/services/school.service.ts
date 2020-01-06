@@ -9,13 +9,15 @@ import { IClass } from '../../../models/edu/class.interface';
 import { stringify } from 'querystring';
 import { IPeriod } from '../../../models/edu/period.interface';
 import { EventEmitter } from '@angular/core';
-import { IClassStatus, IStatistics } from '../../../models/edu/statistics.interface';
+import {
+  IClassStatus,
+  IStatistics
+} from '../../../models/edu/statistics.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchoolService extends RestService<ISchool> {
-
   constructor(injector: Injector) {
     super('school', injector);
     this.schoolSelected = new EventEmitter<string>();
@@ -145,7 +147,9 @@ export class SchoolService extends RestService<ISchool> {
   }
 
   getStatusById(schoolId: string, classId: string, statusId: string) {
-    return this.get<IClassStatus>(`${this.url + schoolId}/classes/${classId}/status/${statusId}`);
+    return this.get<IClassStatus>(
+      `${this.url + schoolId}/classes/${classId}/status/${statusId}`
+    );
   }
 
   createClassStatus(
@@ -159,8 +163,16 @@ export class SchoolService extends RestService<ISchool> {
     );
   }
 
-  updateStatistics(schoolId: string, classId: string, statusId: string, statistics: IStatistics) {
-    return this.put(`${this.url + schoolId}/classes/${classId}/status/${statusId}/statistics`, statistics);
+  updateStatistics(
+    schoolId: string,
+    classId: string,
+    statusId: string,
+    statistics: IStatistics
+  ) {
+    return this.put(
+      `${this.url + schoolId}/classes/${classId}/status/${statusId}/statistics`,
+      statistics
+    );
   }
 
   // Period service.
@@ -196,11 +208,27 @@ export class SchoolService extends RestService<ISchool> {
 
   // get selected period id from local storage.
   getSelectedPeriod() {
-    return JSON.parse(localStorage.getItem('selectedPeriod'));
+    let period = localStorage.getItem('selectedPeriod');
+    if (period === null) {
+      period = JSON.stringify(period);
+    }
+    if (period.includes('_id')) {
+      return JSON.parse(period);
+    } else return null;
   }
 
   setSelectedPeriod(period: IPeriod) {
-    this.periodSelected.emit(period);
     localStorage.setItem('selectedPeriod', JSON.stringify(period));
+    this.periodSelected.emit(period);
+  }
+  removeSelectedPriod() {
+    localStorage.setItem('selectedPeriod', '');
+  }
+
+  removeAuthToken() {
+    this.dropRequestoption();
+  }
+  appenAuthToken() {
+    this.requestOption = this.initRequestOption();
   }
 }
