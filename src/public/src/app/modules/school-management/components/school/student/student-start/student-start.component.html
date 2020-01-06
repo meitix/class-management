@@ -1,18 +1,14 @@
 <ul class="nav nav-pills nav-pills-icons nav-pills-primary" role="tablist">
-    <li routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact: true}">
-      <a [routerLink]="'./'">
-        <i class="material-icons">list</i>
-        لیست
-      </a>
-    </li>
-    <li routerLinkActive="active"
-    [routerLinkActiveOptions]="{exact: true}">
-      <a [routerLink]="'create'" >
-        <i class="material-icons">add</i>
-        جدید
-      </a>
-    </li>
-  </ul>
-
-  <router-outlet></router-outlet>
+  <li>
+    <a (click)="navigateToList()" style="cursor: pointer;">
+      <i class="material-icons">list</i>
+      لیست قرآن آموزان</a
+    >
+  </li>
+  <li>
+    <a (click)="navigateToCreate()" style="cursor: pointer;">
+      <i class="material-icons">add</i>
+      جدید
+    </a>
+  </li>
+</ul>

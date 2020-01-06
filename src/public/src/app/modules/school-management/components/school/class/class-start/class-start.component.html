@@ -1,19 +1,14 @@
-<!-- with icons and horizontal -->
 <ul class="nav nav-pills nav-pills-icons nav-pills-primary" role="tablist">
-  <li routerLinkActive="active"
-  [routerLinkActiveOptions]="{exact: true}">
-    <a [routerLink]="'./'">
+  <li>
+    <a (click)="navigateToList()" style="cursor: pointer;">
       <i class="material-icons">list</i>
-      لیست
-    </a>
+      لیست کلاس ها</a
+    >
   </li>
-  <li routerLinkActive="active"
-  [routerLinkActiveOptions]="{exact: true}">
-    <a [routerLink]="'create'" >
+  <li>
+    <a (click)="navigateToCreate()" style="cursor: pointer;">
       <i class="material-icons">add</i>
       جدید
     </a>
   </li>
 </ul>
-
-<router-outlet></router-outlet>
