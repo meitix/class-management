@@ -4,7 +4,10 @@ import { IClass } from 'src/app/modules/school-management/models/edu/class.inter
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { IStudent, Student } from 'src/app/modules/school-management/models/people/student.interface';
+import {
+  IStudent,
+  Student
+} from 'src/app/modules/school-management/models/people/student.interface';
 import { remove } from 'lodash';
 import { ErrorService } from 'src/app/modules/base/services/error.service';
 import { flatten } from 'lodash';
@@ -31,7 +34,7 @@ export class ManageStudentsComponent implements OnInit {
   ngOnInit() {
     this.route.params.pipe(take(1)).subscribe(async params => {
       if (params.id) {
-        this.class = await this.fetchClassData(params.id);
+        this.class = await this.fetchClassData(params.classId);
         this.people = this.extractPeopleFromClass(this.class);
       }
     });
@@ -51,10 +54,7 @@ export class ManageStudentsComponent implements OnInit {
 
   // remove student from class.
   removeStudentFromClass(person: IPerson) {
-   remove(
-      this.class.students,
-      s => s.info._id === person._id
-    );
+    remove(this.class.students, s => s.info._id === person._id);
     this.people = this.extractPeopleFromClass(this.class);
   }
 

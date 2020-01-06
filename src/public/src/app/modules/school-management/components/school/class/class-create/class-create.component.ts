@@ -42,7 +42,7 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
     // get class id from route.
     this.classIdSubscription = this.route.params.subscribe(params => {
       // didn't use parent on route object so in path '/class/:id' we need to read the id parameter.
-      this.classId = params.id;
+      this.classId = params.classId;
       if (this.classId) {
         this.fetchClass(this.schoolId, this.classId);
       }

@@ -17,7 +17,7 @@ export class StatisticsListComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.pipe(take(1)).subscribe(async params => {
-      this.statuses = await this.getStatuses(params.id);
+      this.statuses = await this.getStatuses(params.classId);
     });
   }
 

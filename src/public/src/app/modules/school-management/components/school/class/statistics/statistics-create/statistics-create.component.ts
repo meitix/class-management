@@ -30,7 +30,7 @@ export class StatisticsCreateComponent implements OnInit {
   ngOnInit() {
     this.route.parent.params.pipe(take(1)).subscribe(async params => {
       if (params.id) {
-        this.class = await this.loadClassData(params.id);
+        this.class = await this.loadClassData(params.classId);
         this.statistics = this.createForm(this.class);
 
         // load saved statuses in edit mode.
