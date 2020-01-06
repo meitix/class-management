@@ -26,7 +26,6 @@ import { StatisticsCreateComponent } from '../class/statistics/statistics-create
 const schoolRoutes: Routes = [
   {
     path: '',
-    component: SchoolStartComponent,
     children: [
       { path: '', component: SchoolListComponent, pathMatch: 'full' },
       { path: 'create', component: SchoolCreateComponent },
@@ -35,21 +34,19 @@ const schoolRoutes: Routes = [
       {
         // student routes.
         path: ':id/student',
-        component: StudentStartComponent,
         children: [
           { path: '', component: StudentListComponent },
           { path: 'create', component: StudentCreateComponent },
-          { path: 'edit/:id', component: StudentCreateComponent }
+          { path: 'edit/:studentId', component: StudentCreateComponent }
         ]
       },
       {
         // personnel routes.
         path: ':id/personnel',
-        component: StudentStartComponent,
         children: [
           { path: '', component: PersonnelListComponent },
           { path: 'create', component: PersonnelCreateComponent },
-          { path: 'edit/:id', component: PersonnelCreateComponent }
+          { path: 'edit/:personnelId', component: PersonnelCreateComponent }
         ]
       },
       {
@@ -65,16 +62,14 @@ const schoolRoutes: Routes = [
       {
         // Classes routes.
         path: ':id/classes',
-        component: ClassStartComponent,
         children: [
           { path: '', component: ClassListComponent },
           { path: 'create', component: ClassCreateComponent },
-          { path: 'edit/:id', component: ClassCreateComponent },
-          { path: ':id/students', component: ManageStudentsComponent },
-          { path: ':id/status', component: ClassStatusComponent },
+          { path: 'edit/:classId', component: ClassCreateComponent },
+          { path: ':classId/students', component: ManageStudentsComponent },
+          { path: ':classId/status', component: ClassStatusComponent },
           {
-            path: ':id/statistics',
-            component: StatisticsStartComponent,
+            path: ':classId/statistics',
             children: [
               { path: '', component: StatisticsListComponent },
               { path: 'create', component: StatisticsCreateComponent },
