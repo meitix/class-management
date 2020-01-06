@@ -39,7 +39,6 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
       'en',
       'YYYY/MM/DD'
     );
-    // console.log(this.person.birthDate);
   }
 
   submit(f: NgForm) {
@@ -48,7 +47,6 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
 
       // change request to update if user is updating.
       if (this.person._id) {
-        console.log(this.person);
         request = this.personService.update(this.person._id, this.person);
       }
 
