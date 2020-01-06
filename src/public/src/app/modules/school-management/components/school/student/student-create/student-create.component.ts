@@ -7,7 +7,10 @@ import {
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ErrorService } from 'src/app/modules/base/services/error.service';
-import { Person, IPerson } from 'src/app/modules/school-management/models/people/person.interface';
+import {
+  Person,
+  IPerson
+} from 'src/app/modules/school-management/models/people/person.interface';
 
 @Component({
   selector: 'app-student-create',
@@ -15,6 +18,7 @@ import { Person, IPerson } from 'src/app/modules/school-management/models/people
   styleUrls: ['./student-create.component.css']
 })
 export class StudentCreateComponent implements OnInit, OnDestroy {
+  isLoading: Boolean = true;
   schoolId: string;
   studentId: string;
 
@@ -30,7 +34,6 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
     this.student = new Student();
     this.student.parent = new Person();
     this.student.info = new Person();
-    console.log(this.student);
   }
 
   ngOnInit() {
@@ -39,12 +42,13 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
       this.schoolId = params.id;
     });
     // get student id from route.
-    this.studentIdSubscription = this.route.params.subscribe(params => {
-    // didn't use parent on route object so in path '/student/:id' we need to read the id parameter.
-      this.studentId = params.id;
+    this.studentIdSubscription = this.route.params.subscribe(async params => {
+      // didn't use parent on route object so in path '/student/:id' we need to read the id parameter.
+      this.studentId = params.studentId;
       if (this.studentId) {
-        this.getStudent(this.studentId);
+        await this.getStudent(this.studentId);
       }
+      this.isLoading = false;
     });
   }
 
@@ -56,12 +60,16 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
     this.student.period = this.schoolService.getSelectedPeriod();
     let req = this.schoolService.addStudent(this.schoolId, this.student);
     if (this.studentId) {
-      req = this.schoolService.updateStudent(this.schoolId , this.studentId , this.student);
+      req = this.schoolService.updateStudent(
+        this.schoolId,
+        this.studentId,
+        this.student
+      );
     }
     try {
       const res = await req.toPromise();
 
-        alert('قرآن آموز با موفقیت ثبت شد');
+      alert('قرآن آموز با موفقیت ثبت شد');
     } catch (e) {
       this.errorService.handle(e, 'مشکل در اتصال به سرور');
     }
