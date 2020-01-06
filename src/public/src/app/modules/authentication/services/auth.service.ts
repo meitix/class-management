@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServerConfig } from '../../../app-config/server-config';
 import { IRole } from '../../school-management/models/people/person.interface';
+import { SchoolService } from '../../school-management/components/school/services/school.service';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AuthService {
   private currentUser: ILoginResult;
   private serverUrl: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private schoolService: SchoolService) {
     this.serverUrl = ServerConfig.serverUrl;
   }
 
@@ -27,10 +29,13 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    return this.http.post<ILoginResult>(this.serverUrl.concat('auth', '/', 'login'), {
-      username: username,
-      password: password
-    });
+    return this.http.post<ILoginResult>(
+      this.serverUrl.concat('auth', '/', 'login'),
+      {
+        username: username,
+        password: password
+      }
+    );
   }
 
   makeUserRemembered(user: ILoginResult) {
@@ -49,6 +54,7 @@ export class AuthService {
 
   logout() {
     localStorage.clear();
+    this.schoolService.removeAuthToken();
   }
 }
 
