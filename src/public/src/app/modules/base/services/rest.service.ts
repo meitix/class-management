@@ -22,12 +22,17 @@ export abstract class RestService<T> {
     this.requestOption = this.initRequestOption();
   }
 
-  private initRequestOption() {
-    const options: any = {headers: {}};
+  initRequestOption() {
+    const options: any = { headers: {} };
     const currentUser = this.authService.getCurrentUser();
-    if (currentUser) { options.headers.Authorization = `Bearer ${currentUser.token}`; }
+    if (currentUser) {
+      options.headers.Authorization = `Bearer ${currentUser.token}`;
+    }
 
     return options;
+  }
+  dropRequestoption() {
+    delete this.requestOption;
   }
 
   // basic http requests.
