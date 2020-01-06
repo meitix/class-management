@@ -1,3 +1,4 @@
+<app-class-start></app-class-start>
 <div class="card">
   <div class="card-header" data-background-color="blue">
     <h4>مدیریت دانش آموزان کلاس</h4>
@@ -7,11 +8,17 @@
     <div class="row">
       <div class="col-md-5">
         <h3 class="heading"></h3>
-        <app-student-search (studentSelect)="assignStudentToClass($event)"></app-student-search>
+        <app-student-search
+          (studentSelect)="assignStudentToClass($event)"
+        ></app-student-search>
       </div>
       <div class="col-md-7">
         <h3 class="heading">لیست دانش آموزان</h3>
-        <app-person-list [people]="people || []" *ngIf="class" (delete)="removeStudentFromClass($event)"></app-person-list>
+        <app-person-list
+          [people]="people || []"
+          *ngIf="class"
+          (delete)="removeStudentFromClass($event)"
+        ></app-person-list>
       </div>
     </div>
     <div class="row">
