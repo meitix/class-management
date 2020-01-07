@@ -14,7 +14,8 @@ import { ErrorService } from 'src/app/modules/base/services/error.service';
 export class SchoolCreateComponent implements OnInit , OnDestroy {
   school: ISchool;
   routeSubscription: Subscription;
-  @ViewChild('f') form: NgForm;
+  @ViewChild( 'f' ) form: NgForm;
+  isLoading: boolean = true;
 
   constructor(
     private schoolService: SchoolService,
@@ -29,7 +30,8 @@ export class SchoolCreateComponent implements OnInit , OnDestroy {
       if (params.id) {
         // fetch school data.
         try {
-          this.school = await this.schoolService.fetchById(params.id).toPromise();
+          this.school = await this.schoolService.fetchById( params.id ).toPromise();
+          this.isLoading = false;
         } catch (e) {
           this.errorService.handle(e , 'مشکل در بارگزاری اطلاعات');
         }

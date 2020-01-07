@@ -11,27 +11,33 @@ import { IPerson } from 'src/app/modules/school-management/models/people/person.
   templateUrl: './student-list.component.html',
   styleUrls: ['./student-list.component.css']
 })
-export class StudentListComponent implements OnInit , OnDestroy {
-
+export class StudentListComponent implements OnInit, OnDestroy {
   students: Array<IPerson>;
   schoolIdSubscription: Subscription;
   schoolId: string;
   periodChangeSubscription: Subscription;
+  isLoading: boolean = true;
 
-  constructor(private schoolService: SchoolService , private route: ActivatedRoute, private errorService: ErrorService) {
+  constructor(
+    private schoolService: SchoolService,
+    private route: ActivatedRoute,
+    private errorService: ErrorService
+  ) {
     this.students = [];
   }
 
-   ngOnInit() {
-   this.schoolIdSubscription = this.route.parent.params.subscribe(params => {
-    if (params.id) {
-      this.schoolId = params.id;
-      this.fetchStudents(this.schoolId);
-    }
-   });
+  ngOnInit() {
+    this.schoolIdSubscription = this.route.parent.params.subscribe(params => {
+      if (params.id) {
+        this.schoolId = params.id;
+        this.fetchStudents(this.schoolId);
+      }
+    });
 
-   // period change subscription.
-   this.periodChangeSubscription = this.schoolService.periodSelected.subscribe(() => this.fetchStudents(this.schoolId));
+    // period change subscription.
+    this.periodChangeSubscription = this.schoolService.periodSelected.subscribe(
+      () => this.fetchStudents(this.schoolId)
+    );
   }
 
   // get students from student service.
@@ -41,16 +47,19 @@ export class StudentListComponent implements OnInit , OnDestroy {
       s.info._id = s._id;
       return s.info;
     });
+    this.isLoading = false;
   }
 
   // delete student.
   delete(student: IStudent) {
     if (confirm('آیا برای حذف اطمینان دارید؟')) {
-    this.schoolService.deleteStudent(this.schoolId , student._id).subscribe(res => {
-      this.fetchStudents(this.schoolId);
-      alert('قرآن آموز با موفقیت حذف شد.');
-    },
-    err => this.errorService.handle(err , 'عملیات با مشکل مواجه شد'));
+      this.schoolService.deleteStudent(this.schoolId, student._id).subscribe(
+        res => {
+          this.fetchStudents(this.schoolId);
+          alert('قرآن آموز با موفقیت حذف شد.');
+        },
+        err => this.errorService.handle(err, 'عملیات با مشکل مواجه شد')
+      );
     }
   }
 

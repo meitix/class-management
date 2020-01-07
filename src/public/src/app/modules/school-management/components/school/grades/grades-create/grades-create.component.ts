@@ -21,6 +21,7 @@ export class GradesCreateComponent implements OnInit, OnDestroy {
   isProcessing: boolean;
   gradeId: string;
   newLesson: ILesson;
+  isLoading: boolean = false;
 
   grade: IGrade;
   gradeIdSubscription: Subscription;
@@ -46,7 +47,9 @@ export class GradesCreateComponent implements OnInit, OnDestroy {
     });
   }
   async fetchGrade(gradeId: string) {
+    this.isLoading = true;
     this.grade = await this.gradeService.fetchById(gradeId).toPromise();
+    this.isLoading = false;
   }
 
   async submit() {
@@ -55,7 +58,7 @@ export class GradesCreateComponent implements OnInit, OnDestroy {
       req = this.gradeService.update(this.gradeId, this.grade);
     }
     try {
-    this.isProcessing = true;
+      this.isProcessing = true;
       const res = await req.toPromise();
       this.isProcessing = false;
       alert('پایه با موفقیت ثبت شد');
@@ -63,7 +66,6 @@ export class GradesCreateComponent implements OnInit, OnDestroy {
       this.errorService.handle(e, 'مشکل در اتصال به سرور');
     }
   }
-
 
   saveLesson() {
     // check empty title.
@@ -83,7 +85,6 @@ export class GradesCreateComponent implements OnInit, OnDestroy {
     // reset the new lesson form.
     this.newLesson = new Lesson();
   }
-
 
   // delete the lesson.
   deleteLesson(lesson: ILesson) {

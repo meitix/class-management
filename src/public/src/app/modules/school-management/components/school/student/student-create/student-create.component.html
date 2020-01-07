@@ -25,6 +25,17 @@
         ></app-person-create>
       </div>
     </div>
+    <div *ngIf="isLoading">
+      <br />
+      <br />
+      <br />
+      <br />
+      <app-isloading></app-isloading>
+      <br />
+      <br />
+      <br />
+      <br />
+    </div>
     <div class="form-group text-center">
       <button class="btn btn-success" (click)="submit()">ثبت</button>
     </div>

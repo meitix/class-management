@@ -18,7 +18,7 @@ import {
   styleUrls: ['./student-create.component.css']
 })
 export class StudentCreateComponent implements OnInit, OnDestroy {
-  isLoading: Boolean = true;
+  isLoading: Boolean = false;
   schoolId: string;
   studentId: string;
 
@@ -48,12 +48,13 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
       if (this.studentId) {
         await this.getStudent(this.studentId);
       }
-      this.isLoading = false;
     });
   }
 
   async getStudent(studentId: string) {
+    this.isLoading = true;
     this.student = await this.schoolService.getStudent(studentId).toPromise();
+    this.isLoading = false;
   }
 
   async submit() {

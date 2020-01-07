@@ -4,7 +4,7 @@
     <h4>لیست کاربران</h4>
     <p>کاربران ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
   </div>
-  <div class="card-content">
+  <div *ngIf="!isLoading" class="card-content" >
     <table class="table">
       <thead *ngIf="schools && schools.length > 0">
         <th>کد</th>
@@ -54,5 +54,16 @@
     <div *ngIf="schools.length === 0">
       <p style="text-align:center">موردی یافت نشد</p>
     </div>
+  </div>
+  <div *ngIf="isLoading">
+    <br />
+    <br />
+    <br />
+    <br />
+    <app-isloading></app-isloading>
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
 </div>

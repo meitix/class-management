@@ -4,7 +4,7 @@
     <h4>لیست پایه ها</h4>
     <p>پایه های ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
   </div>
-  <div class="card-content">
+  <div *ngIf="!isLoading" class="card-content">
     <table class="table">
       <thead *ngIf="statuses && statuses.length > 0">
         <th>تاریخ</th>
@@ -25,5 +25,15 @@
     <div *ngIf="statuses.length === 0">
       <p style="text-align:center">موردی یافت نشد</p>
     </div>
+  </div>
+  <div *ngIf="isLoading">
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <app-isloading></app-isloading>
   </div>
 </div>

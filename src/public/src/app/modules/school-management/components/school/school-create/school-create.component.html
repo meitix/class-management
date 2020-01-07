@@ -4,7 +4,7 @@
     <h4>ایجاد مکتب جدید</h4>
     <p>در این قسمت میتوانید مکتب جدید تعریف کنید</p>
   </div>
-  <div class="card-content">
+  <div *ngIf="!isLoading" class="card-content">
     <form class="form" (ngSubmit)="submit(f)" #f="ngForm">
       <div class="row">
         <div
@@ -57,5 +57,15 @@
         <button class="btn btn-success">ثبت</button>
       </div>
     </form>
+  </div>
+  <div *ngIf="isLoading">
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <app-isloading></app-isloading>
   </div>
 </div>

@@ -5,6 +5,17 @@
     <p>قرآن آموزان ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
   </div>
   <div class="card-content">
-    <app-person-list [people]="students"></app-person-list>
+    <app-person-list *ngIf="!isLoading" [people]="students"></app-person-list>
+    <div *ngIf="isLoading">
+      <br />
+      <br />
+      <br />
+      <br />
+      <app-isloading></app-isloading>
+      <br />
+      <br />
+      <br />
+      <br />
+    </div>
   </div>
 </div>

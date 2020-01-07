@@ -14,6 +14,7 @@ export class ClassListComponent implements OnInit, OnDestroy {
   schoolIdSubscription: Subscription;
   schoolId: string;
   periodChangeSubscription: Subscription;
+  isLoading: boolean = true;
 
   constructor(
     private schoolService: SchoolService,
@@ -46,6 +47,7 @@ export class ClassListComponent implements OnInit, OnDestroy {
         )
         .subscribe(res => {
           this.classes = res;
+          this.isLoading = false;
         });
     }
   }

@@ -4,7 +4,7 @@
     <h4>مدیریت دانش آموزان کلاس</h4>
     <p>در این قسمت میتوانید دانش آموزان یک کلاس را مدیریت کنید</p>
   </div>
-  <div class="card-content">
+  <div *ngIf="!isLoading" class="card-content">
     <div class="row">
       <div class="col-md-5">
         <h3 class="heading"></h3>
@@ -32,5 +32,15 @@
         </button>
       </div>
     </div>
+  </div>
+  <div *ngIf="isLoading">
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <app-isloading></app-isloading>
   </div>
 </div>

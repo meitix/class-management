@@ -19,7 +19,7 @@ import { RoleService } from 'src/app/modules/authentication/services/role.servic
 })
 export class PersonnelCreateComponent implements OnInit, OnDestroy {
   isProcessing: boolean;
-  isLoading: boolean = true;
+  isLoading: boolean = false;
 
   schoolId: string;
   personId: string;
@@ -52,7 +52,7 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
       if (this.personId) {
         await this.fetchPersonnel(this.personId);
       }
-      this.isLoading = false;
+     
     });
 
     // load roles from server.
@@ -66,10 +66,13 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
       multiple: true
     };
   }
-  async fetchPersonnel(personId: string) {
+  async fetchPersonnel( personId: string )
+  {
+    this.isLoading = true;
     const data = await this.schoolService
       .getSinglePersonnel(this.schoolId, personId)
       .toPromise();
+      this.isLoading = false;
     this.person = data.person;
 
     this.roleIds = data.roles.map(r => r._id);

@@ -19,6 +19,7 @@ export class StatisticsCreateComponent implements OnInit {
   statistics: IStatistics;
   isUpdateMode = false;
   status: IClassStatus;
+  isLoading: boolean = true;
 
   constructor(
     private schoolService: SchoolService,
@@ -48,6 +49,7 @@ export class StatisticsCreateComponent implements OnInit {
           }
         });
       }
+      this.isLoading = false;
     });
   }
 

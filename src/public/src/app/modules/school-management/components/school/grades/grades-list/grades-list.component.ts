@@ -8,19 +8,20 @@ import { GradeService } from '../services/grade.service';
   styleUrls: ['./grades-list.component.css']
 })
 export class GradesListComponent implements OnInit {
-
   grades: IGrade[];
+  isLoading: boolean = true;
   constructor(private gradeService: GradeService) {
     this.grades = [];
-   }
+  }
 
   ngOnInit() {
-   this.fetchGridData();
+    this.fetchGridData();
   }
 
   fetchGridData() {
     this.gradeService.fetch().subscribe(res => {
       this.grades = res;
+      this.isLoading = false;
     });
   }
 

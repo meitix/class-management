@@ -8,20 +8,21 @@ import { ISchool } from '../../../models/edu/school.interface';
   styleUrls: ['./school-list.component.css']
 })
 export class SchoolListComponent implements OnInit {
-
   schools: ISchool[];
+  isLoading: boolean = true;
   constructor(private schoolService: SchoolService) {
     this.schools = [];
-   }
+  }
 
   ngOnInit() {
-   this.fetchGridData();
+    this.fetchGridData();
   }
 
   fetchGridData() {
     this.schoolService.fetch().subscribe(res => {
       this.schools = res;
     });
+    this.isLoading = false;
   }
 
   delete(id: string) {

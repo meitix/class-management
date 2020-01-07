@@ -5,7 +5,7 @@
     <h4>ایجاد کلاس جدید</h4>
     <p>در این قسمت میتوانید کلاس جدید تعریف کنید</p>
   </div>
-  <div class="card-content">
+  <div *ngIf="!isLoading" class="card-content">
     <div class="row">
       <!-- TEACHER SELECT  -->
       <div class="col-md-10 col-md-offset-1" *ngIf="isTeacherSearchMode">
@@ -80,5 +80,15 @@
         </button>
       </div>
     </div>
+  </div>
+  <div *ngIf="isLoading">
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <app-isloading></app-isloading>
   </div>
 </div>

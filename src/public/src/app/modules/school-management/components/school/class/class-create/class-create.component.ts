@@ -25,6 +25,7 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
     this.class = new Class();
   }
   isProcessing: boolean;
+  isLoading: boolean = false;
   classId: string;
 
   isTeacherSearchMode: boolean;
@@ -62,9 +63,11 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
 
   // fetch class for edit.
   async fetchClass(schoolId: string, classId: string) {
+    this.isLoading = true;
     this.class = await this.schoolService
       .getClassById(schoolId, classId)
       .toPromise();
+    this.isLoading = false;
   }
 
   // assign teacher to class.
@@ -90,7 +93,7 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
     } catch (e) {
       this.errorService.handle(e, 'مشکل در اتصال به سرور');
     }
-      this.isProcessing = false;
+    this.isProcessing = false;
   }
 
   // toggle teacher search mode.

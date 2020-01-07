@@ -4,7 +4,7 @@
     <h4>لیست کلاس ها</h4>
     <p>کلاس های ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
   </div>
-  <div class="card-content">
+  <div *ngIf="!isLoading" class="card-content">
     <table class="table">
       <thead *ngIf="classes && classes.length > 0">
         <th>عنوان</th>
@@ -45,5 +45,15 @@
     <div *ngIf="classes.length === 0">
       <p style="text-align:center">موردی یافت نشد</p>
     </div>
+  </div>
+  <div *ngIf="isLoading">
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <app-isloading></app-isloading>
   </div>
 </div>

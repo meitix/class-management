@@ -10,6 +10,7 @@ import { take } from 'rxjs/operators';
 })
 export class StatisticsListComponent implements OnInit {
   statuses: any = [];
+  isLoading: boolean = true;
   constructor(
     private schoolService: SchoolService,
     private route: ActivatedRoute
@@ -17,7 +18,8 @@ export class StatisticsListComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.pipe(take(1)).subscribe(async params => {
-      this.statuses = await this.getStatuses(params.classId);
+      this.statuses = await this.getStatuses( params.classId );
+      this.isLoading = false;
     });
   }
 

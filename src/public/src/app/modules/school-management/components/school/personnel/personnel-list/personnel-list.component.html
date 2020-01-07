@@ -1,10 +1,25 @@
 <app-personnel-start></app-personnel-start>
 <div class="card">
-    <div class="card-header" data-background-color="blue">
-      <h4>لیست پرسنل</h4>
-      <p>پرسنل ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
-    </div>
-    <div class="card-content">
-      <app-person-list [people]="personnel" (delete)="delete($event)"></app-person-list>
+  <div class="card-header" data-background-color="blue">
+    <h4>لیست پرسنل</h4>
+    <p>پرسنل ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
+  </div>
+  <div class="card-content">
+    <app-person-list
+      *ngIf="!isLoading"
+      [people]="personnel"
+      (delete)="delete($event)"
+    ></app-person-list>
+    <div *ngIf="isLoading">
+      <br />
+      <br />
+      <br />
+      <br />
+      <app-isloading></app-isloading>
+      <br />
+      <br />
+      <br />
+      <br />
     </div>
   </div>
+</div>
