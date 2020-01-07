@@ -36,6 +36,7 @@ import { StatisticsCreateComponent } from './components/school/class/statistics/
 import { StatisticsListComponent } from './components/school/class/statistics/statistics-list/statistics-list.component';
 import { DatePipe } from './pipes/date.pipe';
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
+import { IsloadingComponent } from '../../shared/loading/isloading/isloading.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { DpDatePickerModule } from 'ng2-jalali-date-picker';
     StatisticsCreateComponent,
     StatisticsListComponent,
     DatePipe,
+    IsloadingComponent
   ],
   imports: [
     CommonModule,
