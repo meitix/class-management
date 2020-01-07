@@ -19,15 +19,13 @@ export class PersonListComponent implements OnInit {
     this.deleteEvent = new EventEmitter();
   }
 
-  ngOnInit()
-  {
+  ngOnInit() {
     this.schoolIdSubscription = this.route.params.subscribe(params => {
       this.schoolId = params.id;
     });
   }
-  navigateToEdit(id)
-  {
-    this.router.navigate([`/school/${this.schoolId}/student/edit/${id}`]);
+  navigateToEdit(id) {
+    this.router.navigate([`${this.router.url}/edit/${id}`]);
   }
   delete(person: any) {
     this.deleteEvent.emit(person);
