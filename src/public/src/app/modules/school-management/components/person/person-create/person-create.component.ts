@@ -34,6 +34,9 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    this.person.birthDate = moment(this.person.birthDate).format(
+      'YYYY/MM/DD h:mm:ss'
+    );
     this.person.birthDate = moment.from(
       this.person.birthDate,
       'en',
