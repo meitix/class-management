@@ -9,7 +9,9 @@ export class ClassController {
       let data = null;
       // check if there is id in params read by id.
       if (req.params.classId)
-        data = await (Class.findById(req.params.classId).populate('teacher') as any).deepPopulate('students.info');
+        data = await (Class.findById(req.params.classId).populate(
+          'teacher'
+        ) as any).deepPopulate('students.info');
       // find by req.body in lack of id.
       else {
         const schoolId = new Types.ObjectId(req.params.id);
@@ -46,7 +48,7 @@ export class ClassController {
 
   // create.
   async create(req: Request, res: Response) {
-    delete req.body._id;
+    // delete req.body._id;
     const schoolId = req.params.id;
     // school id validation.
     if (!schoolId) {
@@ -69,7 +71,8 @@ export class ClassController {
     try {
       const result = await Class.findOneAndUpdate(
         { _id: id },
-        { $set: req.body }
+        { $set: req.body },
+        { runValidators: true }
       );
 
       res.json(result);
