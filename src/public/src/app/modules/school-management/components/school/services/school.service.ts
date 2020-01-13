@@ -72,6 +72,12 @@ export class SchoolService extends RestService<ISchool> {
     );
   }
 
+  getStudentByCode(studentCode: string) {
+    return this.get(`${this.url}${studentCode}/student`).pipe(
+      map(res => <any>res)
+    );
+  }
+
   // delete a single student.
   deleteStudent(schoolId: string, studentId: string) {
     return this.delete(`${this.url + schoolId}/student/${studentId}`);
@@ -87,6 +93,11 @@ export class SchoolService extends RestService<ISchool> {
   getSinglePersonnel(schoolId: string, personnelId: string) {
     return this.get(`${this.url + schoolId}/personnel/${personnelId}`).pipe(
       map(res => <IPersonnelViewModel>res)
+    );
+  }
+  getSinglePersonnelByCode(schoolId: string, personnelCode: string) {
+    return this.get(`${this.url + schoolId}/${personnelCode}/personnel`).pipe(
+      map(res => <any>res)
     );
   }
   // add personnel to school.
@@ -221,6 +232,7 @@ export class SchoolService extends RestService<ISchool> {
     localStorage.setItem('selectedPeriod', JSON.stringify(period));
     this.periodSelected.emit(period);
   }
+
   removeSelectedPriod() {
     localStorage.setItem('selectedPeriod', '');
   }
@@ -228,6 +240,7 @@ export class SchoolService extends RestService<ISchool> {
   removeAuthToken() {
     this.dropRequestoption();
   }
+
   appenAuthToken() {
     this.requestOption = this.initRequestOption();
   }
