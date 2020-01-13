@@ -52,7 +52,7 @@ export class PeopleController {
 
   // create.
   create(req: Request, res: Response) {
-    delete req.body._id;
+    // delete req.body._id;
     const person = new Person(req.body);
     person
       .save()
@@ -67,7 +67,11 @@ export class PeopleController {
   // edit.
   update(req: Request, res: Response) {
     const id = req.params.id;
-    Person.findOneAndUpdate({ _id: id }, { $set: req.body })
+    Person.findOneAndUpdate(
+      { _id: id },
+      { $set: req.body },
+      { runValidators: true }
+    )
       .then(r => {
         res.json(r);
       })
@@ -101,8 +105,8 @@ export class PeopleController {
         nationalCode: studentVM.parent.nationalCode
       });
 
-      // create new parent if is not already exists.
-      // create credentials for parent to login;
+      //create new parent if is not already exists.
+      //create credentials for parent to login;
       if (!parent) {
         parent = new Person(studentVM.parent);
         const user = new User({
@@ -151,7 +155,7 @@ export class PeopleController {
 
     try {
       // find people ids who matches the condition.
-      const peopleIds = await Person.find(condition , {_id: 1});
+      const peopleIds = await Person.find(condition, { _id: 1 });
       const students = await Student.find({
         school: schoolId,
         info: { $in: peopleIds.map(p => p._id) }
@@ -180,6 +184,35 @@ export class PeopleController {
     }
   }
 
+  async getStudentByCode(req: Request, res: Response) {
+    if (req.params.studentCode.length === 10) {
+      try {
+        const student = await Person.findOne({
+          nationalCode: req.params.studentCode
+        });
+        const result = await Student.findOne({ info: student._id })
+          .populate('parent')
+          .exec();
+        let parent = result.parent;
+        res.json({ parent, student });
+      } catch (err) {
+        res.status(400).send(err);
+      }
+    }
+    try {
+      const student = await Person.findOne({
+        code: req.params.studentCode
+      });
+      const result = await Student.findOne({ info: student._id })
+        .populate('parent')
+        .exec();
+      let parent = result.parent;
+      res.json({ parent, student });
+    } catch (err) {
+      res.status(400).send(err);
+    }
+  }
+
   // update student.
   async updateStudent(req: Request, res: Response) {
     const ssn = await Person.db.startSession();
@@ -190,18 +223,23 @@ export class PeopleController {
       delete req.body._id;
       await Student.updateOne(
         { _id: new Types.ObjectId(req.params.studentId) },
-        { $set: req.body }
+        { $set: req.body },
+        { runValidators: true }
       );
 
       // update student info - it should update the object using Person schema.
       const personId = new Types.ObjectId(req.body.info._id);
       delete req.body.info._id;
-      await Person.updateOne({ _id: personId }, req.body.info);
+      await Person.updateOne({ _id: personId }, req.body.info, {
+        runValidators: true
+      });
 
       // update student parent - it should update the object using Person schema.
       const parentId = new Types.ObjectId(req.body.parent._id);
       delete req.body.parent._id;
-      await Person.updateOne({ _id: parentId }, req.body.parent);
+      await Person.updateOne({ _id: parentId }, req.body.parent, {
+        runValidators: true
+      });
 
       // commit transaction.
       await ssn.commitTransaction();
@@ -239,28 +277,59 @@ export class PeopleController {
       res.status(400).send(e);
     }
   }
-  // get personnel by id.
+
   async getPersonnelById(req: Request, res: Response) {
     const schoolId = req.params.id;
     try {
       const personnelId = new Types.ObjectId(req.params.personnelId);
       const result = await School.findById({ _id: schoolId })
-        .populate('personnel.person')
         .populate('personnel.roles')
-        .select({ personnel: 1 });
-      // TODO: FixMe >>> this is the most shitty way I ever done in my life. it shouldn't be filtered after retrieving from DB.
-      // find the personnel info from schools personnel.
-      res.json(
-        _.filter(result.personnel, p =>
-          personnelId.equals(<any>p.person._id)
-        )[0]
-      );
+        .populate({
+          path: 'personnel.person',
+          match: { _id: personnelId }
+        });
+
+      res.json(_.filter(result.personnel, p => p.person)[0]);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+  }
+
+  async getPersonnelByCode(req: Request, res: Response) {
+    const schoolId = req.params.id;
+    const personalCode = req.params.personnelCode;
+    // if user search with national Code
+    if (personalCode.length === 10) {
+      try {
+        const result = await School.findById({ _id: schoolId })
+          .populate('personnel.roles')
+          .populate({
+            path: 'personnel.person',
+            match: { nationalCode: personalCode }
+          });
+
+        res.json(_.filter(result.personnel, p => p.person)[0]);
+      } catch (e) {
+        res.status(400).send(e);
+      }
+    }
+    // if user search with Code
+    try {
+      const result = await School.findById({ _id: schoolId })
+        .populate('personnel.roles')
+        .populate({
+          path: 'personnel.person',
+          match: { code: personalCode }
+        });
+
+      res.json(_.filter(result.personnel, p => p.person)[0]);
     } catch (e) {
       res.status(400).send(e);
     }
   }
 
   // add personnel to school.
+
   async addPersonnel(req: Request, res: Response) {
     const schoolId = new Types.ObjectId(req.params.id);
 
@@ -268,13 +337,15 @@ export class PeopleController {
     const ssn = await Person.db.startSession();
     ssn.startTransaction();
 
-    let person = await Person.findOne({
-      nationalCode: req.body.person.nationalCode
-    });
-    if (!person) person = new Person(req.body.person);
+    // let person = await Person.findOne({
+    //   nationalCode: req.body.person.nationalCode
+    // });
+    // if ( !person )
+    let person = new Person(req.body.person);
     try {
       // save person and add to schools personnel.
       await person.save();
+
       const result = await School.updateOne(
         { _id: schoolId },
         {
@@ -305,14 +376,16 @@ export class PeopleController {
     const personId = new Types.ObjectId(req.body.person._id);
     delete req.body.person._id;
     try {
-      Person.updateOne({ _id: personId }, req.body.person).exec();
+      await Person.updateOne({ _id: personId }, req.body.person, {
+        runValidators: true
+      }).exec();
       const result = await School.updateOne(
         { _id: schoolId, 'personnel.person': personId },
         { $set: { 'personnel.$.roles': req.body.roleIds } }
       );
       res.json(result);
     } catch (e) {
-      res.send(e);
+      res.status(500).send(e);
     }
   }
 
