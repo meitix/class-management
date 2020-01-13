@@ -27,7 +27,7 @@ export class SchoolController {
         res.json(r);
       })
       .catch(err => {
-        res.status(400).send(err.codeName);
+        res.status(400).send(err);
       });
   }
 
