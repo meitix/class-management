@@ -2,7 +2,14 @@ import { Schema, Model, model } from 'mongoose';
 import { IPerson } from '../interfaces/people/person.interface';
 
 export const PersonSchema = new Schema({
-  code: {type: String, required: true, index: true},
+  code: {
+    index: true,
+    type: String,
+    minlength: 5,
+    maxlength: 9,
+    unique: true,
+    required: true
+  },
   firstname: {
     index: true,
     type: String,
@@ -16,13 +23,16 @@ export const PersonSchema = new Schema({
   nationalCode: {
     index: true,
     type: String,
-    maxLength: 10,
-    minLength: 10
+    minlength: 10,
+    maxlength: 10,
+    unique: true,
+    required: true
   },
   mobile: {
-    type: String
+    type: String,
+    required: true
   },
-  tel: String,
+  tel: { type: String, required: true },
   birthDate: Date,
   description: String
 });
