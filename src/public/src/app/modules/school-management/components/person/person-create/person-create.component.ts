@@ -20,6 +20,8 @@ import * as moment from 'jalali-moment';
 })
 export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
   @Output() personUpdate: EventEmitter<IPerson>;
+  @Output() loadPersonByCode: EventEmitter<number>;
+  @Output() loadPersonByNationalCode: EventEmitter<number>;
 
   @Input() person: IPerson;
   @Input() enableSubmit: boolean;
@@ -30,6 +32,8 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
     private errorService: ErrorService
   ) {
     this.personUpdate = new EventEmitter<IPerson>();
+    this.loadPersonByCode = new EventEmitter<number>();
+    this.loadPersonByNationalCode = new EventEmitter<number>();
     this.person = new Person();
   }
 
@@ -70,6 +74,14 @@ export class PersonCreateComponent implements OnInit, OnChanges, OnDestroy {
 
   formChange() {
     this.personUpdate.emit(this.person);
+  }
+
+  loadRelatedDataByCode(code) {
+    this.loadPersonByCode.emit(code);
+  }
+
+  loadRelatedDataByNationalCode(nationalCode) {
+    this.loadPersonByNationalCode.emit(nationalCode);
   }
 
   ngOnDestroy(): void {}

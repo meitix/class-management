@@ -8,9 +8,13 @@ import { SchoolService } from '../../services/school.service';
 import { ActivatedRoute } from '@angular/router';
 import { ErrorService } from 'src/app/modules/base/services/error.service';
 
+import validator from 'validator';
+import * as moment from 'jalali-moment';
+
 // select2.
 import { Options } from 'select2';
 import { RoleService } from 'src/app/modules/authentication/services/role.service';
+import { FormValidatorService } from '../../../form-validator.service';
 
 @Component({
   selector: 'app-personnel-create',
@@ -35,7 +39,8 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
     private schoolService: SchoolService,
     private route: ActivatedRoute,
     private errorService: ErrorService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    private formValidatorService: FormValidatorService
   ) {
     this.person = new Person();
   }
@@ -52,7 +57,6 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
       if (this.personId) {
         await this.fetchPersonnel(this.personId);
       }
-     
     });
 
     // load roles from server.
@@ -66,13 +70,12 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
       multiple: true
     };
   }
-  async fetchPersonnel( personId: string )
-  {
+  async fetchPersonnel(personId: string) {
     this.isLoading = true;
     const data = await this.schoolService
       .getSinglePersonnel(this.schoolId, personId)
       .toPromise();
-      this.isLoading = false;
+    this.isLoading = false;
     this.person = data.person;
 
     this.roleIds = data.roles.map(r => r._id);
@@ -85,6 +88,16 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
   }
 
   async submit() {
+    const isValid = this.formValidatorService.personnelFormValidator(
+      this.person.nationalCode,
+      this.person.code,
+      this.person.firstname,
+      this.person.lastname,
+      this.person.mobile,
+      this.person.tel
+    );
+    if (!isValid) return;
+
     this.isProcessing = true;
 
     let req = this.schoolService.addPersonnel(
@@ -105,7 +118,16 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
       this.isProcessing = false;
       alert('پرسنل با موفقیت ثبت شد');
     } catch (e) {
-      this.errorService.handle(e, 'مشکل در اتصال به سرور');
+      if (e.error.code === 11000) {
+        if (e.error.errmsg.includes('code')) {
+          return this.errorService.handle(e, 'کد تکراری می باشد!');
+        }
+        if (e.error.errmsg.includes('nationalCode')) {
+          return this.errorService.handle(e, 'کد ملی تکراری می باشد!');
+        }
+      } else {
+        this.errorService.handle(e, 'مشکل در اتصال به سرور');
+      }
     }
   }
 
@@ -113,6 +135,80 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
     if (person) {
       this.person = person;
     }
+  }
+
+  loadPersonByCode(code) {
+    if (!this.personId) {
+      if (!code || code.length < 5 || !validator.isNumeric(code)) {
+        this.deleteFormIfPersonNotFound();
+        this.person.nationalCode = '';
+        return;
+      } else {
+        this.schoolService
+          .getSinglePersonnelByCode(this.schoolId, code)
+          .subscribe(res => {
+            if (!res) {
+              this.deleteFormIfPersonNotFound();
+              this.person.nationalCode = '';
+            } else {
+              this.person.nationalCode = res.person.nationalCode;
+              this.fillFormIfPersonIsFounded(res);
+            }
+          });
+      }
+    }
+  }
+
+  loadPersonByNationalCode(nationalCode) {
+    if (!this.personId) {
+      const regex = /^\d{10}$/;
+      const result = regex.exec(nationalCode);
+      if (!nationalCode || !result) {
+        this.deleteFormIfPersonNotFound();
+        this.person.code = '';
+        return;
+      } else {
+        this.schoolService
+          .getSinglePersonnelByCode(this.schoolId, nationalCode)
+          .subscribe(res => {
+            if (!res) {
+              this.person.code = '';
+              this.deleteFormIfPersonNotFound();
+            } else {
+              this.person.code = res.person.code;
+              this.fillFormIfPersonIsFounded(res);
+            }
+          });
+      }
+    }
+  }
+
+  deleteFormIfPersonNotFound() {
+    this.person.firstname = '';
+    this.person.lastname = '';
+    this.person.mobile = [];
+    this.person.tel = [];
+    this.person.description = '';
+
+    this.roles = [];
+    this.person.birthDate = '';
+  }
+
+  fillFormIfPersonIsFounded(res) {
+    this.person.firstname = res.person.firstname;
+    this.person.lastname = res.person.lastname;
+    this.person.mobile = res.person.mobile;
+    this.person.tel = res.person.tel;
+    this.person.description = res.person.description;
+    this.roles = res.person.roles;
+    this.person.birthDate = moment(res.person.birthDate).format(
+      'YYYY/MM/DD h:mm:ss'
+    );
+    this.person.birthDate = moment.from(
+      this.person.birthDate,
+      'en',
+      'YYYY/MM/DD'
+    );
   }
 
   ngOnDestroy(): void {

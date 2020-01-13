@@ -13,6 +13,8 @@
           [enableSubmit]="false"
           [person]="student.info"
           (personUpdate)="updateStudent($event)"
+          (loadPersonByCode)="loadPersonByCode($event)"
+          (loadPersonByNationalCode)="loadPersonByNationalCode($event)"
         ></app-person-create>
       </div>
       <div class="col-md-6">

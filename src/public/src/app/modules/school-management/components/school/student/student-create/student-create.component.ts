@@ -11,6 +11,9 @@ import {
   Person,
   IPerson
 } from 'src/app/modules/school-management/models/people/person.interface';
+import { FormValidatorService } from '../../../form-validator.service';
+import validator from 'validator';
+import * as moment from 'jalali-moment';
 
 @Component({
   selector: 'app-student-create',
@@ -29,7 +32,8 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
   constructor(
     private schoolService: SchoolService,
     private route: ActivatedRoute,
-    private errorService: ErrorService
+    private errorService: ErrorService,
+    private formValidatorService: FormValidatorService
   ) {
     this.student = new Student();
     this.student.parent = new Person();
@@ -58,6 +62,25 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
   }
 
   async submit() {
+    const studentIsValid = this.formValidatorService.studentFormValidator(
+      this.student.info.nationalCode,
+      this.student.info.code,
+      this.student.info.firstname,
+      this.student.info.lastname,
+      this.student.info.mobile,
+      this.student.info.tel
+    );
+    if (!studentIsValid) return;
+
+    const parentIsValid = this.formValidatorService.parentFormValidator(
+      this.student.parent.nationalCode,
+      this.student.parent.code,
+      this.student.parent.firstname,
+      this.student.parent.lastname,
+      this.student.parent.mobile,
+      this.student.parent.tel
+    );
+    if (!parentIsValid) return;
     this.student.period = this.schoolService.getSelectedPeriod();
     let req = this.schoolService.addStudent(this.schoolId, this.student);
     if (this.studentId) {
@@ -72,7 +95,16 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
 
       alert('قرآن آموز با موفقیت ثبت شد');
     } catch (e) {
-      this.errorService.handle(e, 'مشکل در اتصال به سرور');
+      if (e.error.code === 11000) {
+        if (e.error.errmsg.includes('code')) {
+          return this.errorService.handle(e, 'کد تکراری می باشد!');
+        }
+        if (e.error.errmsg.includes('nationalCode')) {
+          return this.errorService.handle(e, 'کد ملی تکراری می باشد!');
+        }
+      } else {
+        this.errorService.handle(e, 'مشکل در اتصال به سرور');
+      }
     }
   }
 
@@ -84,6 +116,101 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
 
   updateParent(parent: Person) {
     this.student.parent = parent;
+  }
+
+  loadPersonByCode(code) {
+    if (!this.studentId) {
+      if (!code || code.length < 5 || !validator.isNumeric(code)) {
+        this.deleteFormIfPersonNotFound();
+        this.student.info.nationalCode = '';
+        this.student.parent.nationalCode = '';
+        return;
+      } else {
+        this.schoolService.getStudentByCode(code).subscribe(res => {
+          if (!res) {
+            this.deleteFormIfPersonNotFound();
+            this.student.info.nationalCode = '';
+            this.student.parent.nationalCode = '';
+          } else {
+            this.student.info.nationalCode = res.student.nationalCode;
+            this.student.parent.nationalCode = res.parent.nationalCode;
+            this.student.parent.code = res.parent.code;
+            this.fillFormIfPersonIsFounded(res);
+          }
+        });
+      }
+    }
+  }
+
+  loadPersonByNationalCode(nationalCode) {
+    if (!this.studentId) {
+      const regex = /^\d{10}$/;
+      const result = regex.exec(nationalCode);
+      if (!nationalCode || !result) {
+        this.deleteFormIfPersonNotFound();
+        this.student.info.code = '';
+        this.student.parent.code = '';
+        return;
+      } else {
+        this.schoolService.getStudentByCode(nationalCode).subscribe(res => {
+          if (!res) {
+            this.student.info.code = '';
+            this.student.parent.code = '';
+            this.deleteFormIfPersonNotFound();
+          } else {
+            this.student.info.code = res.student.code;
+            this.student.parent.code = res.parent.code;
+            this.student.parent.nationalCode = res.parent.nationalCode;
+            this.fillFormIfPersonIsFounded(res);
+          }
+        });
+      }
+    }
+  }
+
+  deleteFormIfPersonNotFound() {
+    this.student.info.firstname = '';
+    this.student.info.lastname = '';
+    this.student.info.mobile = [];
+    this.student.info.tel = [];
+    this.student.info.description = '';
+    this.student.info.birthDate = '';
+
+    this.student.parent.birthDate = '';
+    this.student.parent.firstname = '';
+    this.student.parent.lastname = '';
+    this.student.parent.mobile = [];
+    this.student.parent.tel = [];
+    this.student.parent.description = '';
+  }
+
+  fillFormIfPersonIsFounded(res) {
+    this.student.info.firstname = res.student.firstname;
+    this.student.info.lastname = res.student.lastname;
+    this.student.info.mobile = res.student.mobile;
+    this.student.info.tel = res.student.tel;
+    this.student.info.description = res.student.description;
+    this.student.info.birthDate = moment(res.student.birthDate).format(
+      'YYYY/MM/DD h:mm:ss'
+    );
+    this.student.info.birthDate = moment.from(
+      this.student.info.birthDate,
+      'en',
+      'YYYY/MM/DD'
+    );
+    this.student.parent.firstname = res.parent.firstname;
+    this.student.parent.lastname = res.parent.lastname;
+    this.student.parent.mobile = res.parent.mobile;
+    this.student.parent.tel = res.parent.tel;
+    this.student.parent.description = res.parent.description;
+    this.student.parent.birthDate = moment(res.parent.birthDate).format(
+      'YYYY/MM/DD h:mm:ss'
+    );
+    this.student.parent.birthDate = moment.from(
+      this.student.parent.birthDate,
+      'en',
+      'YYYY/MM/DD'
+    );
   }
 
   ngOnDestroy(): void {
