@@ -7,9 +7,9 @@ import { AuthService } from './modules/authentication/services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-
+  user;
   constructor(private authService: AuthService) {}
   ngOnInit(): void {
-
+    this.user = this.authService.getCurrentUser();
   }
 }

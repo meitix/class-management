@@ -9,7 +9,7 @@
   />
 </div>
 
-<table class="table table-striped" *ngIf="students && students.length > 0;else notFound">
+<table class="table table-striped" *ngIf="students && students.length > 0">
   <thead>
     <tr>
       <th>کد</th>
@@ -32,10 +32,9 @@
       <td>{{ student.info.mobile }}</td>
     </tr>
   </tbody>
-
 </table>
 <ng-template #notFount>
-    <div class="text-center">
-      موردی یافت نشد
-    </div>
+  <div class="text-center">
+    موردی یافت نشد
+  </div>
 </ng-template>

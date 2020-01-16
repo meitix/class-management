@@ -5,7 +5,7 @@ import { SchoolCreateComponent } from './components/school/school-create/school-
 import { SchoolStartComponent } from './components/school/school-start/school-start.component';
 import { SchoolRoutingModule } from './components/school/school-routing/school-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActiveStatusPipe } from '../users/pipes/active-status.pipe';
+import { ActiveStatusPipe } from '../school-management/pipes/active-status.pipe';
 import { PersonStartComponent } from './components/person/person-start/person-start.component';
 import { PersonCreateComponent } from './components/person/person-create/person-create.component';
 import { PersonListComponent } from './components/person/person-list/person-list.component';
