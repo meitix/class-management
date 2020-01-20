@@ -7,12 +7,11 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class RoleService extends RestService<IRole> {
-
   constructor(injector: Injector) {
-    super('roles' , injector);
-   }
+    super('roles', injector);
+  }
 
-  // getRoles() {
-  //  return this.get(this.url).pipe(map(res => <Array<IRole>>res));
-  // }
+  getRoles() {
+    return this.get(this.url).pipe(map(res => <Array<IRole>>res));
+  }
 }
