@@ -151,6 +151,7 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
               this.deleteFormIfPersonNotFound();
               this.person.nationalCode = '';
             } else {
+              this.getRoles();
               this.person.nationalCode = res.person.nationalCode;
               this.fillFormIfPersonIsFounded(res);
             }
@@ -200,7 +201,7 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
     this.person.mobile = res.person.mobile;
     this.person.tel = res.person.tel;
     this.person.description = res.person.description;
-    this.roles = res.person.roles;
+    this.roleIds = res.roles.map(r => r._id);
     this.person.birthDate = moment(res.person.birthDate).format(
       'YYYY/MM/DD h:mm:ss'
     );
