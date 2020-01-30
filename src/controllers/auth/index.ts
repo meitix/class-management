@@ -11,19 +11,29 @@ import { Role } from '../../models/entities/role.entity';
 export class AuthController {
   async login(req: Request, res: Response) {
     const credentials = pick(req.body, ['username', 'password']);
-    const jwtPayload: {id: string , roles: IRole[] , school?: string} = {id: '', roles: []};
+    const jwtPayload: {
+      id: string;
+      roles: IRole[];
+      school?: string;
+      userType: string;
+    } = {
+      id: '',
+      roles: [],
+      userType: ''
+    };
     try {
-      let user = <IUser>(
-        await (User as any).findByCredentials(credentials)
-      );
+      let user = <IUser>await (User as any).findByCredentials(credentials);
       if (!user) {
         throw new Error('نام کاربری یا کلمه عبور اشتباه است');
       }
       // add user id to jwt payload object.
       jwtPayload.id = user.id;
+      jwtPayload.userType = user.userType;
       if (user.userType === 'user') {
         // get school information to user role in the school.
-        const school = <ISchool>await School.findOne({'personnel.person': user.info.id})
+        const school = <ISchool>await School.findOne({
+          'personnel.person': user.info.id
+        })
           .select({ _id: 1, personnel: 1 })
           .populate('personnel.roles')
           .exec();
@@ -33,20 +43,29 @@ export class AuthController {
             'مدرسه مربوط به شما یافت نشد. با مدیر سیستم تماس بگیرید.'
           );
         }
-        
+
         // find user roles in the school.
-        jwtPayload.roles = school.personnel.find(p => p.person.equals(user.info.id)).roles;
+        jwtPayload.roles = school.personnel.find(p =>
+          p.person.equals(user.info.id)
+        ).roles;
         jwtPayload.school = school.id;
-      }
-      else {
-        jwtPayload.roles = [new Role({title: 'ادمین', accessibility: {title: 'manage-schools' , accessLevel: 4} })];
+      } else {
+        jwtPayload.roles = [
+          new Role({
+            title: 'ادمین کل',
+            accessibility: { title: 'admin-schools', accessLevel: 4 }
+          })
+        ];
       }
 
       // generate JWT.
       const token = tokenManager.generate(jwtPayload);
       // prepare and send the result.
-      const result: any = {token , roles: jwtPayload.roles};
-      if(jwtPayload.school) result.schoolId = jwtPayload.school;
+      const result: any = { token, roles: jwtPayload.roles };
+      if (jwtPayload.school) {
+        result.schoolId = jwtPayload.school;
+        result.id = user.info._id;
+      }
       res.send(result);
     } catch (e) {
       console.log(e);
