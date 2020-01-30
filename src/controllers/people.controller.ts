@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import { Person } from '../models/entities/people.schema';
+import { Role } from '../models/entities/role.entity';
 import { IPerson } from '../models/interfaces/people/person.interface';
+import tokenManager from '../helpers/token.manager';
 import { Types, Mongoose } from 'mongoose';
 import * as _ from 'lodash';
 import { School } from '../models/entities/school.entity';
@@ -29,7 +31,13 @@ export class PeopleController {
       return;
     }
 
-    const school = await School.findById(schoolId);
+    let teacherRoleId=  await (await Role.findOne( { title: 'معلم' } ))._id;
+    let school = await School.findById(schoolId);
+    school.personnel = school.personnel.filter(m => {
+      return m.roles.find(r => {
+        return r.toString() === teacherRoleId.toString();
+      });
+    });
 
     // search condition.
     const condition = {
@@ -45,8 +53,7 @@ export class PeopleController {
     };
 
     // search people by term.
-    const result = await Person.find(condition);
-
+    let result = await Person.find(condition);
     res.json(result);
   }
 
@@ -185,28 +192,35 @@ export class PeopleController {
   }
 
   async getStudentByCode(req: Request, res: Response) {
+    let student;
+    let result;
+    let parent;
     if (req.params.studentCode.length === 10) {
       try {
-        const student = await Person.findOne({
+        student = await Person.findOne({
           nationalCode: req.params.studentCode
         });
-        const result = await Student.findOne({ info: student._id })
+        result = await Student.findOne({ info: student._id })
           .populate('parent')
           .exec();
-        let parent = result.parent;
+        if (result) {
+          parent = result.parent;
+        }
         res.json({ parent, student });
       } catch (err) {
         res.status(400).send(err);
       }
     }
     try {
-      const student = await Person.findOne({
+      student = await Person.findOne({
         code: req.params.studentCode
       });
-      const result = await Student.findOne({ info: student._id })
+      result = await Student.findOne({ info: student._id })
         .populate('parent')
         .exec();
-      let parent = result.parent;
+      if (result) {
+        parent = result.parent;
+      }
       res.json({ parent, student });
     } catch (err) {
       res.status(400).send(err);
@@ -254,10 +268,7 @@ export class PeopleController {
   async deleteStudent(req: Request, res: Response) {
     try {
       const studentId = new Types.ObjectId(req.params.studentId);
-      const result = await Person.updateOne(
-        { 'children._id': studentId },
-        { $pull: { children: { _id: studentId } } }
-      );
+      const result = await Student.deleteOne({ _id: studentId });
       res.json(result);
     } catch (err) {
       res.status(400).send(err);
@@ -329,10 +340,23 @@ export class PeopleController {
   }
 
   // add personnel to school.
-
   async addPersonnel(req: Request, res: Response) {
-    const schoolId = new Types.ObjectId(req.params.id);
+    let token = req.header('authorization');
+    const reqUser = tokenManager.decodeToken(token);
 
+    const adminRole = await Role.findOne({ title: 'ادمین' });
+    let reqBodyHasAdminRole = req.body.roleIds
+      .map(m => m === adminRole._id.toString())
+      .includes(true);
+    if (reqBodyHasAdminRole) {
+      if (reqUser.userType !== 'superAdmin') {
+        return res
+          .status(403)
+          .send('شما دسترسی برای اعطا کردن رول ادمین ندارید!');
+      }
+    }
+
+    const schoolId = new Types.ObjectId(req.params.id);
     // begin transaction
     const ssn = await Person.db.startSession();
     ssn.startTransaction();
@@ -372,6 +396,22 @@ export class PeopleController {
 
   // add personnel to school.
   async updatePersonnel(req: Request, res: Response) {
+    let token = req.header('authorization');
+    const reqUser = tokenManager.decodeToken(token);
+
+    // if body has admin role for updating , user only should be superAdmin;
+    const adminRole = await Role.findOne({ title: 'ادمین' });
+    let reqBodyHasAdminRole = req.body.roleIds
+      .map(m => m === adminRole._id.toString())
+      .includes(true);
+
+    if (reqBodyHasAdminRole) {
+      if (reqUser.userType !== 'superAdmin') {
+        return res
+          .status(403)
+          .send('شما دسترسی به اعطا کردن رول ادمین را ندارید!');
+      }
+    }
     const schoolId = new Types.ObjectId(req.params.id);
     const personId = new Types.ObjectId(req.body.person._id);
     delete req.body.person._id;
