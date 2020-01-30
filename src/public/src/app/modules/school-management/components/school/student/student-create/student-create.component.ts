@@ -121,20 +121,23 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
   loadPersonByCode(code) {
     if (!this.studentId) {
       if (!code || code.length < 5 || !validator.isNumeric(code)) {
-        this.deleteFormIfPersonNotFound();
-        this.student.info.nationalCode = '';
-        this.student.parent.nationalCode = '';
+        // this.deleteFormIfPersonNotFound();
+        // this.student.info.nationalCode = '';
+        // this.student.parent.nationalCode = '';
         return;
       } else {
         this.schoolService.getStudentByCode(code).subscribe(res => {
           if (!res) {
-            this.deleteFormIfPersonNotFound();
-            this.student.info.nationalCode = '';
-            this.student.parent.nationalCode = '';
+            // this.deleteFormIfPersonNotFound();
+            // this.student.info.nationalCode = '';
+            // this.student.parent.nationalCode = '';
           } else {
+            console.log(res.parent);
             this.student.info.nationalCode = res.student.nationalCode;
-            this.student.parent.nationalCode = res.parent.nationalCode;
-            this.student.parent.code = res.parent.code;
+            if (res.parent) {
+              this.student.parent.nationalCode = res.parent.nationalCode;
+              this.student.parent.code = res.parent.code;
+            }
             this.fillFormIfPersonIsFounded(res);
           }
         });
@@ -147,20 +150,22 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
       const regex = /^\d{10}$/;
       const result = regex.exec(nationalCode);
       if (!nationalCode || !result) {
-        this.deleteFormIfPersonNotFound();
-        this.student.info.code = '';
-        this.student.parent.code = '';
+        // this.deleteFormIfPersonNotFound();
+        // this.student.info.code = '';
+        // this.student.parent.code = '';
         return;
       } else {
         this.schoolService.getStudentByCode(nationalCode).subscribe(res => {
           if (!res) {
-            this.student.info.code = '';
-            this.student.parent.code = '';
-            this.deleteFormIfPersonNotFound();
+            // this.student.info.code = '';
+            // this.student.parent.code = '';
+            // this.deleteFormIfPersonNotFound();
           } else {
             this.student.info.code = res.student.code;
-            this.student.parent.code = res.parent.code;
-            this.student.parent.nationalCode = res.parent.nationalCode;
+            if (res.parent) {
+              this.student.parent.nationalCode = res.parent.nationalCode;
+              this.student.parent.code = res.parent.code;
+            }
             this.fillFormIfPersonIsFounded(res);
           }
         });
@@ -198,19 +203,21 @@ export class StudentCreateComponent implements OnInit, OnDestroy {
       'en',
       'YYYY/MM/DD'
     );
-    this.student.parent.firstname = res.parent.firstname;
-    this.student.parent.lastname = res.parent.lastname;
-    this.student.parent.mobile = res.parent.mobile;
-    this.student.parent.tel = res.parent.tel;
-    this.student.parent.description = res.parent.description;
-    this.student.parent.birthDate = moment(res.parent.birthDate).format(
-      'YYYY/MM/DD h:mm:ss'
-    );
-    this.student.parent.birthDate = moment.from(
-      this.student.parent.birthDate,
-      'en',
-      'YYYY/MM/DD'
-    );
+    if (res.parent) {
+      this.student.parent.firstname = res.parent.firstname;
+      this.student.parent.lastname = res.parent.lastname;
+      this.student.parent.mobile = res.parent.mobile;
+      this.student.parent.tel = res.parent.tel;
+      this.student.parent.description = res.parent.description;
+      this.student.parent.birthDate = moment(res.parent.birthDate).format(
+        'YYYY/MM/DD h:mm:ss'
+      );
+      this.student.parent.birthDate = moment.from(
+        this.student.parent.birthDate,
+        'en',
+        'YYYY/MM/DD'
+      );
+    }
   }
 
   ngOnDestroy(): void {
