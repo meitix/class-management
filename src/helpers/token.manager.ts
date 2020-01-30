@@ -1,5 +1,6 @@
 import { resolve } from 'path';
 import { sign } from 'jsonwebtoken';
+import * as jwt_decode from 'jwt-decode';
 import { readFileSync } from 'fs';
 import expressJWT = require('express-jwt');
 
@@ -26,6 +27,11 @@ class TokenManager {
       secret: this.secretKey,
       credentialsRequired: false
     });
+  }
+
+  decodeToken(token) {
+    const decoded = jwt_decode(token);
+    return decoded;
   }
 }
 
