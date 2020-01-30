@@ -118,6 +118,9 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
       this.isProcessing = false;
       alert('پرسنل با موفقیت ثبت شد');
     } catch (e) {
+      if (e.status === 403) {
+        return this.errorService.handle(e, e.error);
+      }
       if (e.error.code === 11000) {
         if (e.error.errmsg.includes('code')) {
           return this.errorService.handle(e, 'کد تکراری می باشد!');
@@ -140,16 +143,16 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
   loadPersonByCode(code) {
     if (!this.personId) {
       if (!code || code.length < 5 || !validator.isNumeric(code)) {
-        this.deleteFormIfPersonNotFound();
-        this.person.nationalCode = '';
+        // this.deleteFormIfPersonNotFound();
+        // this.person.nationalCode = '';
         return;
       } else {
         this.schoolService
           .getSinglePersonnelByCode(this.schoolId, code)
           .subscribe(res => {
             if (!res) {
-              this.deleteFormIfPersonNotFound();
-              this.person.nationalCode = '';
+              // this.deleteFormIfPersonNotFound();
+              // this.person.nationalCode = '';
             } else {
               this.getRoles();
               this.person.nationalCode = res.person.nationalCode;
@@ -165,16 +168,16 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
       const regex = /^\d{10}$/;
       const result = regex.exec(nationalCode);
       if (!nationalCode || !result) {
-        this.deleteFormIfPersonNotFound();
-        this.person.code = '';
+        // this.deleteFormIfPersonNotFound();
+        // this.person.code = '';
         return;
       } else {
         this.schoolService
           .getSinglePersonnelByCode(this.schoolId, nationalCode)
           .subscribe(res => {
             if (!res) {
-              this.person.code = '';
-              this.deleteFormIfPersonNotFound();
+              // this.person.code = '';
+              // this.deleteFormIfPersonNotFound();
             } else {
               this.person.code = res.person.code;
               this.fillFormIfPersonIsFounded(res);
@@ -192,6 +195,7 @@ export class PersonnelCreateComponent implements OnInit, OnDestroy {
     this.person.description = '';
 
     this.roles = [];
+    this.roleIds = [];
     this.person.birthDate = '';
   }
 
