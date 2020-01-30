@@ -11,5 +11,7 @@ export class PersonService extends RestService<IPerson> {
   constructor(injector: Injector) {
     super('person' , injector);
   }
-
+  appenAuthToken() {
+    this.requestOption = this.initRequestOption();
+  }
 }

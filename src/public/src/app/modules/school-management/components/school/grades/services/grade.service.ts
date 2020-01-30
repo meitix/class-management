@@ -9,5 +9,8 @@ export class GradeService extends RestService<IGrade> {
 
   constructor(injector: Injector) {
     super('grades', injector);
-   }
+  }
+  appenAuthToken() {
+    this.requestOption = this.initRequestOption();
+  }
 }

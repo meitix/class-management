@@ -6,8 +6,10 @@ import { IClass } from 'src/app/modules/school-management/models/edu/class.inter
   providedIn: 'root'
 })
 export class ClassService extends RestService<IClass> {
-
   constructor(injector: Injector) {
     super('class', injector);
-   }
+  }
+  appenAuthToken() {
+    this.requestOption = this.initRequestOption();
+  }
 }
