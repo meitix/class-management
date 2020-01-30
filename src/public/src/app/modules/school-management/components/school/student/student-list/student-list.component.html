@@ -2,10 +2,16 @@
 <div class="card">
   <div class="card-header" data-background-color="blue">
     <h4>لیست قرآن آموزان</h4>
-    <p>قرآن آموزان ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
+    <p>
+      قرآن آموزان ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید
+    </p>
   </div>
   <div class="card-content">
-    <app-person-list *ngIf="!isLoading" [people]="students"></app-person-list>
+    <app-person-list
+      *ngIf="!isLoading"
+      [people]="students"
+      (delete)="delete($event)"
+    ></app-person-list>
     <div *ngIf="isLoading">
       <br />
       <br />
