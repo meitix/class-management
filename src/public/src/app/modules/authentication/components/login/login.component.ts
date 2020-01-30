@@ -4,6 +4,10 @@ import { NgForm } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { catchError, tap } from 'rxjs/operators';
 import { SchoolService } from 'src/app/modules/school-management/components/school/services/school.service';
+import { PersonService } from 'src/app/modules/school-management/components/person/services/person.service';
+import { GradeService } from 'src/app/modules/school-management/components/school/grades/services/grade.service';
+import { ClassService } from 'src/app/modules/school-management/components/school/class/services/class.service';
+import { UserService } from 'src/app/modules/users/sevices/user.service';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +27,10 @@ export class LoginComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private schoolService: SchoolService
+    private schoolService: SchoolService,
+    private personService: PersonService,
+    private gardeService: GradeService,
+    private classService: ClassService
   ) {}
 
   submit() {
@@ -41,6 +48,9 @@ export class LoginComponent {
             // make user logged in.
             this.authService.setCurrentUser(res);
             this.schoolService.appenAuthToken();
+            this.gardeService.appenAuthToken();
+            this.personService.appenAuthToken();
+            this.classService.appenAuthToken();
 
             if (res.schoolId) {
               // create redirect url based on user role.
