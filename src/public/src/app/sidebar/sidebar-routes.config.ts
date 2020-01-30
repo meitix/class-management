@@ -1,31 +1,48 @@
 import { RouteInfo } from './sidebar.metadata';
 
 export const ROUTES: { ability: string; routes: RouteInfo[] }[] = [
-  {ability: 'manage-schools' , routes: [
-    { path: '', title: 'داشبورد', icon: 'dashboard', class: '' },
-    {
-      path: 'school',
-      title: 'مکتب ها',
-      icon: 'format_align_right',
-      class: ''
-    },
-    {
-      path: 'school/grades',
-      title: 'پایه ها',
-      icon: 'format_align_right',
-      class: ''
-    }]},
-
-    // financial transactions routes.
+  // manage-schools
   {
-    ability: 'financial-transactions',
-    routes: []
+    ability: 'admin-schools',
+    routes: [
+      { path: '', title: 'داشبورد', icon: 'dashboard', class: '' },
+      {
+        path: 'school',
+        title: 'مکتب ها',
+        icon: 'format_align_right',
+        class: ''
+      },
+      {
+        path: 'school/grades',
+        title: 'پایه ها',
+        icon: 'format_align_right',
+        class: ''
+      }
+    ]
   },
 
-  // staffs.
+  // manage-school
   {
-    ability: 'staffs',
+    ability: 'manage-school',
     routes: [
+      {
+        path: '{schoolPathWithId}',
+        title: 'داشبورد',
+        icon: 'dashboard',
+        class: ''
+      },
+      {
+        path: '{schoolPathWithId}/classes',
+        title: 'مدیریت کلاس ها',
+        icon: 'school',
+        class: ''
+      },
+      {
+        path: '{schoolPathWithId}/student',
+        title: 'مدیریت قرآن آموزان',
+        icon: 'face',
+        class: ''
+      },
       {
         path: '{schoolPathWithId}/personnel',
         title: 'مدیریت کارمندان',
@@ -35,14 +52,51 @@ export const ROUTES: { ability: string; routes: RouteInfo[] }[] = [
     ]
   },
 
-  // classes.
+  // financial transactions routes.
   {
-    ability: 'classes',
+    ability: 'financial-transactions',
+    routes: []
+  },
+
+  // staffs.
+  {
+    ability: 'manage-personnel',
     routes: [
+      {
+        path: '{schoolPathWithId}',
+        title: 'داشبورد',
+        icon: 'dashboard',
+        class: ''
+      },
+      {
+        path: '{schoolPathWithId}/personnel',
+        title: 'مدیریت کارمندان',
+        icon: 'card_travel',
+        class: ''
+      }
+    ]
+  },
+
+  // manage-classes.
+  {
+    ability: 'manage-class',
+    routes: [
+      {
+        path: '{schoolPathWithId}',
+        title: 'داشبورد',
+        icon: 'dashboard',
+        class: ''
+      },
       {
         path: '{schoolPathWithId}/classes',
         title: 'مدیریت کلاس ها',
         icon: 'school',
+        class: ''
+      },
+      {
+        path: '{schoolPathWithId}/student',
+        title: 'مدیریت قرآن آموزان',
+        icon: 'face',
         class: ''
       }
     ]
@@ -51,41 +105,55 @@ export const ROUTES: { ability: string; routes: RouteInfo[] }[] = [
   // periods.
   {
     ability: 'periods',
-    routes: [{
-      path: '{schoolPathWithId}/periods',
-      title: 'مدیریت دوره ها',
-      icon: 'date_range',
-      class: ''
-    }]
+    routes: [
+      {
+        path: '{schoolPathWithId}/periods',
+        title: 'مدیریت دوره ها',
+        icon: 'date_range',
+        class: ''
+      }
+    ]
   },
 
   // reports.
   {
     ability: 'reports',
-    routes: [{
-      path: '{schoolPathWithId}/reports',
-      title: 'گزارشات',
-      icon: 'file_copy',
-      class: ''
-    }]
+    routes: [
+      {
+        path: '{schoolPathWithId}/reports',
+        title: 'گزارشات',
+        icon: 'file_copy',
+        class: ''
+      }
+    ]
   },
   // teacher.
   {
-    ability: 'student-status',
-    routes: [{
-      path: '{schoolPathWithId}/classes',
-      title: 'مدیریت کلاس ها',
-      icon: 'file_copy',
-      class: ''
-    }]
+    ability: 'manage-class-statistics',
+    routes: [
+      {
+        path: '{schoolPathWithId}',
+        title: 'داشبورد',
+        icon: 'dashboard',
+        class: ''
+      },
+      {
+        path: '{schoolPathWithId}/classes',
+        title: 'مدیریت آمار',
+        icon: 'file_copy',
+        class: ''
+      }
+    ]
   },
   {
     ability: 'own-students-status',
-    routes: [{
-      path: '{schoolPathWithId}/classes',
-      title: 'مدیریت کلاس ها',
-      icon: 'file_copy',
-      class: ''
-    }]
+    routes: [
+      {
+        path: '{schoolPathWithId}/classes/',
+        title: 'مدیریت کلاس ها',
+        icon: 'file_copy',
+        class: ''
+      }
+    ]
   }
 ];

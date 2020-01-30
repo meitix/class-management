@@ -22,24 +22,47 @@ export class SidebarComponent implements OnInit {
     private menuService: MenuService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.currentUser = this.authService.getCurrentUser();
     if (this.currentUser) {
-      this.menuItems = this.getMenuItems(this.currentUser);
+      this.menuItems = await this.getMenuItems(this.currentUser);
       $.getScript('../../assets/js/sidebar-moving-tab.js');
     }
   }
 
-  getMenuItems(loginResult: ILoginResult) {
+  async getMenuItems(loginResult: ILoginResult) {
     let menuItems = [];
-    let items: any[];
-    loginResult.roles.forEach(r => {
-      items = r.accessibility.map(a => this.menuService.getMenuItems(a.title));
+    let items: any[] = [];
+
+    let hasAdmin = loginResult.roles.find(r => {
+      if (r.title === 'ادمین') {
+        return true;
+      }
     });
-    items = flatten(items);
+    await loginResult.roles.forEach(r => {
+      if (hasAdmin) {
+        items = this.menuService.getMenuItems('manage-school');
+      } else {
+        let item = r.accessibility.map(a =>
+          this.menuService.getMenuItems(a.title)
+        );
+        items.push(item);
+      }
+    });
+
+    items = flatten(flatten(items));
     items = items.filter(i => i);
     menuItems = menuItems.concat(items);
+    menuItems = this.getUniqueItems(menuItems);
+
     return menuItems;
+  }
+
+  getUniqueItems(array) {
+    let unique = array.filter(
+      (set => f => !set.has(f.title) && set.add(f.title))(new Set())
+    );
+    return unique;
   }
 
   logout() {
