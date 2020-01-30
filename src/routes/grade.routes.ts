@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { GradeController } from '../controllers/grade.controller';
+const authSuperAdmin = require('../middlewares/authSuperAdmin');
+const authGrade = require('../middlewares/authClass');
 
 export class GradeRouter {
   router: Router;
@@ -16,11 +18,11 @@ export class GradeRouter {
   }
 
   private assignTheRoutesToController() {
-    this.router.get('/', this.gradeController.fetch);
-    this.router.get('/:id', this.gradeController.fetch);
-    this.router.post('/', this.gradeController.create);
-    this.router.put('/:id', this.gradeController.update);
-    this.router.delete('/:id', this.gradeController.delete);
+    this.router.get('/', authGrade, this.gradeController.fetch);
+    this.router.get('/:id', authSuperAdmin, this.gradeController.fetch);
+    this.router.post('/', authSuperAdmin, this.gradeController.create);
+    this.router.put('/:id', authSuperAdmin, this.gradeController.update);
+    this.router.delete('/:id', authSuperAdmin, this.gradeController.delete);
   }
 }
 
