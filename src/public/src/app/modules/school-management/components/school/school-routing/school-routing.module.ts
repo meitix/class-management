@@ -22,18 +22,41 @@ import { ClassStatusComponent } from '../class/class-status/class-status.compone
 import { StatisticsStartComponent } from '../class/statistics/statistics-start/statistics-start.component';
 import { StatisticsListComponent } from '../class/statistics/statistics-list/statistics-list.component';
 import { StatisticsCreateComponent } from '../class/statistics/statistics-create/statistics-create.component';
+import { AuthGuardAdmin } from '../services/authGuard/authGuard.admin';
+import { AuthGuardStudent } from '../services/authGuard/authGuard.student';
+import { AuthGuardPersonnel } from '../services/authGuard/authGaurd.personnel';
+import { AuthGuardStudentStatistic } from '../services/authGuard/authGuard.studentStatistic';
+import { AuthGuardSuperAdmin } from '../services/authGuard/authGuard.superAdmin';
 
 const schoolRoutes: Routes = [
   {
     path: '',
     children: [
-      { path: '', component: SchoolListComponent, pathMatch: 'full' },
-      { path: 'create', component: SchoolCreateComponent },
-      { path: 'edit/:id', component: SchoolCreateComponent },
-      { path: ':id/periods', component: PeriodCreateComponent },
+      {
+        path: '',
+        canActivate: [AuthGuardSuperAdmin],
+        component: SchoolListComponent,
+        pathMatch: 'full'
+      },
+      {
+        path: 'create',
+        canActivate: [AuthGuardSuperAdmin],
+        component: SchoolCreateComponent
+      },
+      {
+        path: 'edit/:id',
+        canActivate: [AuthGuardAdmin],
+        component: SchoolCreateComponent
+      },
+      {
+        path: ':id/periods',
+        canActivate: [AuthGuardSuperAdmin],
+        component: PeriodCreateComponent
+      },
       {
         // student routes.
         path: ':id/student',
+        canActivate: [AuthGuardStudent],
         children: [
           { path: '', component: StudentListComponent },
           { path: 'create', component: StudentCreateComponent },
@@ -43,6 +66,7 @@ const schoolRoutes: Routes = [
       {
         // personnel routes.
         path: ':id/personnel',
+        canActivate: [AuthGuardPersonnel],
         children: [
           { path: '', component: PersonnelListComponent },
           { path: 'create', component: PersonnelCreateComponent },
@@ -54,22 +78,55 @@ const schoolRoutes: Routes = [
         path: 'grades',
         component: GradesStartComponent,
         children: [
-          { path: '', component: GradesListComponent },
-          { path: 'create', component: GradesCreateComponent },
-          { path: 'edit/:id', component: GradesCreateComponent }
+          {
+            path: '',
+            canActivate: [AuthGuardStudent],
+            component: GradesListComponent
+          },
+          {
+            path: 'create',
+            canActivate: [AuthGuardSuperAdmin],
+            component: GradesCreateComponent
+          },
+          {
+            path: 'edit/:id',
+            canActivate: [AuthGuardSuperAdmin],
+            component: GradesCreateComponent
+          }
         ]
       },
       {
         // Classes routes.
         path: ':id/classes',
         children: [
-          { path: '', component: ClassListComponent },
-          { path: 'create', component: ClassCreateComponent },
-          { path: 'edit/:classId', component: ClassCreateComponent },
-          { path: ':classId/students', component: ManageStudentsComponent },
-          { path: ':classId/status', component: ClassStatusComponent },
+          {
+            path: '',
+            canActivate: [AuthGuardStudentStatistic],
+            component: ClassListComponent
+          },
+          {
+            path: 'create',
+            canActivate: [AuthGuardStudent],
+            component: ClassCreateComponent
+          },
+          {
+            path: 'edit/:classId',
+            canActivate: [AuthGuardStudent],
+            component: ClassCreateComponent
+          },
+          {
+            path: ':classId/students',
+            canActivate: [AuthGuardStudent],
+            component: ManageStudentsComponent
+          },
+          {
+            path: ':classId/status',
+            canActivate: [AuthGuardStudent],
+            component: ClassStatusComponent
+          },
           {
             path: ':classId/statistics',
+            canActivate: [AuthGuardStudentStatistic],
             children: [
               { path: '', component: StatisticsListComponent },
               { path: 'create', component: StatisticsCreateComponent },
