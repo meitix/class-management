@@ -1,8 +1,10 @@
-<app-class-start></app-class-start>
+<app-class-start *ngIf="rolehasPermitforHaveAllclasses"></app-class-start>
 <div class="card">
   <div class="card-header" data-background-color="blue">
     <h4>لیست کلاس ها</h4>
-    <p>کلاس های ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید</p>
+    <p>
+      کلاس های ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید
+    </p>
   </div>
   <div *ngIf="!isLoading" class="card-content">
     <table class="table">
@@ -17,7 +19,9 @@
         <tr *ngFor="let class of classes">
           <td>{{ class.title }}</td>
           <td>
-            <span *ngIf="class.teacher">{{class.teacher.firstname +' '+ class.teacher.lastname}}</span>
+            <span *ngIf="class.teacher">{{
+              class.teacher.firstname + ' ' + class.teacher.lastname
+            }}</span>
             <span *ngIf="!class.teacher" class="text-danger">بدون معلم</span>
           </td>
           <td>{{ class.grade.title }}</td>
@@ -25,17 +29,31 @@
           <!-- <td [innerHtml]="class.isEnable | activeStatus"></td> -->
 
           <td>
-            <a class="btn btn-simple btn-sm" [routerLink]="[class._id,'statistics']">
+            <a
+              class="btn btn-simple btn-sm"
+              [routerLink]="[class._id, 'statistics']"
+            >
               <i class="material-icons text-danger text-sm">list</i>
             </a>
-            <a class="btn btn-simple btn-sm" [routerLink]="[class._id,'students']">
+            <a
+              *ngIf="rolehasPermitforHaveAllclasses"
+              class="btn btn-simple btn-sm"
+              [routerLink]="[class._id, 'students']"
+            >
               <i class="material-icons text-danger text-sm">assignment_ind</i>
             </a>
             <a
-              class="btn btn-simple btn-sm" [routerLink]="['edit', class._id]">
+              *ngIf="rolehasPermitforHaveAllclasses"
+              class="btn btn-simple btn-sm"
+              [routerLink]="['edit', class._id]"
+            >
               <i class="material-icons text-info text-sm">edit</i>
             </a>
-            <a class="btn btn-simple btn-sm" (click)="delete(class._id)">
+            <a
+              *ngIf="rolehasPermitforHaveAllclasses"
+              class="btn btn-simple btn-sm"
+              (click)="delete(class._id)"
+            >
               <i class="material-icons text-danger text-sm">delete</i>
             </a>
           </td>

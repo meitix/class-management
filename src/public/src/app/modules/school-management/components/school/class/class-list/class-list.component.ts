@@ -3,6 +3,7 @@ import { IClass } from 'src/app/modules/school-management/models/edu/class.inter
 import { SchoolService } from '../../services/school.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/modules/authentication/services/auth.service';
 
 @Component({
   selector: 'app-class-list',
@@ -15,9 +16,12 @@ export class ClassListComponent implements OnInit, OnDestroy {
   schoolId: string;
   periodChangeSubscription: Subscription;
   isLoading: boolean = true;
+  rolehasPermitforHaveAllclasses;
+  currentUser;
 
   constructor(
     private schoolService: SchoolService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) {
     this.classes = [];
@@ -25,9 +29,12 @@ export class ClassListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // get school id from route.
-    this.schoolIdSubscription = this.route.parent.params.subscribe(params => {
+    this.schoolIdSubscription = this.route.params.subscribe(params => {
       this.schoolId = params.id;
     });
+
+    this.checkRolePermitforHaveAllclasses();
+
     this.fetchGridData();
 
     // listen to period change.
@@ -46,7 +53,14 @@ export class ClassListComponent implements OnInit, OnDestroy {
           this.schoolService.getSelectedPeriod()._id
         )
         .subscribe(res => {
-          this.classes = res;
+          if (this.rolehasPermitforHaveAllclasses) {
+            this.classes = res;
+          } else {
+            this.classes = res.filter(f => {
+              return f.teacher._id === this.currentUser.id;
+            });
+          }
+
           this.isLoading = false;
         });
     }
@@ -59,6 +73,26 @@ export class ClassListComponent implements OnInit, OnDestroy {
         this.fetchGridData();
       });
     }
+  }
+
+  checkRolePermitforHaveAllclasses()
+  {
+    this.currentUser = this.authService.getCurrentUser();
+    this.rolehasPermitforHaveAllclasses = this.currentUser.roles.map(f => {
+      if (
+        f.title === 'ادمین' ||
+        f.title === 'مدیریت اموزش' ||
+        f.title === 'ادمین کل'
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    if (this.rolehasPermitforHaveAllclasses.includes(true))
+      return (this.rolehasPermitforHaveAllclasses = true);
+    else this.rolehasPermitforHaveAllclasses = false;
+
   }
 
   ngOnDestroy() {
