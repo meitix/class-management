@@ -1,0 +1,61 @@
+<div class="card">
+  <div class="card-header" data-background-color="blue">
+    <h4>مکتب</h4>
+    <p>
+      مکتب ثبت شده در سیستم را میتوانید در این قسمت مشاهده و مدیریت کنید
+    </p>
+  </div>
+  <div *ngIf="!isLoading" class="card-content">
+    <table class="table">
+      <thead *ngIf="schools && schools.length > 0">
+        <th>کد</th>
+        <th>عنوان</th>
+        <th>وضعیت</th>
+        <th>هیات امنا</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let school of schools">
+          <td>{{ school.code }}</td>
+          <td>{{ school.title }}</td>
+          <!-- <td [innerHtml]="school.isEnable | activeStatus"></td> -->
+          <td [innerHtml]="school.isEnable"></td>
+          <td>{{ school.boardOfTrust }}</td>
+          <td>
+            <a
+              class="btn btn-simple btn-sm"
+              [routerLink]="['../edit', school._id]"
+            >
+              <i class="material-icons text-info text-sm">edit</i>
+            </a>
+            <a class="btn btn-simple btn-sm" [routerLink]="['personnel']">
+              <i class="material-icons text-warning text-sm">card_travel</i>
+            </a>
+            <a class="btn btn-simple btn-sm" [routerLink]="['student']">
+              <i class="material-icons text-primary text-sm">face</i>
+            </a>
+            <a class="btn btn-simple btn-sm" [routerLink]="['classes']">
+              <i class="material-icons text-info text-sm">school</i>
+            </a>
+            <!-- <a class="btn btn-simple btn-sm" (click)="delete(school._id)">
+              <i class="material-icons text-danger text-sm">delete</i>
+            </a> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="schools.length === 0">
+      <p style="text-align:center">موردی یافت نشد</p>
+    </div>
+  </div>
+  <div *ngIf="isLoading">
+    <br />
+    <br />
+    <br />
+    <br />
+    <app-isloading></app-isloading>
+    <br />
+    <br />
+    <br />
+    <br />
+  </div>
+</div>
