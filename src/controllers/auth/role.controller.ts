@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { Role } from "../../models/entities/role.entity";
+import { Request, Response } from 'express';
+import { Role } from '../../models/entities/role.entity';
 
 export class RoleController {
   async fetch(req: Request, res: Response) {
@@ -9,6 +9,7 @@ export class RoleController {
     // find by req.body in lack of id.
     else {
       data = await Role.find();
+      data = data.filter(d => d.title !== 'ادمین کل');
     }
     res.send(data);
   }
