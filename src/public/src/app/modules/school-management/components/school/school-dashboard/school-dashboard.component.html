@@ -1,3 +1,46 @@
-<p>
-  school-dashboard works!
-</p>
+<div *ngIf="!manageSchoolUP" class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li *ngIf="manageClass">
+        <button (click)="turnOnManageClasses()">مدیریت کلاس ها</button>
+      </li>
+      <li *ngIf="manageClass">
+        <button (click)="turnOnManageStudents()">مدیریت قرآن آموزان</button>
+      </li>
+      <li *ngIf="studentsStatistics">
+        <button (click)="turnOnStudentsStatistics()">مدیریت آمار</button>
+      </li>
+      <li *ngIf="managePersonnel">
+        <button (click)="turnOnManagePersonnel()">مدیریت کارمندان</button>
+      </li>
+    </ul>
+  </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+
+<!-- Components -->
+<app-admin-dashboard
+  *ngIf="manageSchoolUP"
+  [schoolId]="schoolId"
+></app-admin-dashboard>
+
+<app-manage-class *ngIf="manageClassUP" [schoolId]="schoolId">
+</app-manage-class>
+
+<app-manage-student
+  *ngIf="manageStudentsUP"
+  [schoolId]="schoolId"
+></app-manage-student>
+
+<app-students-statistics
+  *ngIf="studentsStatisticsUP"
+  [schoolId]="schoolId"
+></app-students-statistics>
+
+<app-manage-staffs
+  *ngIf="managePersonnelUP"
+  [schoolId]="schoolId"
+></app-manage-staffs>
