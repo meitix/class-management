@@ -37,6 +37,11 @@ import { StatisticsListComponent } from './components/school/class/statistics/st
 import { DatePipe } from './pipes/date.pipe';
 import { DpDatePickerModule } from 'ng2-jalali-date-picker';
 import { IsloadingComponent } from '../../shared/loading/isloading/isloading.component';
+import { AdminDashboardComponent } from './components/school/school-dashboard/admin-dashboard/admin-dashboard.component';
+import { ManageClassComponent } from './components/school/school-dashboard/manage-class/manage-class.component';
+import { StudentsStatisticsComponent } from './components/school/school-dashboard/students-statistics/students-statistics.component';
+import { ManageStaffsComponent } from './components/school/school-dashboard/manage-staffs/manage-staffs.component';
+import { ManageStudentComponent } from './components/school/school-dashboard/manage-student/manage-student.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +77,12 @@ import { IsloadingComponent } from '../../shared/loading/isloading/isloading.com
     StatisticsCreateComponent,
     StatisticsListComponent,
     DatePipe,
-    IsloadingComponent
+    IsloadingComponent,
+    AdminDashboardComponent,
+    ManageClassComponent,
+    StudentsStatisticsComponent,
+    ManageStaffsComponent,
+    ManageStudentComponent
   ],
   imports: [
     CommonModule,
