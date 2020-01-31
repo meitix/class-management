@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { PeriodController } from '../controllers/period.controller';
 const authSuperAdmin = require('../middlewares/authSuperAdmin');
+const authAdmin = require('../middlewares/authAdmin');
 
 export class PeriodRouter {
   router: Router;
@@ -14,11 +15,11 @@ export class PeriodRouter {
   private assignRoutesToController() {
     this.router.get('/', this.periodController.fetchAll);
     this.router.get('/:periodId', this.periodController.fetch);
-    this.router.post('/', authSuperAdmin, this.periodController.create);
-    this.router.put('/:periodId', authSuperAdmin, this.periodController.update);
+    this.router.post('/', authAdmin, this.periodController.create);
+    this.router.put('/:periodId', authAdmin, this.periodController.update);
     this.router.delete(
       '/:periodId',
-      authSuperAdmin,
+      authAdmin,
       this.periodController.delete
     );
   }

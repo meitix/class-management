@@ -50,7 +50,7 @@ const schoolRoutes: Routes = [
       },
       {
         path: ':id/periods',
-        canActivate: [AuthGuardSuperAdmin],
+        canActivate: [AuthGuardAdmin],
         component: PeriodCreateComponent
       },
       {
