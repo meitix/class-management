@@ -7,16 +7,22 @@ import { InitialDefaultData } from "./init-default-data";
 export class ClassManagement {
   app: Express;
 
-  constructor() {
+  constructor(private isProduction = false) {
     this.app = express();
     this.init();
+  }
+
+  private get publicFolder(): string {
+   return this.isProduction ? '/public' : '/public/dist/class-management-fe'
   }
 
   // initial app.
   private init() {
     this.app.use(cors());
     this.app.use(express.json());
-    this.app.use(schoolManagementRouter);
+    this.app.use('/api', schoolManagementRouter);
+    console.log(__dirname + this.publicFolder ,this.isProduction)
+    this.app.use(express.static(__dirname + this.publicFolder));
     // this.useErrorHandler();
     InitialDefaultData();
   }

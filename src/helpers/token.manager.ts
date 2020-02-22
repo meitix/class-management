@@ -10,7 +10,7 @@ class TokenManager {
   constructor() {
     // read secret key from config.
     this.secretKey = readFileSync(
-      resolve('./config/settings/jwt-secret.key')
+      resolve( __dirname, '../config/settings/jwt-secret.key')
     ).toString();
   }
 
